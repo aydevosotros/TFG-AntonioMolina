@@ -15,7 +15,7 @@ if __name__ == '__main__':
     q = 0.6;
     # define 2 groups of input data
     A = rand(100)
-    print(A)
+#     print(A)
 #     A.append([rand(1,K)+q,rand(1,K)-q])
     B = rand(100)
 #     B.append([rand(1,K)+q,rand(1,K)-q])
