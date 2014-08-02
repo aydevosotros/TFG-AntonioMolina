@@ -1,0 +1,23 @@
+\select@language {spanish}
+\contentsline {chapter}{\numberline {1}Introduction}{2}
+\contentsline {section}{\numberline {1.1}Notas}{2}
+\contentsline {section}{\numberline {1.2}La metaplasticidad en redes biol\IeC {\'o}gicas}{2}
+\contentsline {section}{\numberline {1.3}Metaplasticidad en redes neuronales artificiales}{2}
+\contentsline {section}{\numberline {1.4}Trabajos previos}{2}
+\contentsline {chapter}{\numberline {2}Metaplasticidad en Redes Neuronales con Funci\IeC {\'o}n de Base Radial (RBFNN)}{3}
+\contentsline {section}{\numberline {2.1}Estudio previo}{3}
+\contentsline {section}{\numberline {2.2}La naturaleza stad\IeC {\'\i }stica del proceso de aprendizaje}{3}
+\contentsline {section}{\numberline {2.3}Refuerzo de casos menos frecuentes}{3}
+\contentsline {section}{\numberline {2.4}Entrenamiento}{3}
+\contentsline {chapter}{\numberline {3}Implementaci\IeC {\'o}n}{4}
+\contentsline {section}{\numberline {3.1}Metodolog\IeC {\'\i }a de desarrollo}{4}
+\contentsline {section}{\numberline {3.2}Pruebas y m\IeC {\'e}tricas de rendimiento}{4}
+\contentsline {subsection}{\numberline {3.2.1}Pruebas de clasificaci\IeC {\'o}n}{4}
+\contentsline {section}{\numberline {3.3}Implementaci\IeC {\'o}n b\IeC {\'a}sica de una RBF}{4}
+\contentsline {section}{\numberline {3.4}Extendemos con centr\IeC {\'o}ides K-NN}{4}
+\contentsline {section}{\numberline {3.5}PyBrain}{4}
+\contentsline {chapter}{\numberline {4}Resultados}{5}
+\contentsline {section}{\numberline {4.1}Resultados sobre las pruebas de rendimiento}{5}
+\contentsline {subsection}{\numberline {4.1.1}Pruebas de clasificaci\IeC {\'o}n}{5}
+\contentsline {section}{\numberline {4.2}Comparativa de RBFNN con y sin metaplasticidad}{5}
+\contentsline {section}{\numberline {4.3}Otros resultados de inter\IeC {\'e}s}{5}
