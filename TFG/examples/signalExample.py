@@ -24,21 +24,21 @@ if __name__ == '__main__':
     rbf.train(x, y)
     z = rbf.test(x)
        
-    # plot original data
+    # plotDataSet original data
     plt.figure(figsize=(12, 8))
-    plt.plot(x, y, 'k-')
+    plt.plotDataSet(x, y, 'k-')
      
-    # plot learned model
-    plt.plot(x, z, 'r-', linewidth=2)
+    # plotDataSet learned model
+    plt.plotDataSet(x, z, 'r-', linewidth=2)
      
-    # plot rbfs
-    plt.plot(rbf.centers, zeros(rbf.numCenters), 'gs')
+    # plotDataSet rbfs
+    plt.plotDataSet(rbf.centers, zeros(rbf.numCenters), 'gs')
      
     for c in rbf.centers:
         # RF prediction lines
         cx = arange(c-0.7, c+0.7, 0.01)
         cy = [rbf._basisfunc(array([cx_]), array([c])) for cx_ in cx]
-        plt.plot(cx, cy, '-', color='gray', linewidth=0.2)
+        plt.plotDataSet(cx, cy, '-', color='gray', linewidth=0.2)
      
     plt.xlim(-1.2, 1.2)
     plt.show()

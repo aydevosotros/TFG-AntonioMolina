@@ -20,8 +20,8 @@ if __name__ == '__main__':
     B = rand(100)
 #     B.append([rand(1,K)+q,rand(1,K)-q])
     
-    plt.plot(A,B)
+    plt.plotDataSet(A,B)
     plt.show()
-    #plt.plot((A(1,:),A(2,:),'k+',B(1,:),B(2,:),'b*'))
+    #plt.plotDataSet((A(1,:),A(2,:),'k+',B(1,:),B(2,:),'b*'))
 #     grid on
 #     hold on

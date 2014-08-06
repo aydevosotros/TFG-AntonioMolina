@@ -13,11 +13,11 @@
 \contentsline {section}{\numberline {3.1}Metodolog\IeC {\'\i }a de desarrollo}{4}
 \contentsline {section}{\numberline {3.2}Pruebas y m\IeC {\'e}tricas de rendimiento}{4}
 \contentsline {subsection}{\numberline {3.2.1}Pruebas de clasificaci\IeC {\'o}n}{4}
-\contentsline {section}{\numberline {3.3}Implementaci\IeC {\'o}n b\IeC {\'a}sica de una RBF}{4}
-\contentsline {section}{\numberline {3.4}Extendemos con centr\IeC {\'o}ides K-NN}{4}
-\contentsline {section}{\numberline {3.5}PyBrain}{4}
-\contentsline {chapter}{\numberline {4}Resultados}{5}
-\contentsline {section}{\numberline {4.1}Resultados sobre las pruebas de rendimiento}{5}
-\contentsline {subsection}{\numberline {4.1.1}Pruebas de clasificaci\IeC {\'o}n}{5}
-\contentsline {section}{\numberline {4.2}Comparativa de RBFNN con y sin metaplasticidad}{5}
-\contentsline {section}{\numberline {4.3}Otros resultados de inter\IeC {\'e}s}{5}
+\contentsline {section}{\numberline {3.3}Implementaci\IeC {\'o}n b\IeC {\'a}sica de una RBF}{5}
+\contentsline {section}{\numberline {3.4}Extendemos con centr\IeC {\'o}ides K-NN}{5}
+\contentsline {section}{\numberline {3.5}PyBrain}{5}
+\contentsline {chapter}{\numberline {4}Resultados}{6}
+\contentsline {section}{\numberline {4.1}Resultados sobre las pruebas de rendimiento}{6}
+\contentsline {subsection}{\numberline {4.1.1}Pruebas de clasificaci\IeC {\'o}n}{6}
+\contentsline {section}{\numberline {4.2}Comparativa de RBFNN con y sin metaplasticidad}{6}
+\contentsline {section}{\numberline {4.3}Otros resultados de inter\IeC {\'e}s}{6}
