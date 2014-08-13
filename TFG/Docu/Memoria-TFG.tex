@@ -53,16 +53,37 @@ Con todo esto en mente, he propuesto las siguientes pruebas que nos servirán pa
 		\item Clasificador sobre datos estandarizados
 	\end{itemize}
 \end{itemize} 
+Para cada uno de los tipos de pruebas elaboraré una clase que será la encargada de generar los datos de prueba, estos serán utilizados por los diferentes tipos de redes neuronales discutidos en este documento y además serán las encargadas de evaluar diferentes parámetros de error y rendimiento a partir de las predicciones que nos proporcione cada una de las redes. Estos parámetros de evaluación serán explicados en detalle más adelante para cada uno de los tipos de prueba. Todas las clases de prueba tendrán por objeto:
+\begin{itemize}
+	\item Generar los datos característicos (clusters, ondas, etc...)
+	\item Proporcionar getters para obtener las X y las Y que serán la entrada a nuestras redes
+	\item Proporcionar métodos de evaluación de los resultados de las distintas redes neuronales
+\end{itemize}
 
 \subsection{Pruebas de clasificación}
 Uno de los usos más habituales de las RBFNN es cuando tenemos que clasificar sobre un conjunto de datos cuyas clases no son linealmente separables.
 \begin{figure}[!h]{}
     \centering
     \includegraphics[width=0.4\textwidth]{img/clusteredData1.png}
-    \label{fig:Suscripcion}
+    \label{fig:clusteredData1}
     \caption{Conjunto de datos con distribución normal}
 \end{figure}
-Ya que, a través de las RBFNN, obtenemos un modelo con la forma $f(x)=\sum w_{i}\phi(r)$ (que es caracterizado como funciones de base radial) podemos aproximar funciones complejas con gran precisión como podemos ver en la figura...
+Ya que, a través de las RBFNN, obtenemos un modelo con la forma $f(x)=\sum w_{i}\phi(r)$ (que es caracterizado con funciones de base radial) podemos aproximar funciones complejas cuya salida sigue una distribución gaussiana (la más frecuente con mucha diferencia de entre las variables aleatorias que se dan en la naturaleza) con notable precisión. 
+La figura \ref{fig:clusteredData1} es un ejemplo de datos generados con el generador de datos clusterizados que he implementado. Este recibe como parámetros básicos el número de centroides y el número de muestras y genera estos datos de forma aleatoria tomando como centro los k-centroides también tomados aleatoriamente. En las siguientes líneas introduciré esta clase sin entrar en excesivo detalle de la implementación pero sí tratando de aclarar las cuestiones que considero claves.
+
+\subsubsection{Generación de datos aleatorios}
+Para este tipo de test necesitamos generar datos que se distribuyan de forma normal alrededor de un centroide. Una distribución normal es aquella que cuya función de densidad de probabilidad queda definida por la media ($\mu$) y la desviación estándar ($\sigma$) del conjunto de datos ($x$) de la siguiente forma:
+\begin{center}
+$pdf(x,\mu,\sigma) = \frac{1}{ \sigma \sqrt{2 \pi}} e^{\left(-\frac{{\left(\mu - x\right)}^{2}}{2 \, \sigma^{2}}\right)}$
+\end{center} 
+Existen multitud de generadores aleatorios de este tipo de datos. En este caso utilizaré el propio de NumPy como muestro a continuación para generar las $n$ muestras por cada centroide ya que este definirá la media. La desviación estándard será proporcionada como parámetro en el constructor de la clase y nos permitirá jugar con la forma que adoptarán los datos generados.
+
+\begin{figure}[!h]{}
+    \centering
+    \includegraphics[width=0.4\textwidth]{img/clusteredData1.png}
+    \label{fig:clusteredData1}
+    \caption{Conjunto de datos con distribución normal}
+\end{figure}
 \section{Implementación básica de una RBF}
 
 \section{Extendemos con centróides K-NN}
