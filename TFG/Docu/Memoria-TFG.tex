@@ -1,5 +1,6 @@
 \documentclass[10pt,a4paper, twocolumn]{report}
-\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+\usepackage[utf8]{inputenc} 
 \usepackage[spanish]{babel}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -25,12 +26,23 @@
 \end{itemize}
 
 \section{La metaplasticidad en redes biológicas}
+
 \section{Metaplasticidad en redes neuronales artificiales}
 \section{Trabajos previos}
+El término metaplasticidad aplicado a redes artificiales fué acuñado por el doctor Andina en (ref). Andina definió la metaplasticidad en redes neuronales artificales como:
+\begin{quote}
+During the AMMLP training phase, the matrix weight W that models the synaptic strength of its artificial neurons is updated according to the probability of the input patterns and therefore of the corresponding synaptic activations
+\end{quote}
 \chapter{Metaplasticidad en Redes Neuronales con Función de Base Radial (RBFNN)}
 \section{Estudio previo}
+\subsection{Investigación del estado del arte y posibles vías de actuación}
+\subsection{Estudio del trabajo sobre la metaplasticidad en redes neuronales}
+\subsection{Implementación y estudio de la metaplasticidad en MLPs}
 \section{La naturaleza stadística del proceso de aprendizaje}
+Aquí me gustaría esponer una base sobre la que sustentar la idea de mejorar el proceso de aprendizaje en RBFNN implementado el concepto de metaplasticidad
 \section{Refuerzo de casos menos frecuentes}
+De acuerdo a lo descrito anteriormente, podemos considerar el proceso de metaplasticidad neuronal en redes artificiales como el refuerzo del aprendizaje en base a la probabilidad de pertenecencia a una clase de una muestra concreta. Así, para un caso típico (sus características son "frecuentes" en una clase, su influencia en el peso "influencia psinactica" será menor que para un caso "atípico" de la clase.
+La idea intuitiva   
 \section{Entrenamiento}
 \chapter{Implementación}
 \section{Metodología de desarrollo}
@@ -87,13 +99,14 @@ Existen multitud de generadores aleatorios de este tipo de datos. En este caso u
 \section{Implementación básica de una RBF}
 
 \section{Extendemos con centróides K-NN}
+
 \section{PyBrain}
 
 
 \chapter{Resultados}
-\section{Resultados sobre las pruebas de rendimiento}
-Como comentamos en la sección... 
 \subsection{Pruebas de clasificación}
+Ya hemos comentado anteriormente como he desarrollado el generador de datos aleatorios y como este evalúa el error del clasificador. En este proceso de evaluación consideraré una serie de conjuntos de datos con diferentes números de categorías que siguen una distribución normal en un número arbitrario de dimensiones. Sobre cada uno de estos conjuntos de datos evaluaré el funcionamiento de las distintan RBFNN estudiadas con diferente número de clústeres (neuronas con activación en base a una función de base radial en la primera capa de la red) evaluando tanto la clasificación (aciertos, fallos, falsos positivos, falsos negativos, preción y "recall") como los tiempos de entrenamiento.
+
 \section{Comparativa de RBFNN con y sin metaplasticidad}
 \section{Otros resultados de interés}
 

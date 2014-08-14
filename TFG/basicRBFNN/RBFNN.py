@@ -9,6 +9,7 @@ Added by Antonio Molina:
 '''
 
 from scipy import *
+import numpy as np
 from scipy.linalg import norm, pinv
  
 from matplotlib import pyplot as plt
@@ -38,7 +39,6 @@ class RBFNN:
     def train(self, X, Y):
         """ X: matrix of dimensions n x indim
             y: column vector of dimension n x 1 """
-         
         # choose random center vectors from training set
         rnd_idx = random.permutation(X.shape[0])[:self.numCenters]
         self.centers = [X[i,:] for i in rnd_idx]
@@ -46,7 +46,7 @@ class RBFNN:
         print "center", self.centers
         # calculate activations of RBFs
         G = self._calcAct(X)
-        print G
+#         print G
          
         # calculate output weights (pseudoinverse)
         self.W = dot(pinv(G), Y)
@@ -56,6 +56,6 @@ class RBFNN:
          
         G = self._calcAct(X)
         Y = dot(G, self.W)
-        return Y
+        return np.around(Y)
      
         
