@@ -9,13 +9,14 @@ import numpy as np
 import time
 import shlex, subprocess
 from matplotlib import pyplot as plt
-
+import os
 
 def generatePdfReport(nCentroids, perf, tTime):
     #TODO: Create the script for creating report
     pass
 
 def ClusteredDataTest():
+    os.mkdir("plots/")
     latexReport = '''
     \\documentclass[10pt,a4paper, twocolumn]{report}
     \\usepackage[T1]{fontenc} 
