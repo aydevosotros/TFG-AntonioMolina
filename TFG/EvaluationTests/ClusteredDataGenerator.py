@@ -25,6 +25,7 @@ class ClusteredDataGenerator(object):
         self.nCentroids = nCentroids
         self.indim = indim
         self._generateData()
+        #TODO: Tengo que hacer también para probar para diferentes dimensiones de entrada
         
     def _generateData(self):
         for i in range(self.nCentroids):
