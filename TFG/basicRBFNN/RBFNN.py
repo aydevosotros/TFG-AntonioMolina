@@ -16,12 +16,13 @@ from matplotlib import pyplot as plt
  
 class RBFNN:
      
-    def __init__(self, indim, numCenters, outdim):
+    def __init__(self, indim, numCenters, outdim, training="random"):
         self.indim = indim
         self.outdim = outdim
         self.numCenters = numCenters
         self.centers = [random.uniform(-1, 1, indim) for i in xrange(numCenters)]
         self.beta = 8
+        self.training=training
         self.W = random.random((self.numCenters, self.outdim))
          
     def _basisfunc(self, c, d):
@@ -39,10 +40,18 @@ class RBFNN:
     def train(self, X, Y):
         """ X: matrix of dimensions n x indim
             y: column vector of dimension n x 1 """
-        # choose random center vectors from training set
-        rnd_idx = random.permutation(X.shape[0])[:self.numCenters]
-        self.centers = [X[i,:] for i in rnd_idx]
-         
+        if self.training == "random":
+            # choose random center vectors from training set
+            rnd_idx = random.permutation(X.shape[0])[:self.numCenters]
+            self.centers = [X[i,:] for i in rnd_idx]
+        elif self.training == "knn":
+            pass
+        elif self.training == "meta":
+            #TODO: Implementar metaplasticidad
+            pass
+        else:
+            print "You must set the training method"
+            return
         print "center", self.centers
         # calculate activations of RBFs
         G = self._calcAct(X)
