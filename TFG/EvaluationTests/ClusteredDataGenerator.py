@@ -25,10 +25,10 @@ class ClusteredDataGenerator(object):
         self.nCentroids = nCentroids
         self.indim = indim
         self._generateData()
-        #TODO: Tengo que hacer también para probar para diferentes dimensiones de entrada
+        #TODO: Tengo que hacer tambien para probar para diferentes dimensiones de entrada
         
     def _generateData(self):
-        for i in range(self.nCentroids):
+        for i in xrange(self.nCentroids):
             mean = np.random.rand(2)*30 + (np.random.rand(2)*10)
             print "Creating cluster with center: " + str(mean)
             samples = np.random.normal(size=[self.nSamples, 2], loc=mean)
@@ -45,7 +45,7 @@ class ClusteredDataGenerator(object):
     def plotDataSet(self):
         colors = ["red", "blue" , "green", "orange", "purple"]
         ts = self.getTrainingX()
-        for i in range(len(self.getTrainingX())):
+        for i in xrange(len(self.getTrainingX())):
             plt.plot(ts[i,0], ts[i,1], "o", color=colors[int(self.getTrainingY()[i])])
         plt.title("Plot of two first features of each sample in the dataset")
         plt.xlabel("First dimension")
@@ -56,7 +56,7 @@ class ClusteredDataGenerator(object):
         plt.clf()
         colors = ["red", "blue" , "green", "orange", "purple"]
         ts = self.getTrainingX()
-        for i in range(len(self.getTrainingX())):
+        for i in xrange(len(self.getTrainingX())):
             plt.plot(ts[i,0], ts[i,1], "o", color=colors[int(self.getTrainingY()[i])])
         plt.title("Plot of two first features of each sample in the dataset")
         plt.xlabel("First dimension")
@@ -65,7 +65,6 @@ class ClusteredDataGenerator(object):
         
     def getTrainingX(self):
         '''It returns the first 75% of the X in dataSet for training'''
-        print "El trainingSet tiene: ", len(self.data[:int(0.75*(self.nCentroids*self.nSamples)),:-1])
         return self.data[:int(0.75*(self.nCentroids*self.nSamples)),:-1]
         
     def getTrainingY(self):
@@ -73,7 +72,6 @@ class ClusteredDataGenerator(object):
         return self.data[:int(0.75*(self.nCentroids*self.nSamples)),-1]
     
     def getValidationX(self):
-        print "El validationTest tiene: ", len(self.data[int(0.75*(self.nCentroids*self.nSamples))+1:,:-1])
         '''It returns the last 25% of the X in dataSet for verifying'''
         return self.data[int(0.75*(self.nCentroids*self.nSamples))+1:,:-1]
     
