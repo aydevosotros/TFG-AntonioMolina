@@ -6,41 +6,68 @@ Created on Jul 28, 2014
 
 from matplotlib import pyplot as plt
 import numpy as np
-from basicRBFNN import RBFNN
+import csv
 
-class ClusteredDataGenerator(object):
+class DataGenerator(object):
     '''
     Esta clase preparara el entorno, ejecutara pruebas de clasisficacion sobre M elementos
     que siguen una distribucion gausiana alrededor de un numero N de centroides aleatorios.
     '''
 
 
-    def __init__(self, nSamples, nCentroids, indim):
+    def __init__(self):
         '''
         Constructor
         '''
-        # Params setting
-        self.totalSamples = nSamples
-        self.nSamples = nSamples / nCentroids
-        self.nCentroids = nCentroids
-        self.indim = indim
-        self._generateData()
-        #TODO: Tengo que hacer tambien para probar para diferentes dimensiones de entrada
+        pass
         
-    def _generateData(self):
-        for i in xrange(self.nCentroids):
+    def generateClusteredRandomData(self, nSamples=500, nCentroids=2, dim=30):
+        #TODO: Tengo que hacer tambien para probar para diferentes dimensiones de entrada
+        for i in xrange(nCentroids):
+            #TODO: Parametrizar la media
             mean = np.random.rand(2)*30 + (np.random.rand(2)*10)
             print "Creating cluster with center: " + str(mean)
-            samples = np.random.normal(size=[self.nSamples, 2], loc=mean)
-            n=0
-            for sample in samples:
+            samples = np.random.normal(size=[nSamples, dim], loc=mean)
+            for n, sample in enumerate(samples):
                 sample = np.append(sample, (i))
                 if n==0 and i==0:
                     self.data = sample
                 else:
                     self.data = np.vstack((self.data, sample))
-                n+=1
         np.random.shuffle(self.data) # Shuffle data to avoid dataset to be ordered by centroid
+    
+    def generateRealData(self, dataSet='column'):
+        if dataSet == "cancer": #Wisconsi breast cancer dataset
+            with open('DataSets/wdbc.data', 'rb') as csvfile:
+                spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+                for ns, sample in enumerate(spamreader):
+                    s = str.split(sample[0], ',')
+                    if s[1]=='B': 
+                        t=0.0
+                    else:
+                        t=1.0
+                    sample = np.append(np.array(s[2:], float), t)
+    #                 print sample , ns
+                    if ns == 0:
+                        self.data = sample
+                    else:
+                        self.data = np.vstack((self.data, sample))
+        elif dataSet == "column":
+            with open('DataSets/column_2C.data', 'rb') as csvfile:
+                spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+                for ns, sample in enumerate(spamreader):
+                    s = str.split(sample[0], ',')
+                    if s[-1]=='Abnormal': 
+                        t=0.0
+                    else:
+                        t=1.0
+                    sample = np.append(np.array(s[:-1], float), t)
+    #                 print sample , ns
+                    if ns == 0:
+                        self.data = sample
+                    else:
+                        self.data = np.vstack((self.data, sample))
+        np.random.shuffle(self.data)
     
     def plotDataSet(self):
         colors = ["red", "blue" , "green", "orange", "purple"]
@@ -61,31 +88,34 @@ class ClusteredDataGenerator(object):
         plt.title("Plot of two first features of each sample in the dataset")
         plt.xlabel("First dimension")
         plt.ylabel("Second dimension")
-        plt.savefig("plots/"+str(self.nCentroids)+"c"+str(self.totalSamples)+"s"+".png")
+        plt.savefig("plots/"+str(len(self.data))+"s"+".png")
         
     def getTrainingX(self):
         '''It returns the first 75% of the X in dataSet for training'''
-        return self.data[:int(0.75*(self.nCentroids*self.nSamples)),:-1]
+        return self.data[:int(0.75*len(self.data)),:-1]
         
     def getTrainingY(self):
         '''It returns the first 75% of the Y in dataSet for training'''
-        return self.data[:int(0.75*(self.nCentroids*self.nSamples)),-1]
+        return self.data[:int(0.75*len(self.data)),-1]
     
     def getValidationX(self):
         '''It returns the last 25% of the X in dataSet for verifying'''
-        return self.data[int(0.75*(self.nCentroids*self.nSamples))+1:,:-1]
+        return self.data[int(0.75*len(self.data))+1:,:-1]
     
     def getValidationY(self):
         '''It returns the last 25% of the X in dataSet for verifying'''
-        return self.data[int(0.75*(self.nCentroids*self.nSamples)+1):,-1]
+        return self.data[int(0.75*len(self.data)+1):,-1]
         
     def getDataSet(self):
+        #TODO: Esto ta mu mal
         return self.getTrainingX(), self.getTrainingY()
+    
             
     def verifyResult(self, Y):
         vY = self.getValidationY()
         hits = 0.0
         fails = 0.0
+        #TODO: Tengo que hacer una verificacion mas exhaustiva
         truePositive = 0
         falsePositive = 0
         trueNegative = 0
@@ -105,7 +135,6 @@ class ClusteredDataGenerator(object):
         
 # Some code to debug
 if __name__ == '__main__':
-    cdt = ClusteredDataGenerator(1000, 3, 2)
-    cdt.plotDataSet()
+    cdt = DataGenerator()
     print cdt.getDataSet()
     print len(cdt.getTrainingX())+len(cdt.getValidationX())

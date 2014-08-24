@@ -66,8 +66,9 @@ class RBFNN:
         """ X: matrix of dimensions n x indim """
          
         G = self._calcAct(X)
+        print "G=", G
         Y = dot(G, self.W)
-        return np.around(Y)
+        return Y
     
 
 # Some code to debug

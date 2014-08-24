@@ -3,7 +3,7 @@ Created on Jul 28, 2014
     By executing this file you'll be executing and evaluating the test written in this package
 @author: antonio
 '''
-from EvaluationTests.ClusteredDataGenerator import ClusteredDataGenerator
+from EvaluationTests.DataGenerator import DataGenerator
 from basicRBFNN.RBFNN import RBFNN
 import numpy as np
 import time
@@ -11,20 +11,46 @@ import shlex, subprocess
 from matplotlib import pyplot as plt
 import Strings
 import os
-import csv
 
-def RealDataTest(dataSet="cancer", minCentroids=2, maxCentroids=200, stepCentroids=10):
+def RealDataTest(dataSet="cancer", minCentroids=10, maxCentroids=200, stepCentroids=20):
     latexReport = ""
     try:
         os.mkdir("plots/") #Creo, si no esta, la carpeta en la que guardar las figuras
     except:
         pass
-    #load dataset
-    if dataSet == "cancer": #Wisconsi breast cancer dataset
-        with open('DataSets/wdbc.data', 'rb') as csvfile:
-            spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-            for ns, sample in enumerate(spamreader):
-                print "la linea %d tiene: %s"%(ns, sample)
+    dataGenerator = DataGenerator()
+    j = 0            
+    nC = np.zeros(maxCentroids/stepCentroids)
+    rperf = np.zeros(maxCentroids/stepCentroids)
+    rtT = np.zeros(maxCentroids/stepCentroids)
+    kperf = np.zeros(maxCentroids/stepCentroids)
+    ktT = np.zeros(maxCentroids/stepCentroids)
+    for nc in xrange(minCentroids, maxCentroids, stepCentroids):
+        dataGenerator.generateRealData("cancer")
+        print "Testing RBFNN looking for %d centroids"%(nc)
+        rrbfnn = RBFNN(len(dataGenerator.getTrainingX()[0]), nc, 1, "random")
+        krbfnn = RBFNN(len(dataGenerator.getTrainingX()[0]), nc, 1, "knn")
+        #Training and verifying results by randomly chosen centroids
+        t = time.clock()
+        rrbfnn.train(dataGenerator.getTrainingX(), dataGenerator.getTrainingY())
+        rtT[j] = time.clock()-t
+#         print "la salida de la red es:",
+        rperf[j] = dataGenerator.verifyResult(np.around(rrbfnn.test(dataGenerator.getValidationX())))
+        print "Con una precision del %d"%(rperf[j])
+        #Training and verifying results by k-means clustering
+        t = time.clock()
+        krbfnn.train(dataGenerator.getTrainingX(), dataGenerator.getTrainingY())
+        ktT[j] = time.clock()-t
+        kperf[j] = dataGenerator.verifyResult(np.around(krbfnn.test(dataGenerator.getValidationX())))
+        print "Con una precision del %d"%(kperf[j])
+        #Training and verifying results with metaplasticity modified weights
+        nC[j] = nc
+        j+=1
+    
+    return latexReport
+        
+        
+        
     
 def ClusteredDataTest(minCentroids=2, maxCentroids=200, stepCentroids=10):
     latexReport = ""
@@ -32,19 +58,20 @@ def ClusteredDataTest(minCentroids=2, maxCentroids=200, stepCentroids=10):
         os.mkdir("plots/") #Creo, si no esta, la carpeta en la que guardar las figuras
     except:
         pass
-    for n in xrange(500, 10000, 500): # Tomo diferentes tamanyos de training sets
+    for n in xrange(500, 1000, 500): # Tomo diferentes tamanyos de training sets
         latexReport += '''\\section{For a data set of %d random samples.}''' % (n)
         print "Performing test with clustered data for %d random samples"% (n)
-        for i in range(3): #TODO: Parametrizar los centroides en el dataset
+        for i in xrange(3): #TODO: Parametrizar los centroides en el dataset
             print "For %d clusters in the data set"%(i+2)
             latexReport += '''\\subsubsection{For %d clusters in the data set.}''' % (i+2)
-            cdt = ClusteredDataGenerator(n, i+2, 2)
-            cdt.savePlot()
+            dataGenerator = DataGenerator()
+            dataGenerator.generateClusteredRandomData(n, i+2, 2)
+            dataGenerator.savePlot()
             latexReport += '''\\begin{figure}[!h]{}
                                 \\centering
-                                \\includegraphics[width=0.4\\textwidth]{plots/%dc%ds.png}
+                                \\includegraphics[width=0.4\\textwidth]{plots/%ds.png}
                                 \\label{fig:clusteredData1}
-                            \\end{figure}''' % (i+2, n)
+                            \\end{figure}''' % (n)
             j = 0            
             nC = np.zeros(maxCentroids/stepCentroids)
             rperf = np.zeros(maxCentroids/stepCentroids)
@@ -57,14 +84,14 @@ def ClusteredDataTest(minCentroids=2, maxCentroids=200, stepCentroids=10):
                 krbfnn = RBFNN(2, nc, 1, "knn")
                 #Training and verifying results by randomly chosen centroids
                 t = time.clock()
-                rrbfnn.train(cdt.getTrainingX(), cdt.getTrainingY())
+                rrbfnn.train(dataGenerator.getTrainingX(), dataGenerator.getTrainingY())
                 rtT[j] = time.clock()-t
-                rperf[j] = cdt.verifyResult(rrbfnn.test(cdt.getValidationX()))
+                rperf[j] = dataGenerator.verifyResult(np.around(rrbfnn.test(dataGenerator.getValidationX())))
                 #Training and verifying results by k-means clustering
                 t = time.clock()
-                krbfnn.train(cdt.getTrainingX(), cdt.getTrainingY())
+                krbfnn.train(dataGenerator.getTrainingX(), dataGenerator.getTrainingY())
                 ktT[j] = time.clock()-t
-                kperf[j] = cdt.verifyResult(krbfnn.test(cdt.getValidationX()))
+                kperf[j] = dataGenerator.verifyResult(np.around(krbfnn.test(dataGenerator.getValidationX())))
                 #Training and verifying results with metaplasticity modified weights
                 nC[j] = nc
                 j+=1
@@ -111,6 +138,7 @@ if __name__ == '__main__':
     latexReport = Strings.headerReportClusterTemplate #Incluyo la cabecera tex
     
     latexReport += ClusteredDataTest()
+#     latexReport += RealDataTest()
     
     latexReport += '''\\end{document}'''
     with open('report.tex','w') as f:
