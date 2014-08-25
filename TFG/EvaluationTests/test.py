@@ -5,6 +5,7 @@ Created on Jul 28, 2014
 '''
 from EvaluationTests.DataGenerator import DataGenerator
 from basicRBFNN.RBFNN import RBFNN
+from sklearn import preprocessing
 import numpy as np
 import time
 import shlex, subprocess
@@ -19,6 +20,7 @@ def RealDataTest(dataSet="cancer", minCentroids=10, maxCentroids=200, stepCentro
     except:
         pass
     dataGenerator = DataGenerator()
+    dataGenerator.generateRealData("cancer")
     j = 0            
     nC = np.zeros(maxCentroids/stepCentroids)
     rperf = np.zeros(maxCentroids/stepCentroids)
@@ -26,27 +28,30 @@ def RealDataTest(dataSet="cancer", minCentroids=10, maxCentroids=200, stepCentro
     kperf = np.zeros(maxCentroids/stepCentroids)
     ktT = np.zeros(maxCentroids/stepCentroids)
     for nc in xrange(minCentroids, maxCentroids, stepCentroids):
-        dataGenerator.generateRealData("cancer")
         print "Testing RBFNN looking for %d centroids"%(nc)
         rrbfnn = RBFNN(len(dataGenerator.getTrainingX()[0]), nc, 1, "random")
         krbfnn = RBFNN(len(dataGenerator.getTrainingX()[0]), nc, 1, "knn")
         #Training and verifying results by randomly chosen centroids
+        #Pruebo a escalar
         t = time.clock()
-        rrbfnn.train(dataGenerator.getTrainingX(), dataGenerator.getTrainingY())
+        rrbfnn.train(preprocessing.scale(dataGenerator.getTrainingX()), dataGenerator.getTrainingY())
         rtT[j] = time.clock()-t
 #         print "la salida de la red es:",
-        rperf[j] = dataGenerator.verifyResult(np.around(rrbfnn.test(dataGenerator.getValidationX())))
-        print "Con una precision del %d"%(rperf[j])
+        rperf[j] = dataGenerator.verifyResult(np.around(rrbfnn.test(preprocessing.scale(dataGenerator.getValidationX()))))
         #Training and verifying results by k-means clustering
         t = time.clock()
         krbfnn.train(dataGenerator.getTrainingX(), dataGenerator.getTrainingY())
         ktT[j] = time.clock()-t
         kperf[j] = dataGenerator.verifyResult(np.around(krbfnn.test(dataGenerator.getValidationX())))
-        print "Con una precision del %d"%(kperf[j])
         #Training and verifying results with metaplasticity modified weights
         nC[j] = nc
         j+=1
     
+    #Writing table of results
+    latexReport += '''\\begin{tabular}{|l | c | r|} \\hline Centroids & Performance & Training time \\\\ \\hline'''
+    for j in range(len(nC)):
+        latexReport += '''%d & %s & %s\\\\ \\hline''' % (nC[j], str(kperf[j]), str(ktT[j])) #TODO: Tengo que reconstruir la tabla para que entre todo
+    latexReport += '''\\end{tabular}'''
     return latexReport
         
         
@@ -137,8 +142,15 @@ if __name__ == '__main__':
     print 'Performing test over the RBFNNs'
     latexReport = Strings.headerReportClusterTemplate #Incluyo la cabecera tex
     
-    latexReport += ClusteredDataTest()
-#     latexReport += RealDataTest()
+#     latexReport += ClusteredDataTest()
+    latexReport += RealDataTest(dataSet='cancer',       #Data set to test 
+                                minCentroids = 10,     #Min number of centroids (neurons in hiddent layer
+                                maxCentroids = 50,    #Max centroids
+                                stepCentroids = 10)     
+    latexReport += RealDataTest(dataSet='column',       #Data set to test 
+                                minCentroids = 10,     #Min number of centroids (neurons in hiddent layer
+                                maxCentroids = 50,    #Max centroids
+                                stepCentroids = 10)     
     
     latexReport += '''\\end{document}'''
     with open('report.tex','w') as f:

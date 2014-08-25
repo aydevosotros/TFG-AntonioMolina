@@ -6,6 +6,7 @@ Created on Jul 28, 2014
 
 from matplotlib import pyplot as plt
 import numpy as np
+from sklearn import preprocessing
 import csv
 
 class DataGenerator(object):
@@ -36,7 +37,7 @@ class DataGenerator(object):
                     self.data = np.vstack((self.data, sample))
         np.random.shuffle(self.data) # Shuffle data to avoid dataset to be ordered by centroid
     
-    def generateRealData(self, dataSet='column'):
+    def generateRealData(self, dataSet='column', scale=True):
         if dataSet == "cancer": #Wisconsi breast cancer dataset
             with open('DataSets/wdbc.data', 'rb') as csvfile:
                 spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
@@ -68,6 +69,9 @@ class DataGenerator(object):
                     else:
                         self.data = np.vstack((self.data, sample))
         np.random.shuffle(self.data)
+        
+        if scale:
+            self.data[:,:-1] = preprocessing.scale(self.data[:,:-1])
     
     def plotDataSet(self):
         colors = ["red", "blue" , "green", "orange", "purple"]
