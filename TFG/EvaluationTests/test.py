@@ -57,36 +57,37 @@ def RealDataTest(dataSet="cancer", minCentroids=10, maxCentroids=200, stepCentro
         
         
     
-def ClusteredDataTest(minCentroids=2, maxCentroids=200, stepCentroids=10):
+def ClusteredDataTest(minCentroids=2, maxCentroids=200, stepCentroids=10, dim=2):
     latexReport = ""
     try:
         os.mkdir("plots/") #Creo, si no esta, la carpeta en la que guardar las figuras
     except:
         pass
-    for n in xrange(500, 1000, 500): # Tomo diferentes tamanyos de training sets
+    for n in xrange(500, 1000, 100): # Tomo diferentes tamanyos de training sets
         latexReport += '''\\section{For a data set of %d random samples.}''' % (n)
         print "Performing test with clustered data for %d random samples"% (n)
         for i in xrange(3): #TODO: Parametrizar los centroides en el dataset
             print "For %d clusters in the data set"%(i+2)
             latexReport += '''\\subsubsection{For %d clusters in the data set.}''' % (i+2)
             dataGenerator = DataGenerator()
-            dataGenerator.generateClusteredRandomData(n, i+2, 2)
+            dataGenerator.generateClusteredRandomData(n, i+2, dim)
             dataGenerator.savePlot()
-            latexReport += '''\\begin{figure}[!h]{}
-                                \\centering
-                                \\includegraphics[width=0.4\\textwidth]{plots/%ds.png}
-                                \\label{fig:clusteredData1}
-                            \\end{figure}''' % (n)
-            j = 0            
-            nC = np.zeros(maxCentroids/stepCentroids)
-            rperf = np.zeros(maxCentroids/stepCentroids)
-            rtT = np.zeros(maxCentroids/stepCentroids)
-            kperf = np.zeros(maxCentroids/stepCentroids)
-            ktT = np.zeros(maxCentroids/stepCentroids)
+#             latexReport += '''\\begin{figure}[!h]{}
+#                                 \\centering
+#                                 \\includegraphics[width=0.4\\textwidth]{plots/%ds.png}
+#                                 \\label{fig:clusteredData1}
+#                             \\end{figure}''' % (n)
+            j = 0
+            steps = (maxCentroids-minCentroids)/stepCentroids
+            nC = np.zeros(steps)
+            rperf = np.zeros(steps)
+            rtT = np.zeros(steps)
+            kperf = np.zeros(steps)
+            ktT = np.zeros(steps)
             for nc in xrange(minCentroids, maxCentroids, stepCentroids): # Test the network for an incremental number of centroids
                 print "Testing RBFNN looking for %d centroids"%(nc)
-                rrbfnn = RBFNN(2, nc, 1, "random")
-                krbfnn = RBFNN(2, nc, 1, "knn")
+                rrbfnn = RBFNN(dim, nc, 1, "random")
+                krbfnn = RBFNN(dim, nc, 1, "knn")
                 #Training and verifying results by randomly chosen centroids
                 t = time.clock()
                 rrbfnn.train(dataGenerator.getTrainingX(), dataGenerator.getTrainingY())
@@ -102,12 +103,20 @@ def ClusteredDataTest(minCentroids=2, maxCentroids=200, stepCentroids=10):
                 j+=1
             
             #Writing table of results
-            latexReport += '''\\begin{tabular}{|l | c | r|} \\hline Centroids & Performance & Training time \\\\ \\hline'''
+            latexReport += '''\\onecolumn\\begin{center}\\begin{tabular}{|c|c|c|c|c|c|c|}
+                        \\hline
+                        \\multicolumn{7}{|c|}{RBFNNs performance over n samples} \\\\
+                        \\hline
+                        \\multirow{2}{*}{nC} & \multicolumn{2}{|c|}{Random centroids} & \multicolumn{2}{|c|}{Knn} & \multicolumn{2}{|c|}{Metaplasticity} \\\\
+                        %\\hline
+                        & Time & Accuracy & Time & Accuracy & Time & Accuracy \\\\
+                        \\hline'''
             for j in range(len(nC)):
-                latexReport += '''%d & %s & %s\\\\ \\hline''' % (nC[j], str(kperf[j]), str(ktT[j])) #TODO: Tengo que reconstruir la tabla para que entre todo
-            latexReport += '''\\end{tabular}'''
+                latexReport += '''%d & %s & %s & %s & %s & %s & %s \\\\ \\hline''' % (nC[j], str(rtT[j]), str(rperf[j]), str(ktT[j]), str(kperf[j]), "na", "na")
+            latexReport += '''\\end{tabular}\\end{center}\\twocolumn\n'''
                 
             #Plotting accuracy over nCentroids
+            #TODO: Tengo que hacer un multiplot. quedara mejor
             plt.clf()
             plt.plot(nC, rperf, "-b")
             plt.plot(nC, kperf, "-r")
@@ -117,11 +126,11 @@ def ClusteredDataTest(minCentroids=2, maxCentroids=200, stepCentroids=10):
             plt.ylim(0,100)
             plt.legend(["Randomed", "K-means"])
             plt.savefig("plots/Accuracy%dc%ds.png" % (nc, n))
-            latexReport += '''\\begin{figure}[!h]{}
+            latexReport += '''\n\\begin{figure}[]{}
                             \\centering
                             \\includegraphics[width=0.4\\textwidth]{plots/Accuracy%dc%ds.png}
                             \\label{fig:clusteredData1}
-                            \\end{figure}''' % (nc, n)
+                            \\end{figure}\n''' % (nc, n)
             #Plotting time over nCentroids
             plt.clf()
             plt.plot(nC, rtT, "-b")
@@ -131,30 +140,38 @@ def ClusteredDataTest(minCentroids=2, maxCentroids=200, stepCentroids=10):
             plt.ylabel("Time (s)")
             plt.legend(["Randomed", "K-means"])
             plt.savefig("plots/Time%dc%ds.png" % (nc, n))
-            latexReport += '''\\begin{figure}[!h]{}
+            latexReport += '''\n\\begin{figure}[]{}
                             \\centering
                             \\includegraphics[width=0.4\\textwidth]{plots/Time%dc%ds.png}
                             \\label{fig:clusteredData1}
-                            \\end{figure}''' % (nc, n)
+                            \\end{figure}\n''' % (nc, n)
     return latexReport
 
 if __name__ == '__main__':
     print 'Performing test over the RBFNNs'
     latexReport = Strings.headerReportClusterTemplate #Incluyo la cabecera tex
     
-#     latexReport += ClusteredDataTest()
+    latexReport += ClusteredDataTest(minCentroids = 200,
+                                maxCentroids = 400,
+                                stepCentroids = 50,
+                                dim = 10)
+    
     latexReport += RealDataTest(dataSet='cancer',       #Data set to test 
                                 minCentroids = 10,     #Min number of centroids (neurons in hiddent layer
                                 maxCentroids = 50,    #Max centroids
                                 stepCentroids = 10)     
-    latexReport += RealDataTest(dataSet='column',       #Data set to test 
-                                minCentroids = 10,     #Min number of centroids (neurons in hiddent layer
-                                maxCentroids = 50,    #Max centroids
-                                stepCentroids = 10)     
+
+#     latexReport += RealDataTest(dataSet='column',       #Data set to test 
+#                                 minCentroids = 10,     #Min number of centroids (neurons in hiddent layer
+#                                 maxCentroids = 50,    #Max centroids
+#                                 stepCentroids = 10)     
     
     latexReport += '''\\end{document}'''
     with open('report.tex','w') as f:
         f.write(latexReport.encode('utf8')) #Escribo el archivo .tex
-    proc=subprocess.Popen(shlex.split('pdflatex report.tex')) #Genero el pdf del informe
+    fname='report'
+    proc=subprocess.Popen(shlex.split('pdflatex %s.tex'%(fname))) #Genero el pdf del informe
+    proc.communicate()
+    proc=subprocess.Popen(shlex.split('rm %s.aux %s.idx %s.log %s.tex %s.toc'%(fname,fname,fname,fname,fname)))
     proc.communicate()
     

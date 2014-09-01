@@ -2,14 +2,14 @@
 
 headerReportClusterTemplate = '''
     \\documentclass[10pt,a4paper, twocolumn]{report}
-    \\usepackage[T1]{fontenc} 
     \\usepackage[utf8]{inputenc} 
     \\usepackage[spanish]{babel}
     \\usepackage{amsmath}
     \\usepackage{amsfonts}
     \\usepackage{amssymb}
     \\usepackage{graphicx}
-    \\author{Antonio Molina Garca-Retamero}
+    \\usepackage{multirow}
+    \\author{Antonio Molina Garcia-Retamero}
     \\title{Results report}
     \\makeindex
     \\begin{document}

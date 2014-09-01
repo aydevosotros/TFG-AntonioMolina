@@ -22,11 +22,11 @@ class DataGenerator(object):
         '''
         pass
         
-    def generateClusteredRandomData(self, nSamples=500, nCentroids=2, dim=30):
+    def generateClusteredRandomData(self, nSamples=500, nCentroids=2, dim=2):
         #TODO: Tengo que hacer tambien para probar para diferentes dimensiones de entrada
         for i in xrange(nCentroids):
             #TODO: Parametrizar la media
-            mean = np.random.rand(2)*30 + (np.random.rand(2)*10)
+            mean = np.random.rand(dim)*30 + (np.random.rand(dim)*10)
             print "Creating cluster with center: " + str(mean)
             samples = np.random.normal(size=[nSamples, dim], loc=mean)
             for n, sample in enumerate(samples):
@@ -44,7 +44,7 @@ class DataGenerator(object):
                 for ns, sample in enumerate(spamreader):
                     s = str.split(sample[0], ',')
                     if s[1]=='B': 
-                        t=0.0
+                        t=-1.0
                     else:
                         t=1.0
                     sample = np.append(np.array(s[2:], float), t)
@@ -59,7 +59,7 @@ class DataGenerator(object):
                 for ns, sample in enumerate(spamreader):
                     s = str.split(sample[0], ',')
                     if s[-1]=='Abnormal': 
-                        t=0.0
+                        t=-1.0
                     else:
                         t=1.0
                     sample = np.append(np.array(s[:-1], float), t)
