@@ -23,14 +23,14 @@ class DataGenerator(object):
         pass
         
     def generateClusteredRandomData(self, nSamples=500, nCentroids=2, dim=2):
-        #TODO: Tengo que hacer tambien para probar para diferentes dimensiones de entrada
+        #TODO: Para mas de dos clases tengo que jugar con el outdim y calcular las neuronas de la ultima capa y tal
         for i in xrange(nCentroids):
             #TODO: Parametrizar la media
             mean = np.random.rand(dim)*30 + (np.random.rand(dim)*10)
-            print "Creating cluster with center: " + str(mean)
+#             print "Creating cluster with center: " + str(mean)
             samples = np.random.normal(size=[nSamples, dim], loc=mean)
             for n, sample in enumerate(samples):
-                sample = np.append(sample, (i))
+                sample = np.append(sample, (1 if i==0 else -1))
                 if n==0 and i==0:
                     self.data = sample
                 else:
@@ -44,9 +44,9 @@ class DataGenerator(object):
                 for ns, sample in enumerate(spamreader):
                     s = str.split(sample[0], ',')
                     if s[1]=='B': 
-                        t=-1.0
-                    else:
                         t=1.0
+                    else:
+                        t=-1.0
                     sample = np.append(np.array(s[2:], float), t)
     #                 print sample , ns
                     if ns == 0:
@@ -125,7 +125,9 @@ class DataGenerator(object):
         trueNegative = 0
         falseNegative = 0
         for cy, y in enumerate(Y):
-            if y == vY[cy]:
+            if y > 0 and vY[cy] > 0:
+                hits +=1
+            elif y < 0 and vY[cy] < 0:
                 hits +=1
             else:
                 fails +=1

@@ -11,9 +11,11 @@ Added by Antonio Molina:
 from scipy import *
 import numpy as np
 from scipy.linalg import norm, pinv
-from sklearn.neighbors import NearestNeighbors
 from scipy.cluster.vq import kmeans
 from matplotlib import pyplot as plt
+from EvaluationTests.DataGenerator import DataGenerator
+from scipy.optimize.optimize import fmin_cg
+
  
 class RBFNN:
      
@@ -31,13 +33,62 @@ class RBFNN:
         return exp(-self.beta * norm(c-d)**2)
      
     def _calcAct(self, X):
-        # calculate activations of RBFs
+        # TODO: Aqui falta el bias que flipas
         G = zeros((X.shape[0], self.numCenters), float)
         for ci, c in enumerate(self.centers):
             for xi, x in enumerate(X):
                 G[xi,ci] = self._basisfunc(c, x)
+                G[xi,-1] = 1
         return G
-     
+    
+    def _costFunction(self, W, *args):
+        X, Y = args
+        ej = 0.0
+        # Error computation
+        for i, xi in enumerate(X):
+            G = zeros(self.numCenters, float)
+            for ci, c in enumerate(self.centers):
+                G[ci] = self._basisfunc(c, xi)
+            fx = dot(np.transpose(G), W)
+            ej += (Y[i]-fx)**2
+        ej /= 2
+        return ej
+    
+    def _gradientWeights(self, W, *args):
+        X, Y = args
+        grad = zeros(shape(W), float)
+        ej = self._costFunction(W, X, Y)
+        for i, xi in enumerate(X):
+            for j, cj in enumerate(self.centers):
+                grad[j] += ej*self._basisfunc(cj, xi)
+        return grad
+    
+    def _positionDerivative(self, X, Y):
+        
+        pass
+    
+    def _spreadsDerivative(self, X, Y):
+        
+        pass
+    
+    def _cgMinimization(self, X, Y):
+        w = self.W
+        print fmin_cg(self._costFunction, w, fprime=None, args=(X,Y))
+    
+    def _gradientDescent(self, X, Y, iterations):
+        error = np.zeros(iterations, float)
+        G = self._calcAct(X)
+        print G
+        for it in xrange(iterations):
+            ej = self._costFunction(self.W, X, Y)
+            gj = self._gradientWeights(self.W, X, Y)
+            error[it] = ej;
+            print "El error para la iteracion %d es %.15f y el gradiente:\n"%(it, ej), gj
+            self.W = self.W - 0.1*gj
+        plt.clf()
+        plt.plot(xrange(iterations), error)
+        plt.show()
+ 
     def train(self, X, Y):
         """ X: matrix of dimensions n x indim
             y: column vector of dimension n x 1 """
@@ -48,25 +99,25 @@ class RBFNN:
         elif self.training == "knn":
             print 'Training with centroids from k-means algorithm'
             self.centers = kmeans(X, self.numCenters)[0]
-        elif self.training == "meta":
-            #TODO: Implementar metaplasticidad
-            pass
         else:
             print "You must set the training method"
             return
 #         print "center", self.centers
         # calculate activations of RBFs
-        G = self._calcAct(X)
+        self.G = self._calcAct(X)
 #         print G
          
+        self._gradientDescent(X, Y, 7000)
+#         self._cgMinimization(X, Y)
         # calculate output weights (pseudoinverse)
-        self.W = dot(pinv(G), Y)
+#         self.W = dot(pinv(self.G), Y)
+        
          
     def test(self, X):
         """ X: matrix of dimensions n x indim """
          
         G = self._calcAct(X)
-        print "G=", G
+#         print "G=", G
         Y = dot(G, self.W)
         return Y
     
@@ -74,34 +125,22 @@ class RBFNN:
 # Some code to debug
 if __name__ == '__main__':
     print "Ejecutando codigo de debug"
-    for i in xrange(3):
-        mean = np.random.rand(2)*30 + (np.random.rand(2)*10)
-        print "Creating cluster with center: " + str(mean)
-        samples = np.random.normal(size=[1000, 2], loc=mean)
-        n=0
-        for sample in samples:
-            sample = np.append(sample, (i))
-            if n==0 and i==0:
-                data = sample
-            else:
-                data = np.vstack((data, sample))
-            n+=1
-    np.random.shuffle(data) # Shuffle data to avoid dataset to be ordered by centroid    cdt.plotDataSet()
+    dim=2
+    nSamples=500
+    dataGenerator = DataGenerator()
+#     dataGenerator.generateClusteredRandomData(nSamples, 2, dim)
+    dataGenerator.generateRealData('cancer', False)
+
+    print "InDim: ", len(dataGenerator.getTrainingX()[0])
+    rbfnn = RBFNN(len(dataGenerator.getTrainingX()[0]), 5, 1, 'knn')
+    rbfnn.train(dataGenerator.getTrainingX(), dataGenerator.getTrainingY())
+    dataGenerator.verifyResult(rbfnn.test(dataGenerator.getValidationX()))
     
-    rbfnn = RBFNN(2, 200, 1, 'knn', 'estaSinImplementar')
-    rbfnn.train(data[:int(0.75*3000),:-1], data[:int(0.75*3000),-1])
-    Y = rbfnn.test(data[int(0.75*3000)+1:,:-1])
-    vY = data[int(0.75*3000+1):,-1]
-    
-    hits = 0.0
-    fails = 0.0
-    for cy, y in enumerate(Y):
-        if y == vY[cy]:
-            hits +=1
-        else:
-            fails +=1
-    print "Hits: ", hits
-    print "Fais: ", fails        
-    print "Performance", hits/len(vY)
-     
+    #Plotting data
+    colors = ["red", "blue"]
+    for i,x in enumerate(dataGenerator.getTrainingX()):
+        plt.plot(x[0], x[1], "o", color= colors[0] if dataGenerator.getTrainingY()[i]>0 else colors[1])
+    plt.xlabel("First dimension")
+    plt.ylabel("Second dimension")
+    plt.show()
         
