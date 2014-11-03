@@ -16,9 +16,9 @@
 \tableofcontents
 \pagebreak
 
-\chapter{Introduction}
+\chapter{Introducción}
 \section{La propuesta de Trabajo de Fin de Grado}
-En este documento se recoge la memoria del trabajo de fin de grado que he realizado y que pretende justificar los valores y facultades adquiridas en el estudio de los... En estas primeras líneas trataré de exponer el trabajo en términos generales y justificar la elección del mismo y las bondades y problemas del mismo.
+En este documento se recoge la memoria del trabajo de fin de grado que he realizado y que pretende justificar los valores y facultades adquiridas en el estudio de los... En estas primeras líneas trataré de exponer el trabajo en términos generales y justificar la elección del trabajo, las bondades y problemas del mismo.
 \section{Proceso de investigacion}
 \subsection{Planteamiento del problema}
 Una vez aceptada la idea de trabajo que anteriormente he expuesto, el siguiente paso ha sido determinar el problema que se va a tratar dentro del proceso investigador y así tratar de proponer una solución al problema siguiendo una metodología de investigación.
@@ -28,24 +28,29 @@ Partiendo del problema de tratar de emular mecanismos biológicos en los modelos
 
 \subsection{El estado del arte}
 Dado que partimos de un trabajo en curso que es la implementación de la metaplasticidad artificial en redes neuronales artificiales, el estudio del estado del arte se divide tanto en estudiar el estado del arte en los cerebros de mamíferos que es en los que se estudia este fenómeno como en estudiar y entender los modelos estadísticos bajo los que se estudian las redes neuronales artificiales para buscar la forma de aplicar este principio que es la metaplasticidad a las redes neuronales artificiales partiendo del trabajo de Diego Andina.
+
 \subsection{La metaplasticidad en redes biológicas}
 Metaplasticity refers to activity-dependent changes in neural functions that modulate subsequent synaptic plasticity such as long-term potentiation (LTP) and long-term depression (LTD). Simply put, it is the “plasticity of synaptic plasticity” (Abraham and Bear, 1996). Metaplasticity can be distinguished from conventional neuromodulation of plasticity, in which molecules such as other neurotransmitters (e.g., GABA or monoamines), cytokines, or hormones that are present at the time of plasticity induction regulate the degree of LTP or LTD elicited (Fig. 1). Metaplasticity, in contrast, refers to neuronal changes that are elicited at one point in time, by what is commonly called “priming” activity. By virtue of their persistence, these neuronal changes are able to regulate synaptic plasticity processes minutes, hours, or days later. At very short intervals between priming activity and plasticity induction, however, the distinction between metaplasticity and neuromodulation may become blurred. In many cases, metaplasticity is induced without producing observable changes in synaptic transmission, and it only becomes apparent during subsequent attempts to induce LTP or LTD. In practice, however, neural activity can generate metaplasticity concomitantly with synaptic plasticity.
 
 Functionally, metaplasticity endows synapses with the capacity to integrate plasticity-relevant signals across time. It can also serve, by changing the thresholds for LTP and LTD, to keep synaptic strengths within a functional dynamic range. That is, it prevents them from becoming so strong or weak that they lead to excessive or insufficient activation, respectively, of the postsynaptic cells. Readers are directed to a recent review for a more comprehensive discussion of metaplasticity (Abraham, 2008). 
 
 Con el término metaplasticidad nos referimos al cambio dependiente de la actividad que modula la plasticidad sináptica en los sistemas neuronales. Estos cambios en la plasticidad pueden ser del tipo LTP (long-term potentiation) y LTD (long-term depression).
+
 \section{Metaplasticidad en redes neuronales artificiales}
+
 \chapter{Metaplasticidad en Redes Neuronales con Función de Base Radial (RBFNN)}
-\subsection{Propuesta de soluc}
-\section{Mi intuición de metaplasticidad en RBFNN}
-En base a los trabajos previos, la idea de servirnos de la naturaleza de los datos de nuestro entrenamiento para hacernos una idea a priori de cuan significativa es una muestra y actuar ponderando esa "conexión sináptica" concreta parece encajar de forma especial en el concepto de RBFNN debido a la naturaleza de las Funciones de Base Radial. Quiero decir, las Funciones de Base Radial nos proporcionan una transformación no lineal que nos permite encontrar un hiperplano que en algún espacio multidimensional nuestros datos serán separables. El modelo de las RBFNN, como ya hemos comentado, se sirven de un modelo con la forma $f(x)=\sum w \phi(x)$ donde $\phi(x)$ es un función de base radial. Este tipo de funciones pueden ser muy variadas y se ha experimentado con multitud de ideas alrededor de esto sin embargo en los casos más habituales se utiliza una función gausiana en donde tenemos que inferir tanto la media como los centroides para cada una de las funciones en nuestro training set. De esto se deriva un entrenamiento de dos fases en el que en la primera fase inferimos los datos necesarios para calcular la activación de la capa oculta para hacer luego encontrar los parámetros para la transformación lineal sobre la salida de esta capa en una segunda fase de entrenamiento.
+En base a los trabajos previos, la idea de servirnos de la naturaleza de los datos de nuestro entrenamiento para hacernos una idea a priori de cuan significativa es una muestra y actuar ponderando esa "conexión sináptica" concreta parece encajar de forma especialmente bien en el concepto de RBFNN debido a la naturaleza de las Funciones de Base Radial. Quiero decir, las Funciones de Base Radial nos proporcionan una transformación no lineal que nos permite encontrar un hiperplano que en algún espacio con muchas dimensiones nuestros datos serán separables. El modelo de las RBFNN, como ya hemos comentado, se sirven de un modelo con la forma $f(x)=\sum w \phi(x)$ donde $\phi(x)$ es un función de base radial. Este tipo de funciones pueden ser muy variadas y se ha experimentado con multitud de ideas alrededor de esto sin embargo en los casos más habituales se utiliza una función gausiana en donde tenemos que inferir tanto la media como los centroides para cada una de las funciones en nuestro training set. De esto se deriva un entrenamiento de dos fases en el que en la primera fase inferimos los datos necesarios para calcular la activación de la capa oculta para hacer luego encontrar los parámetros para la transformación lineal sobre la salida de esta capa en una segunda fase de entrenamiento.
 
 Aquí es donde pretendo encontrar y probar diferentes formas de optimizar la segunda fase de entrenamiento sirviéndonos del estudio estádico que implica la primera fase. Esto es, Cuando en la primera fase de entrenamiento buscamos los centros para nuestras funciones de activación obtenemos información relevante que podemos utilizar para estimar, como hablábamos antes, como considerar una probabilidad de pertenencia a una clase si consideramos el centroide como una clase, etc... Multitud de ideas se pueden considerar y en última instancia lo que se estaría haciendo sería entremezclar de diferentes formas el proceso de aprendizaje no supervisado a priori para influir en el proceso de aprendizaje supervisado de la segunda fase.
+
+\section{Propuesta de solución}
+
+\section{Metaplasticidad en RBFNN}
+
 
 \section{Entrenamiento}
 Explico las bases y explico mis intuiciones
 \chapter{Implementación}
-Tendría que encontrar el sitio donde poner qué se ha implementado y por qué
 \section{Metodología de desarrollo}
 Aquí comento que he realizado la implementación siguiendo el paradigma TDD para la implementación de las redes.
 \section{Lenguaje y herramientas}
@@ -54,13 +59,13 @@ Aquí comento que he realizado la implementación siguiendo el paradigma TDD par
 Dado que por medio de este trabajo se pretende la demostración de la mejora propuesta sobre las RBFNN, estableceré una serie de pruebas que pretenderán poner a prueba las diferentes implementaciones de las redes para resolver problemas típicos de aprendizaje máquina.
 En secciones anteriores hemos comentado la problemática y las diferentes alternativas propuestas para entrenar las RBFNN. La batería de pruebas es la parte probablemente más crítica del proyecto y con especial esmero he diseñado un conjunto de pruebas que pretende ser exhaustivo y con el que pretendo primero valorar el comportamiento de las soluciones típicas existentes y las mejoras propuestas en esta investigación.
 
-De entre los escenarios típicos del aprendizaje máquina podemos hacer dos grandes grupos: tal y clasificación. Para este proyecto he seguido la estrategia de construir, para sendos tipos de problemas, sets de datos aleatorios cuyos parámetros intrínsecos puedan ser manipulados fácilmente permitiendo generar de forma sencilla tantos escenarios como se crean apropiados para los diferentes test. En busca de evitar el "data snooping" y una vez determinadas las configuraciones para los que los diferentes tipos de redes tienen comportamientos interesantes, las redes serán testeados sobre sets de datos estándares en la investigación sobre aprendizaje máquina.
+De entre los escenarios típicos del aprendizaje máquina podemos hacer dos grandes grupos: generalización de señales y clasificación. Para este proyecto he seguido la estrategia de construir, para sendos tipos de problemas, sets de datos aleatorios cuyos parámetros intrínsecos puedan ser manipulados fácilmente permitiendo generar de forma sencilla tantos escenarios como se crean apropiados para los diferentes test. En busca de evitar el "data snooping" y una vez determinadas las configuraciones para los que los diferentes tipos de redes tienen comportamientos interesantes, las redes serán testeados sobre sets de datos estándares en la investigación sobre aprendizaje máquina.
 
 \begin{itemize}
-	\item Reconocimiento de patrones
+	\item Generalización de señales
 	\begin{itemize}
 		\item Onda compuesta aleatoria
-		\item Otra idea que se me ocurra
+		\item Tengo que buscar 
 	\end{itemize}
 	\item Clasificación
 	\begin{itemize}
