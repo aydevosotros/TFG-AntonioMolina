@@ -62,16 +62,40 @@ Con el término metaplasticidad nos referimos al cambio dependiente de la activi
 Funcionalmente, la metaplasticidad dota a las conexiones sinápticas de la capacidad de integrar señales relativas a la plasticidad a través del tiempo. Además, la metaplasticidad tiene un importante papel como regulador de los umbrales de los LTP y LTD para mantener las conexiones sinápticas en un rango funcional dinámico que evite que estas conexiones se vuelvan demasiado fuertes o demasiado débiles como consecuencia de los mecanismos de plasticidad sináptica convencionales basados en neurotransmisores y hormonas.
 
 \section{Metaplasticidad en redes neuronales artificiales}
-El doctor Diego Andina realizó una aproximación a la integración de los mecanismos de metaplasticidad en un artículo publicado en... En este artículo, se propone un mecanismo de metaplasticidad artificial aplicado a las MLP de la siguiente forma.
+El doctor Diego Andina realizó una aproximación a la integración de los mecanismos de metaplasticidad en un artículo ... En el se propone un mecanismo de metaplasticidad artificial aplicado a las MLP de la siguiente forma.
+
+El problema del entrenamiento en cualquier problema de aprendizaje es el de minimizar una función de error ajustando los parámetros del modelo en base a un conjunto de vectores de entrada $x=(x_1,x_2,...,x_n),(x\in\Re^n)$ que conforman el \textit{training set}. En base al criterio de error $E(x)$ que elijamos, el error esperado del sistema será por tanto:
+\[
+	E_M = \int_{\Re^n}E(x)f(x)dx = \int_{\Re^n}e(x)dx
+\] 
+Sobre lo que podemos hacer la siguiente transformación:
+\[
+	E_M = \int_{\Re^n}\dfrac{e(x)}{f^*_X(x)}f^*_X(x)dx = \varepsilon^*\lbrace\dfrac{e(x)}{f^*_X(x)}\rbrace
+\]
+y calcular el error del modelo sirviéndonos del siguiente estimador:
+\[
+	\widehat{E}_M=\dfrac{1}{M}\sum^M_{k=1}\dfrac{e(x^*_k)}{f^*_X(x^*_k)}
+\]
+donde $x^*,k=1,2,...,M$ son muestras independientes cuya $pdf$ es $f^*_X(x)$. Como se observa, $f^*_X(x)$ es la distribución de probabilidad de la función que tratamos de generalizar con nuestro modelo a través de nuestras muestras de entrenamiento. Por lo tanto, idealmente, 
+\[
+	(f^*_X(x))_{opt}=\dfrac{1}{E_M}e(x)
+\]
+
+Primero explico que significa todo esto.
+
+Y en base a esta estimación del error, se propone la siguiente modificación del algorítmo de \textit{backpropagation} para el entrenamiento de las MLP:
+
+ecuaciones 8, 9 y 10
 
 \subsection{Implementación de la AMMLP y ampliación del estudio}
 Con tal de realizar mi propia experimentación con las AMMLP (Artificial Metaplasticity Multilayer Perceptron) y partiendo de una implementación de una MLP que desarrollé en \textit{C++} para la asignatura de \textit{Razonamiento Automático}, implementé el mecanismo de metaplasticidad artificial que he se ha expuesto en la sección anterior.
 
 Gracias a esta implementación fuí capaz de alcanzar un mejor entendimiento del mecanismo, 
 
-\chapter{Metaplasticidad en Redes Neuronales con Función de Base Radial (RBFNN)}
+\section{Metaplasticidad en Redes Neuronales con Función de Base Radial (RBFNN)}
+\subsection{Problemática}
 Una vez asumido el concepto de metaplasticidad en las redes neuronales biológicas y partiendo de la propuesta de metaplasticidad artificial en las MLP de Diego Andina, estamos en disposición de abordar el problema. 
-Como ya se ha expuesto anteriormente y en esencia, la propuesta de Diego Andina se basa en la emulación de los procesos LTP y LTD añadiendo un factor que pondera la derivada parcial de la muestra con respecto al peso de la conexión sináptica que representa cuan \textit{raro}, en términos de probabilidad, es la muestra respecto a la clase en que se clasifica a priori. Esta probabilidad a priori se estima por la propia salida de la red neuronal en ese estado del entrenamiento. 
+Como ya se ha expuesto anteriormente y en esencia, la propuesta de Diego Andina se basa en la emulación de los procesos LTP y LTD añadiendo un factor que pondera la derivada parcial en el descenso por gradiente de la muestra con respecto al peso de la conexión sináptica que representa cuan \textit{raro}, en términos de probabilidad, es la muestra respecto a la clase en que se clasifica a posteriori. Esta probabilidad a posteriori se estima por la propia salida de la red neuronal en ese estado del entrenamiento. 
 
 \begin{figure}[h!]{}
     \centering
@@ -82,7 +106,7 @@ Como ya se ha expuesto anteriormente y en esencia, la propuesta de Diego Andina 
 
 En este punto, queda patente que existe numerosos problemas a la hora de aplicar esta técnica a otro tipo de redes neuronales, en particular en las RBFNN. En la siguiente figura \ref{fig:RBFNN1}, se representa la arquitectura típica de una RBFNN.
 
-Un problema fundamental se debe a la salida de la última capa de sendas redes neuronales. Para implementar un mecanismo de metaplasticidad similar al descrito en las AMMLP, se requiere de una estimación de la probabilidad de pertenencia a la clase (cuan \textit{rara} es la muestra) y en las AMMLP la estimamos como la salida de la propia red neuronal. Ya que la neurona de la última capa es una función logística \footnote{Una función logística es una función contínua cuya salida $\in [0 1]$. Un ejemplo de función logística típia es $f_{log}(z)=\frac{1}{1+e^-z}$}, asumimos ésta como la probabilidad a priori de pertenencia a la clase. Por su parte, la salida de una RBFN para el problema de clasificación se calcula como $sign(f(x)=\sum w \phi(x))$. Queda patente que a priori la salida de la RBFNN no nos sirve para estimar una probabilidad a priori de la muestra.
+Un problema fundamental se debe a la salida de la última capa de sendas redes neuronales. Para implementar un mecanismo de metaplasticidad similar al descrito en las AMMLP, se requiere de una estimación de la probabilidad de pertenencia a la clase (cuan \textit{rara} es la muestra) y en las AMMLP la estimamos como la salida de la propia red neuronal. Ya que la neurona de la última capa es una función logística \footnote{Una función logística es una función contínua cuya salida $\in [0 1]$. Un ejemplo de función logística típia es $f_{log}(z)=\frac{1}{1+e^-z}$}, asumimos ésta como la probabilidad a posteriori de pertenencia a la clase. Por su parte, la salida de una RBFN para el problema de clasificación se calcula como $sign(f(x)=\sum w \phi(x))$. Queda patente que la salida de la RBFNN no nos sirve para estimar una probabilidad a posteriori de la muestra.
 
 Sin embargo, la propia naturaleza de las RBFNN parece resultar idónea a su vez para experimentar con técnicas. Este \textit{parecer} es una percepción completamente intuitiva, pero existen ciertas características que trataré de explicar a continuación que pueden hacer de estas redes idóneas para representar las redes neuronales biológicas y a la forma en que estas representan la información y que me inspiraron a plantearme el problema en multitud de formas tratando de encontrar la forma de encajar estas características con la naturaleza del aprendizaje y de la metaplasticidad. Estas características son, en líneas generales:
 \begin{itemize}
