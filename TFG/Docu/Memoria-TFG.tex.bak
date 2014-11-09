@@ -6,6 +6,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{multirow}
+
 \author{Antonio Molina García-Retamero}
 \title{Optimización de redes neuronales mediante métodos bioinspirados}
 \makeindex
@@ -16,14 +17,14 @@
 \tableofcontents
 \pagebreak
 
-\chapter{Introduction}
+\chapter{Introducción}
 \section{La propuesta de Trabajo de Fin de Grado}
 En este documento se recoge la memoria del trabajo de fin de grado que he realizado y que pretende justificar los valores y facultades adquiridas en el estudio y superación de las competencias recogidas en el Grado en Ingeniería Informática. En estas primeras líneas trataré de exponer el trabajo en términos generales y justificar la elección del mismo y las bondades y problemas del mismo.
 
 \subsection{Justificación y objetivos}
 En el proceso de elección del proyecto de fin de grado y de los objetivos a plantear para el desarrollo del mismo, he de indicar que primó mi clara vocación investigadora y es por ello que desde el principio le planteé a mi tutor del proyecto mi deseo de realizar algún tipo de investigación básica, con especial interés es el campo de la inteligencia artificial. Es por eso que este proyecto de fin de grado está generalmente enfocado al desarrollo de una investigación que pueda encontrar una aplicación práctica evidente y que cubra en la medida de lo posible todas las competencias adquiridas durante el grado. Por lo tanto, los objetivos generales que cubren este trabajo serían:
 \begin{itemize}
-	\item Búsqueda de un problema relativo al campo de estudio sobre el que realizar un proceso investigador con tal de dar solución al problema desde un punto cientifico-técnico.
+	\item Búsqueda de un problema relativo al campo de estudio sobre el que realizar un proceso investigador con tal de dar solución al problema desde un punto científico-técnico.
 	\item Estudio del estado del arte del problema en cuestión.
 	\item Planteamiento de soluciones.
 	\item Experimentación.
@@ -33,21 +34,21 @@ En el proceso de elección del proyecto de fin de grado y de los objetivos a pla
 
 La redacción de esta memoria está estructurada haciendo una división entre el trabajo puramente teórico e investigador que será la primera parte de la misma y que tratará de clarificar la metodología de investigación, el planteamiento del problema objeto de estudio y el estudio del estado del arte. En la segunda parte se tratará el diseño y la implementación del banco de pruebas sobre el que realizar el proceso experimentador y se justificará la elección de las tecnologías y metodologías utilizadas. En la tercera parte de esta memoria se detallará la experimentación realizada, se recogerán los resultados y se detallarán las conclusiones del trabajo en su conjunto. 
 
-\section{Proceso de investigacion}
-\subsection{Planteamiento del problema}
-Una vez definido el trabajo y planteados los objetivos del mismo, el siguiente paso ha sido determinar el problema que se va a tratar dentro del proceso investigador y así tratar de proponer una solución al problema siguiendo una metodología de investigación.
-Las redes neuronales, por su propia naturaleza, han pretendido de alguna manera emular el proceso cognitivo que se produce en el cerebro de los mamimeros, siempre a una escala reducida, pero sirviéndose de los mismos principios fundamentales. Sin embargo, el problema del aprendizaje es tradicionalmente objeto de la estadísticas y no de la biología. Las redes neuronales aplicadas a problemas de aprendizaje han sido muy estudiadas como un problema estadístico y existe una muy extensa literatura al respecto, sin embargo, no ha sido hasta años recientes que se está abordando el problema del aprendizaje máquina desde un punto de vista biológico. En los últimos años, la neurocomputación ha adquirido una muy notable importancia dentro del campo del aprendizaje máquina y propone sistemas que realmente pretenden emular a los sistemas biológicos y en los que la posibilidad de llegar a entender quizá un poco más los procesos que dotan a los sistemas biológicos de inteligencia y quizá incluso emular algunas de sus funcionalidades es un campo muy prometedor y cargado de retos ilusionantes.
+\chapter{Proceso de investigación}
+\section{Planteamiento del problema}
+Una vez definido el trabajo y planteados los objetivos de este trabajo fin de grado, el siguiente paso ha sido determinar el problema que se va a tratar dentro del proceso investigador y así tratar de proponer una solución al problema siguiendo una metodología de investigación.
+Las redes neuronales artificiales han pretendido, desde su concepción, emular, de alguna manera, el proceso cognitivo que se produce en el cerebro de los mamíferos, siempre a una escala reducida, pero sirviéndose de los mismos principios fundamentales. Sin embargo, el problema del aprendizaje es tradicionalmente objeto de la estadísticas y no de la biología. Las redes neuronales artificiales aplicadas al problema de aprendizaje han sido muy estudiadas como un problema estadístico y existe una muy extensa literatura al respecto, sin embargo, no ha sido hasta años recientes que se está abordando el problema del aprendizaje máquina desde un punto de vista biológico. En los últimos años, la neurocomputación ha adquirido una muy notable importancia dentro del campo del aprendizaje máquina y propone sistemas que realmente pretenden emular a los sistemas biológicos y en los que la posibilidad de llegar a entender quizá un poco más los procesos que dotan a los sistemas biológicos de inteligencia y quizá incluso emular algunas de sus funcionalidades es un campo muy prometedor y cargado de retos ilusionantes.
 
 Partiendo del problema de tratar de emular mecanismos biológicos en los modelos de aprendizaje máquina, mi tutor, Daniel Ruiz, me mostró el trabajo de Diego Andina sobre la aplicación de la metaplasticidad neuronal al perceptrón multicapa (MLP) y me propuso el aplicarlo a otro tipo de redes como las RBFNN.
 
-\subsection{El estado del arte}
+\section{El estado del arte}
 Dado que partimos de un trabajo en curso, que es la implementación de la metaplasticidad artificial en redes neuronales artificiales, el estudio del estado del arte ha sido un trabajo áurduo que ha requerido de un estudio bastante en profundidad de las diferentes disciplinas bajo las que se contempla el problema que hemos definido y que cubren desde la neurobiología a la estadística y el aprendizaje máquina. Es por esto que me serviré de esta sección primero para demostrar de alguna forma el trabajo realizado en la documentación y adquisición de conocimientos necesarios para comprender el problema y plantear una solución así como para tratar de introducir al lector, de la forma más amena posible, en los conceptos y terminología en que se definen la problemática y la solución propuesta al problema.
 
 El trabajo se inicia con el estudio de lo relativo a la metaplasticidad en las redes neuronales biológicas. Además, he dedicado tiempo a estudiar y entender los modelos estadísticos bajo los que se estudian las redes neuronales artificiales para buscar la forma de aplicar este principio, que es la metaplasticidad artificial, a otros tipos de redes neuronales artificiales más allá, y partiendo, del trabajo que ha desarrollado Diego Andina en las MLP.
 
-En las siguientes subsecciones se definirán primero la metaplasticidad en términos biológicos para después explicar
-
 Una vez adquiridos los conocimientos necesarios para comprender el problema, se realizará un estudio del estado del arte de las diferentes técnicas de las RBFNN con tal de encontrar la forma de aplicar el concepto de metaplasticidad que se da de forma natural en las redes neuronales biológicas.
+
+En las siguientes subsecciones se definirán primero la metaplasticidad en términos biológicos y se expondrá la propuesta de Diego Andina para poder especificar el problema y, partiendo de ahí, plantear la solución propuesta. 
 
 En este punto de la investigación se ha recurrido de nuevo a la bioinspiración tratando de encontrar una perspectiva bajo la que contemplar las RBFNN y sobre la que plantear una solución al problema. 
 
@@ -55,19 +56,50 @@ En este punto de la investigación se ha recurrido de nuevo a la bioinspiración
 	Aquí quiero decir que el tema de RBFN como "kernel methods" y lo de la tonotopy y retinotopy, que es también estado del arte, lo trato más adelante como una ampliación del estado del arte, para no meter más conceptos aquí y que tiene más coherencia explicarlo cuando propongo la solución.
 }
 
-\subsection{La metaplasticidad en redes biológicas}
-Metaplasticity refers to activity-dependent changes in neural functions that modulate subsequent synaptic plasticity such as long-term potentiation (LTP) and long-term depression (LTD). Simply put, it is the “plasticity of synaptic plasticity” (Abraham and Bear, 1996). Metaplasticity can be distinguished from conventional neuromodulation of plasticity, in which molecules such as other neurotransmitters (e.g., GABA or monoamines), cytokines, or hormones that are present at the time of plasticity induction regulate the degree of LTP or LTD elicited (Fig. 1). Metaplasticity, in contrast, refers to neuronal changes that are elicited at one point in time, by what is commonly called “priming” activity. By virtue of their persistence, these neuronal changes are able to regulate synaptic plasticity processes minutes, hours, or days later. At very short intervals between priming activity and plasticity induction, however, the distinction between metaplasticity and neuromodulation may become blurred. In many cases, metaplasticity is induced without producing observable changes in synaptic transmission, and it only becomes apparent during subsequent attempts to induce LTP or LTD. In practice, however, neural activity can generate metaplasticity concomitantly with synaptic plasticity.
+\section{La metaplasticidad en redes biológicas}
+Con el término metaplasticidad nos referimos al cambio dependiente de la actividad que modula la plasticidad sináptica en los sistemas neuronales. Estos cambios en la plasticidad pueden ser del tipo LTP\footnote{\textbf{Long-Term Potentiation} es la potenciación de la eficiencia provocada por los eventos más reciente en la señal transmitida entre dos neuronas que se estimulan síncronamente} y LTD\footnote{\textbf{Long-Term Depression} es la reducción de la eficiencia provocada por los evento menos reciente en la señal transmitida entre dos neuronas que se estimulan síncronamente}. Abraham and Bear lo definió de forma sencilla como: \textit{plasticity of synaptic plasticity}, es decir, la plasticidad de la plasticidad sináptica. A diferencia de los mecanismos convencionales de neuromudalación de la plasticidad sináptica en los que son neurotransmisores y hormonas los que inducen cierto grado de LTP y LTD, la metaplasticidad se refiere al cambio que es provocado en un momento dado por lo que comunmente denominamos \textit{primar} la actividad. Es decir, la metaplasticidad se refiere a la inducción en los cambios de los LTP y LTD derivados de la actividad. Reforzando aquellas conexiones sinápticas relativas a las \textit{experiencias} más comunes y deprimiendo aquellas relativas a \textit{experiencias} menos comunes.
 
-Functionally, metaplasticity endows synapses with the capacity to integrate plasticity-relevant signals across time. It can also serve, by changing the thresholds for LTP and LTD, to keep synaptic strengths within a functional dynamic range. That is, it prevents them from becoming so strong or weak that they lead to excessive or insufficient activation, respectively, of the postsynaptic cells. Readers are directed to a recent review for a more comprehensive discussion of metaplasticity (Abraham, 2008). 
+Funcionalmente, la metaplasticidad dota a las conexiones sinápticas de la capacidad de integrar señales relativas a la plasticidad a través del tiempo. Además, la metaplasticidad tiene un importante papel como regulador de los umbrales de los LTP y LTD para mantener las conexiones sinápticas en un rango funcional dinámico que evite que estas conexiones se vuelvan demasiado fuertes o demasiado débiles como consecuencia de los mecanismos de plasticidad sináptica convencionales basados en neurotransmisores y hormonas.
 
-Con el término metaplasticidad nos referimos al cambio dependiente de la actividad que modula la plasticidad sináptica en los sistemas neuronales. Estos cambios en la plasticidad pueden ser del tipo LTP (long-term potentiation) y LTD (long-term depression).
 \section{Metaplasticidad en redes neuronales artificiales}
-\chapter{Metaplasticidad en Redes Neuronales con Función de Base Radial (RBFNN)}
-\subsection{Propuesta de solución}
-\section{Mi intuición de metaplasticidad en RBFNN}
-En base a los trabajos previos, la idea de servirnos de la naturaleza de los datos de nuestro entrenamiento para hacernos una idea a priori de cuan significativa es una muestra y actuar ponderando esa "conexión sináptica" concreta parece encajar de forma especial en el concepto de RBFNN debido a la naturaleza de las Funciones de Base Radial. Quiero decir, las Funciones de Base Radial nos proporcionan una transformación no lineal que nos permite encontrar un hiperplano que en algún espacio multidimensional nuestros datos serán separables. El modelo de las RBFNN, como ya hemos comentado, se sirven de un modelo con la forma $f(x)=\sum w \phi(x)$ donde $\phi(x)$ es un función de base radial. Este tipo de funciones pueden ser muy variadas y se ha experimentado con multitud de ideas alrededor de esto sin embargo en los casos más habituales se utiliza una función gausiana en donde tenemos que inferir tanto la media como los centroides para cada una de las funciones en nuestro training set. De esto se deriva un entrenamiento de dos fases en el que en la primera fase inferimos los datos necesarios para calcular la activación de la capa oculta para hacer luego encontrar los parámetros para la transformación lineal sobre la salida de esta capa en una segunda fase de entrenamiento.
+El doctor Diego Andina realizó una aproximación a la integración de los mecanismos de metaplasticidad en un artículo publicado en... En este artículo, se propone un mecanismo de metaplasticidad artificial aplicado a las MLP de la siguiente forma.
 
-Aquí es donde pretendo encontrar y probar diferentes formas de optimizar la segunda fase de entrenamiento sirviéndonos del estudio estádico que implica la primera fase. Esto es, Cuando en la primera fase de entrenamiento buscamos los centros para nuestras funciones de activación obtenemos información relevante que podemos utilizar para estimar, como hablábamos antes, como considerar una probabilidad de pertenencia a una clase si consideramos el centroide como una clase, etc... Multitud de ideas se pueden considerar y en última instancia lo que se estaría haciendo sería entremezclar de diferentes formas el proceso de aprendizaje no supervisado a priori para influir en el proceso de aprendizaje supervisado de la segunda fase.
+\subsection{Implementación de la AMMLP y ampliación del estudio}
+Con tal de realizar mi propia experimentación con las AMMLP (Artificial Metaplasticity Multilayer Perceptron) y partiendo de una implementación de una MLP que desarrollé en \textit{C++} para la asignatura de \textit{Razonamiento Automático}, implementé el mecanismo de metaplasticidad artificial que he se ha expuesto en la sección anterior.
+
+Gracias a esta implementación fuí capaz de alcanzar un mejor entendimiento del mecanismo, 
+
+\chapter{Metaplasticidad en Redes Neuronales con Función de Base Radial (RBFNN)}
+Una vez asumido el concepto de metaplasticidad en las redes neuronales biológicas y partiendo de la propuesta de metaplasticidad artificial en las MLP de Diego Andina, estamos en disposición de abordar el problema. 
+Como ya se ha expuesto anteriormente y en esencia, la propuesta de Diego Andina se basa en la emulación de los procesos LTP y LTD añadiendo un factor que pondera la derivada parcial de la muestra con respecto al peso de la conexión sináptica que representa cuan \textit{raro}, en términos de probabilidad, es la muestra respecto a la clase en que se clasifica a priori. Esta probabilidad a priori se estima por la propia salida de la red neuronal en ese estado del entrenamiento. 
+
+\begin{figure}[h!]{}
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/RBFN1.png}
+    \label{fig:RBFNN1}
+    \caption{Arquitectura de las RBFNN}
+\end{figure}
+
+En este punto, queda patente que existe numerosos problemas a la hora de aplicar esta técnica a otro tipo de redes neuronales, en particular en las RBFNN. En la siguiente figura \ref{fig:RBFNN1}, se representa la arquitectura típica de una RBFNN.
+
+Un problema fundamental se debe a la salida de la última capa de sendas redes neuronales. Para implementar un mecanismo de metaplasticidad similar al descrito en las AMMLP, se requiere de una estimación de la probabilidad de pertenencia a la clase (cuan \textit{rara} es la muestra) y en las AMMLP la estimamos como la salida de la propia red neuronal. Ya que la neurona de la última capa es una función logística \footnote{Una función logística es una función contínua cuya salida $\is [0 1]$. Un ejemplo de función logística típia es $f_{log}(z)=\frac{1}{1+e^-z}$}, asumimos ésta como la probabilidad a priori de pertenencia a la clase. Por su parte, la salida de una RBFN para el problema de clasificación se calcula como $sign(f(x)=\sum w \phi(x))$. Queda patente que a priori la salida de la RBFNN no nos sirve para estimar una probabilidad a priori de la muestra.
+
+Sin embargo, la propia naturaleza de las RBFNN parece resultar idónea a su vez para experimentar con técnicas. Este \textit{parecer} es una percepción completamente intuitiva, pero existen ciertas características que trataré de explicar a continuación que pueden hacer de estas redes idóneas para representar las redes neuronales biológicas y a la forma en que estas representan la información y que me inspiraron a plantearme el problema en multitud de formas tratando de encontrar la forma de encajar estas características con la naturaleza del aprendizaje y de la metaplasticidad. Estas características son, en líneas generales:
+\begin{itemize}
+	\item La capa oculta característica de las RBFNN está compuesta por \textit{neuronas} cuya función de activación es típicamente una Gausiana en la forma . Estas gausianas tienen dos parámetros básicos y que son fundamentalmente dependientes de la naturaleza de la señal de entrada y que son un centroide y la varianza.
+	\item La capa oculta, a su vez, realiza una transformación no lineal en un espacio basado en la distancia. Esta característica sirve de nexo para el estudio de las RBFNN dentro del conjunto de los \textit{Kernel Methods}.
+	\item La salida de la red neuronal, con la forma $f(x)=\sum w \phi(x)$ es una transformación lineal sobre la salida de las gausianas. 
+\end{itemize}
+
+
+
+\section{Ampliación del estado del arte}
+\subsection{Tonotopía y Retinotopía}
+\subsection{Kernel Methods}
+\section{Propuesta de solución}
+En base a los trabajos previos, la idea de servirnos de la naturaleza de los datos de nuestro entrenamiento para hacernos una idea a priori de cuan significativa es una muestra y actuar ponderando esa "conexión sináptica" concreta parece encajar de forma especial en el concepto de RBFNN debido a la naturaleza de las Funciones de Base Radial. Quiero decir, las Funciones de Base Radial nos proporcionan una transformación no lineal que nos permite encontrar un hiper-plano que en algún espacio multidimensional nuestros datos serán separables. El modelo de las RBFNN, como ya hemos comentado, se sirven de un modelo con la forma $f(x)=\sum w \phi(x)$ donde $\phi(x)$ es un función de base radial. Este tipo de funciones pueden ser muy variadas y se ha experimentado con multitud de ideas alrededor de esto sin embargo en los casos más habituales se utiliza una función gausiana en donde tenemos que inferir tanto la media como los centroides para cada una de las funciones en nuestro training set. De esto se deriva un entrenamiento de dos fases en el que en la primera fase inferimos los datos necesarios para calcular la activación de la capa oculta para hacer luego encontrar los parámetros para la transformación lineal sobre la salida de esta capa en una segunda fase de entrenamiento.
+
+Aquí es donde pretendo encontrar y probar diferentes formas de optimizar la segunda fase de entrenamiento sirviéndonos del estudio estadístico que implica la primera fase. Esto es, Cuando en la primera fase de entrenamiento buscamos los centros para nuestras funciones de activación obtenemos información relevante que podemos utilizar para estimar, como hablábamos antes, como considerar una probabilidad de pertenencia a una clase si consideramos el centroide como una clase, etc... Multitud de ideas se pueden considerar y en última instancia lo que se estaría haciendo sería entremezclar de diferentes formas el proceso de aprendizaje no supervisado a priori para influir en el proceso de aprendizaje supervisado de la segunda fase.
 
 
 \chapter{Implementación}
