@@ -1,29 +1,25 @@
 \select@language {spanish}
 \contentsline {chapter}{\numberline {1}Introduction}{2}
-\contentsline {section}{\numberline {1.1}Notas}{2}
-\contentsline {section}{\numberline {1.2}Motivaciones}{2}
-\contentsline {section}{\numberline {1.3}La metaplasticidad en redes biol\IeC {\'o}gicas}{2}
-\contentsline {section}{\numberline {1.4}Metaplasticidad en redes neuronales artificiales}{2}
-\contentsline {section}{\numberline {1.5}Trabajos previos}{2}
-\contentsline {chapter}{\numberline {2}Metaplasticidad en Redes Neuronales con Funci\IeC {\'o}n de Base Radial (RBFNN)}{3}
-\contentsline {section}{\numberline {2.1}Estudio previo}{3}
-\contentsline {subsection}{\numberline {2.1.1}Investigaci\IeC {\'o}n del estado del arte y posibles v\IeC {\'\i }as de actuaci\IeC {\'o}n}{3}
-\contentsline {subsection}{\numberline {2.1.2}Estudio del trabajo sobre la metaplasticidad en redes neuronales}{3}
-\contentsline {subsection}{\numberline {2.1.3}Implementaci\IeC {\'o}n y estudio de la metaplasticidad en MLPs}{3}
-\contentsline {section}{\numberline {2.2}La naturaleza stad\IeC {\'\i }stica del proceso de aprendizaje}{3}
-\contentsline {section}{\numberline {2.3}Refuerzo de casos menos frecuentes}{3}
-\contentsline {section}{\numberline {2.4}Mi intuici\IeC {\'o}n de metaplasticidad en RBFNN}{3}
-\contentsline {section}{\numberline {2.5}Entrenamiento}{4}
-\contentsline {chapter}{\numberline {3}Implementaci\IeC {\'o}n}{5}
-\contentsline {section}{\numberline {3.1}Metodolog\IeC {\'\i }a de desarrollo}{5}
-\contentsline {section}{\numberline {3.2}Lenguaje y herramientas}{5}
-\contentsline {section}{\numberline {3.3}Implementaci\IeC {\'o}n de las redes}{5}
-\contentsline {section}{\numberline {3.4}Pruebas y m\IeC {\'e}tricas de rendimiento}{5}
-\contentsline {subsection}{\numberline {3.4.1}Pruebas de clasificaci\IeC {\'o}n}{6}
-\contentsline {subsubsection}{Generaci\IeC {\'o}n de datos aleatorios}{6}
-\contentsline {section}{\numberline {3.5}Implementaci\IeC {\'o}n b\IeC {\'a}sica de una RBF}{7}
-\contentsline {section}{\numberline {3.6}Extendemos con centr\IeC {\'o}ides K-NN}{7}
-\contentsline {chapter}{\numberline {4}Resultados}{8}
-\contentsline {subsection}{\numberline {4.0.1}Pruebas de clasificaci\IeC {\'o}n}{8}
-\contentsline {section}{\numberline {4.1}Comparativa de RBFNN con y sin metaplasticidad}{8}
-\contentsline {section}{\numberline {4.2}Otros resultados de inter\IeC {\'e}s}{8}
+\contentsline {section}{\numberline {1.1}La propuesta de Trabajo de Fin de Grado}{2}
+\contentsline {subsection}{\numberline {1.1.1}Justificaci\IeC {\'o}n y objetivos}{2}
+\contentsline {section}{\numberline {1.2}Proceso de investigacion}{3}
+\contentsline {subsection}{\numberline {1.2.1}Planteamiento del problema}{3}
+\contentsline {subsection}{\numberline {1.2.2}El estado del arte}{3}
+\contentsline {subsection}{\numberline {1.2.3}La metaplasticidad en redes biol\IeC {\'o}gicas}{4}
+\contentsline {section}{\numberline {1.3}Metaplasticidad en redes neuronales artificiales}{4}
+\contentsline {chapter}{\numberline {2}Metaplasticidad en Redes Neuronales con Funci\IeC {\'o}n de Base Radial (RBFNN)}{5}
+\contentsline {subsection}{\numberline {2.0.1}Propuesta de soluci\IeC {\'o}n}{5}
+\contentsline {section}{\numberline {2.1}Mi intuici\IeC {\'o}n de metaplasticidad en RBFNN}{5}
+\contentsline {chapter}{\numberline {3}Implementaci\IeC {\'o}n}{6}
+\contentsline {section}{\numberline {3.1}Metodolog\IeC {\'\i }a de desarrollo}{6}
+\contentsline {section}{\numberline {3.2}Lenguaje y herramientas}{6}
+\contentsline {section}{\numberline {3.3}Implementaci\IeC {\'o}n de las redes}{6}
+\contentsline {section}{\numberline {3.4}Pruebas y m\IeC {\'e}tricas de rendimiento}{6}
+\contentsline {subsection}{\numberline {3.4.1}Pruebas de clasificaci\IeC {\'o}n}{7}
+\contentsline {subsubsection}{Generaci\IeC {\'o}n de datos aleatorios}{8}
+\contentsline {section}{\numberline {3.5}Implementaci\IeC {\'o}n b\IeC {\'a}sica de una RBF}{8}
+\contentsline {section}{\numberline {3.6}Extendemos con centr\IeC {\'o}ides K-NN}{8}
+\contentsline {chapter}{\numberline {4}Resultados}{9}
+\contentsline {subsection}{\numberline {4.0.1}Pruebas de clasificaci\IeC {\'o}n}{9}
+\contentsline {section}{\numberline {4.1}Comparativa de RBFNN con y sin metaplasticidad}{9}
+\contentsline {section}{\numberline {4.2}Otros resultados de inter\IeC {\'e}s}{9}
