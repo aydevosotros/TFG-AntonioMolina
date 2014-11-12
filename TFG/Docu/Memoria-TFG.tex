@@ -16,9 +16,9 @@
 
 %Cabecera y pie de página
 \pagestyle{fancy}
-\lhead{\rightmark} % texto izquierda de la cabecera
-\chead{} % texto centro de la cabecera
-\rhead{} % número de página a la derecha
+\lhead{\rightmark} 
+\chead{} 
+\rhead{} 
 \lfoot{Antonio Molina García-Retamero}
 \cfoot{}
 \rfoot{\thepage}
@@ -257,6 +257,8 @@ El objetivo final del software a desarrollar es el de proveer de un \textit{fram
 	\item \textbf{Desarrollo rápido:}
 \end{itemize}
 
+De esta forma, la experimentación será un ejercicio dinámico en la que fácilmente cambiar los diferentes parámetros y algoritmos y experimentar sobre diferentes conjuntos de datos. La experimentación, en multitud de ocasiones, se trata de un ejercicio de ensayo-error guiado por un proceso creativo en donde la simplicidad de las herramientas juega un papel muy importante y por lo tanto, el diseño ha tenido como requisito constante exponer un conjunto de objetos sencillos, claros y fáciles de utilizar y que a su vez sean altamente parametrizables y extensibles en su comportamiento.
+
 
 \section{Metodología de desarrollo}
 En cuanto a las metodologías de desarrollo, en fase de diseño, determiné usar diferentes metodologías para afrontar los diferentes problemas y con tal de aprovechar las ventajas que, sobre cada uno de los problemas, estas ofrecen.
@@ -268,37 +270,40 @@ Para el desarrollo del generador de datos realicé un Diseño Orientado a Objeto
 Por último, para el generador de informes me serví de una combinación de estas. Es decir, partía de un resultado esperado que era el informe y una interfaz pública más o menos clara (\textit{addGrafico, addSection, etc}). Sin embargo en tiempo de desarrollo, las pruebas fueron redefiniendo esta interfaz en base a los requisitos que iban imponiendo las pruebas rediseñando así el modelo en cada \textit{iteración} del desarrollo.
 
 \section{Lenguaje y herramientas}
+python-sklearn python-matplotlib python-scipy
 \section{Esquema general del diseño}
 \section{Implementación de la RBFN}
 \section{Implementación del generador de datos}
+El generador de datos tiene como objetivos generales generar/obtener los conjuntos de datos que alimentarán nuestros modelos y hacerlos disponibles de forma sencilla. El generador de datos tiene un papel fundamental en la experimentación debido a las particularidades de la solución propuesta ya que es importante tener control sobre la distribución de los datos con los que trabajamos. Además, se delega en este la obtención de los datos de diferentes bases de datos estándar con tal de comparar los resultados con otras propuestas del estado del arte.
+
+La siguiente figura representa el esquema general de la clase generadora de datos implementada.
+\begin{figure}[!h]{}
+    \centering
+    \includegraphics[width=0.4\textwidth]{img/GeneradorEsquema.png}
+    \label{fig:EsquemaGenerador}
+    \caption{Esquema general del generador de datos}
+\end{figure}
+Los dos métodos principales de estas clases y que son los encargados de generar y de obtener los conjuntos de datos serán explicados en detalle a continuación.
+
+\subsection{Generación de datos aleatorios}
+Tal como se ha descrito en secciones anteriores, en la implementación de la metaplasticidad propuesta por Diego Andina\citep{Andina2009}, la $fdp$ ($f_X(x)$) es fundamental y esto hace muy importante poder tener control sobre la distribución de probabilidad de los conjuntos de datos que se generan. Dado que se ha observado históricamente que las distribuciones gaussianas son las más comunes en los datos de origen natural, he utilizado para la generación de datos aleatorios la implementación que ofrece \textit{numpy} y que genera los datos siguiendo la siguiente función de distribución de probabilidad normal: 
+
+\begin{center}
+$pdf(x,\mu,\sigma) = \frac{1}{ \sigma \sqrt{2 \pi}} e^{\left(-\frac{{\left(\mu - x\right)}^{2}}{2 \, \sigma^{2}}\right)}$
+\end{center}
+
+El método, por tanto, construye el conjunto de datos en base a dos centroides aleatorios (que representan dos clases) etiquetando cada muestra en su clase. Dado lo compacto del código me decido a introducirlo en esta memoria para el lector interesado.
+\begin{figure}[!h]{}
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/generateClusteredRandomData.png}
+    \label{fig:generateRandomMethod}
+    \caption{Conjunto de datos con distribución normal}
+\end{figure}
+
+
 \section{Implementación del generador de informes}
 
-Dado que por medio de este trabajo se pretende la demostración de la mejora propuesta sobre las RBFN, estableceré una serie de pruebas que pretenderán poner a prueba las diferentes implementaciones de las redes para resolver problemas típicos de aprendizaje máquina.
-En secciones anteriores hemos comentado la problemática y las diferentes alternativas propuestas para entrenar las RBFN. La batería de pruebas es la parte probablemente más crítica del proyecto y con especial esmero he diseñado un conjunto de pruebas que pretende ser exhaustivo y con el que pretendo primero valorar el comportamiento de las soluciones típicas existentes y las mejoras propuestas en esta investigación.
 
-De entre los escenarios típicos del aprendizaje máquina podemos hacer dos grandes grupos: tal y clasificación. Para este proyecto he seguido la estrategia de construir, para sendos tipos de problemas, sets de datos aleatorios cuyos parámetros intrínsecos puedan ser manipulados fácilmente permitiendo generar de forma sencilla tantos escenarios como se crean apropiados para los diferentes test. En busca de evitar el "data snooping" y una vez determinadas las configuraciones para los que los diferentes tipos de redes tienen comportamientos interesantes, las redes serán testeados sobre sets de datos estándares en la investigación sobre aprendizaje máquina.
-
-\begin{itemize}
-	\item Reconocimiento de patrones
-	\begin{itemize}
-		\item Onda compuesta aleatoria
-		\item Otra idea que se me ocurra
-	\end{itemize}
-	\item Clasificación
-	\begin{itemize}
-		\item Clasificación sobre datos aleatorios artificiales
-		\item Clasificación sobre datos reales
-	\end{itemize}
-\end{itemize} 
-En las siguientes secciones trataré de clarificar todo esto para cada tipo de pruebas. Explicaré las cosas fundamentales de la implementación tratando de no perder al lector en el código pero dándo una visión clara y precisa de lo que se desea poner a prueba con cada test. Sin embargo, antes de entrar en detalle sobre la construcción de los conjuntos de datos me gustaría dejar patente el guión básico que sigo a la hora de diseñar las prubas.
-
-Anteriormente hemos discutido las fases del entrenamiento de redes RBFN y de las soluciones típicas. Además discutimos acerca de como podemos implementar la intuición de la metaplasticidad en la fase supervisada a partir de la información estadística que supone el aprendizaje no supervisado de la primera parte del entrenamiento en busca de los parámetros de las funciones de base radial. 
-
-Con todo esto, una primera batería de test tratará de determinar en qué condiciones, el cálculo de la pseudoinversa deja de resultar rentable en términos de coste computacional con respecto a al descenso por gradiente. Este coste computacional es directamente proporcional al tamaño del set de datos, con lo que esta prueba nos dará una estimación de cuan grande ha de ser al menos nuestro conjunto de datos para que resulte rentable la aproximación del descenso por gradiente que es necesario para la implementación de la intuición de metaplasticidad aquí propuesta.
-
-A continuación, someteremos a una batería exahustiva de test generados artificialmente y sobre los que variaré los parámetros de los diferentes tipos de redes y de los propios conjuntos de datos en busca de las condiciones en que cada tipo de RBFNs de los propuestos ofrece un comportamiento mejor que el resto. Con esto podremos determinar si existen condiciones en las que, en efecto, la propuesta de metaplasticidad supone una mejora sobre las aproximaciones existentes.
-
-Por último, se realizarán pruebas sobre sets de datos conocidos y ampliamente utilizados en el campo del aprendizaje máquina. Con esto se pretende evitar la aparición de resultados inválidos por la propia intervención y manipulación de los parámetros y datos en busca de las condiciones en las que la esta implementación resulte mejor además de poder ofrecer comparativas que puedan ser reconocidas por quienes trabajan en otras propuestas sobre los mismos conjuntos de datos.
 
 \subsection{Pruebas de clasificación}
 Uno de los usos más habituales de las RBFN es cuando tenemos que clasificar sobre un conjunto de datos cuyas clases no son linealmente separables. Anteriormente hablamos de
@@ -313,9 +318,7 @@ La figura \ref{fig:clusteredData1} es un ejemplo de datos generados con el gener
 
 \subsubsection{Generación de datos aleatorios}
 Para este tipo de test necesitamos generar datos que se distribuyan de forma normal alrededor de un centroide. Una distribución normal es aquella que cuya función de densidad de probabilidad queda definida por la media ($\mu$) y la desviación estándar ($\sigma$) del conjunto de datos ($x$) de la siguiente forma:
-\begin{center}
-$pdf(x,\mu,\sigma) = \frac{1}{ \sigma \sqrt{2 \pi}} e^{\left(-\frac{{\left(\mu - x\right)}^{2}}{2 \, \sigma^{2}}\right)}$
-\end{center} 
+ 
 Existen multitud de generadores aleatorios de este tipo de datos. En este caso utilizaré el propio de NumPy como muestro a continuación para generar las $n$ muestras por cada centroide ya que este definirá la media. La desviación estándard será proporcionada como parámetro en el constructor de la clase y nos permitirá jugar con la forma que adoptarán los datos generados.
 
 \begin{figure}[!h]{}

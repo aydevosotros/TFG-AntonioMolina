@@ -65,6 +65,7 @@ class RBFNN:
     def _cgMinimization(self, X, Y):
         w = self.W
         print fmin_cg(self._costFunction, w, fprime=None, args=(X,Y))
+#         res = minimize(loglikelihood, (0.01, 0.1,0.1), method = 'Nelder-Mead',args = (atimes,))
     
     def _gradientDescent(self, X, Y, iterations):
         error = np.zeros(iterations, float)

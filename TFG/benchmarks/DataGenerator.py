@@ -22,20 +22,17 @@ class DataGenerator(object):
         '''
         pass
         
-    def generateClusteredRandomData(self, nSamples=500, nCentroids=2, dim=2):
-        #TODO: Para mas de dos clases tengo que jugar con el outdim y calcular las neuronas de la ultima capa y tal
-        for i in xrange(nCentroids):
-            #TODO: Parametrizar la media
-            mean = np.random.rand(dim)*30 + (np.random.rand(dim)*10)
-#             print "Creating cluster with center: " + str(mean)
-            samples = np.random.normal(size=[nSamples, dim], loc=mean)
+    def generateClusteredRandomData(self, nSamples=500, dim=2, sigma=0.1, cf=30, cd=10):
+        for i in xrange(2):
+            mean = np.random.rand(dim)*cf + (np.random.rand(dim)*cd)
+            samples = np.random.normal(size=[nSamples, dim], loc=mean, scale=sigma)
             for n, sample in enumerate(samples):
                 sample = np.append(sample, (1 if i==0 else -1))
                 if n==0 and i==0:
                     self.data = sample
                 else:
                     self.data = np.vstack((self.data, sample))
-        np.random.shuffle(self.data) # Shuffle data to avoid dataset to be ordered by centroid
+        np.random.shuffle(self.data) # Shuffle data to avoid dataset to be ordered by centroids
     
     def generateRealData(self, dataSet='column', scale=True):
         if dataSet == "cancer": #Wisconsi breast cancer dataset
@@ -142,5 +139,5 @@ class DataGenerator(object):
 # Some code to debug
 if __name__ == '__main__':
     cdt = DataGenerator()
-    print cdt.getDataSet()
+    cdt.generateClusteredRandomData(100, 2, 5)
     print len(cdt.getTrainingX())+len(cdt.getValidationX())
