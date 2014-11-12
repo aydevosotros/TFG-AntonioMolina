@@ -13,7 +13,7 @@ import numpy as np
 from scipy.linalg import norm, pinv
 from scipy.cluster.vq import kmeans
 from matplotlib import pyplot as plt
-from EvaluationTests.DataGenerator import DataGenerator
+from benchmarks import DataGenerator
 from scipy.optimize.optimize import fmin_cg
 
  
@@ -38,7 +38,6 @@ class RBFNN:
         for ci, c in enumerate(self.centers):
             for xi, x in enumerate(X):
                 G[xi,ci] = self._basisfunc(c, x)
-                G[xi,-1] = 1
         return G
     
     def _costFunction(self, W, *args):
@@ -62,14 +61,6 @@ class RBFNN:
             for j, cj in enumerate(self.centers):
                 grad[j] += ej*self._basisfunc(cj, xi)
         return grad
-    
-    def _positionDerivative(self, X, Y):
-        
-        pass
-    
-    def _spreadsDerivative(self, X, Y):
-        
-        pass
     
     def _cgMinimization(self, X, Y):
         w = self.W

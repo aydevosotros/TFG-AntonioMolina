@@ -3,14 +3,14 @@ Created on Jul 28, 2014
     By executing this file you'll be executing and evaluating the test written in this package
 @author: antonio
 '''
-from EvaluationTests.DataGenerator import DataGenerator
-from basicRBFNN.RBFNN import RBFNN
+from benchmarks.DataGenerator import DataGenerator
+from RBFNN import RBFNN
 from sklearn import preprocessing
 import numpy as np
 import time
 import shlex, subprocess
 from matplotlib import pyplot as plt
-import Strings
+from benchmarks import Strings
 import os
 
 def RealDataTest(dataSet="cancer", minCentroids=10, maxCentroids=200, stepCentroids=20, meanSamples=10):
