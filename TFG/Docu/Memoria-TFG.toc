@@ -1,0 +1,35 @@
+\select@language {spanish}
+\contentsline {chapter}{\numberline {1}Introducci\IeC {\'o}n}{2}{chapter.1}
+\contentsline {section}{\numberline {1.1}La propuesta de Trabajo de Fin de Grado}{2}{section.1.1}
+\contentsline {subsection}{\numberline {1.1.1}Justificaci\IeC {\'o}n y objetivos}{2}{subsection.1.1.1}
+\contentsline {chapter}{\numberline {2}Proceso de investigaci\IeC {\'o}n}{4}{chapter.2}
+\contentsline {section}{\numberline {2.1}Planteamiento del problema}{4}{section.2.1}
+\contentsline {section}{\numberline {2.2}El estado del arte}{4}{section.2.2}
+\contentsline {section}{\numberline {2.3}La metaplasticidad en redes biol\IeC {\'o}gicas}{5}{section.2.3}
+\contentsline {section}{\numberline {2.4}Metaplasticidad en redes neuronales artificiales}{6}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}Propuesta de implementaci\IeC {\'o}n de la AMP en las MLP}{7}{subsection.2.4.1}
+\contentsline {subsubsection}{Implementaci\IeC {\'o}n propia}{8}{section*.2}
+\contentsline {subsubsection}{Conclusiones del estudio}{8}{section*.3}
+\contentsline {section}{\numberline {2.5}Metaplasticidad Artificial en RBFN}{9}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Definici\IeC {\'o}n y caracter\IeC {\'\i }sticas de las RBFN}{9}{subsection.2.5.1}
+\contentsline {subsubsection}{Metodolog\IeC {\'\i }as de entrenamiento}{10}{section*.4}
+\contentsline {subsection}{\numberline {2.5.2}Aplicaci\IeC {\'o}n directa del estimador de probabilidad}{10}{subsection.2.5.2}
+\contentsline {subsubsection}{Propuesta de implementaci\IeC {\'o}n}{10}{section*.5}
+\contentsline {subsection}{\numberline {2.5.3}Problem\IeC {\'a}tica}{10}{subsection.2.5.3}
+\contentsline {section}{\numberline {2.6}Ampliaci\IeC {\'o}n del estado del arte}{12}{section.2.6}
+\contentsline {subsection}{\numberline {2.6.1}Tonotop\IeC {\'\i }a y Retinotop\IeC {\'\i }a}{12}{subsection.2.6.1}
+\contentsline {subsection}{\numberline {2.6.2}Kernel Methods}{12}{subsection.2.6.2}
+\contentsline {section}{\numberline {2.7}Propuesta de soluci\IeC {\'o}n}{12}{section.2.7}
+\contentsline {chapter}{\numberline {3}Implementaci\IeC {\'o}n}{13}{chapter.3}
+\contentsline {section}{\numberline {3.1}Metodolog\IeC {\'\i }a de desarrollo}{14}{section.3.1}
+\contentsline {section}{\numberline {3.2}Lenguaje y herramientas}{14}{section.3.2}
+\contentsline {section}{\numberline {3.3}Esquema general del dise\IeC {\~n}o}{14}{section.3.3}
+\contentsline {section}{\numberline {3.4}Implementaci\IeC {\'o}n de la RBFN}{14}{section.3.4}
+\contentsline {section}{\numberline {3.5}Implementaci\IeC {\'o}n del generador de datos}{14}{section.3.5}
+\contentsline {section}{\numberline {3.6}Implementaci\IeC {\'o}n del generador de informes}{14}{section.3.6}
+\contentsline {subsection}{\numberline {3.6.1}Pruebas de clasificaci\IeC {\'o}n}{16}{subsection.3.6.1}
+\contentsline {subsubsection}{Generaci\IeC {\'o}n de datos aleatorios}{16}{section*.6}
+\contentsline {chapter}{\numberline {4}Experimentaci\IeC {\'o}n}{18}{chapter.4}
+\contentsline {subsection}{\numberline {4.0.2}Pruebas de clasificaci\IeC {\'o}n}{18}{subsection.4.0.2}
+\contentsline {section}{\numberline {4.1}Comparativa de RBFN con y sin metaplasticidad}{18}{section.4.1}
+\contentsline {section}{\numberline {4.2}Otros resultados de inter\IeC {\'e}s}{18}{section.4.2}
