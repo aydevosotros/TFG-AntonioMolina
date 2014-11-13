@@ -32,6 +32,36 @@ Metaplasticity can Improve Artificial Neural Networks Learning",
 @manual{scikitlearn2014,
       title  = "Sci-kit-learn documentation",
       author = "Sci-kit developers",
-      url    = "http://www.scipy.org/docs.html",
+      url    = "http://scikit-learn.org/stable/documentation.html",
       year   = "2014 (visitado en Noviembre, 2014)"
 }
+
+@article{Humphries20101202,
+title = "Tonotopic organization of human auditory cortex ",
+journal = "NeuroImage ",
+volume = "50",
+number = "3",
+pages = "1202 - 1211",
+year = "2010",
+note = "",
+issn = "1053-8119",
+doi = "http://dx.doi.org/10.1016/j.neuroimage.2010.01.046",
+url = "http://www.sciencedirect.com/science/article/pii/S1053811910000686",
+author = "Colin Humphries and Einat Liebenthal and Jeffrey R. Binder"
+}
+
+@article{Clopton19741,
+title = "Tonotopic organization: Review and analysis ",
+journal = "Brain Research ",
+volume = "76",
+number = "1",
+pages = "1 - 20",
+year = "1974",
+note = "",
+issn = "0006-8993",
+doi = "http://dx.doi.org/10.1016/0006-8993(74)90509-5",
+url = "http://www.sciencedirect.com/science/article/pii/0006899374905095",
+author = "Ben M. Clopton and Jeffrey A. Winfield and Frank J. Flammino"
+}
+
+

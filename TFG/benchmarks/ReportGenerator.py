@@ -4,11 +4,18 @@ Created on Nov 12, 2014
 @author: antonio
 '''
 
-class ReportGenerator(object):
+class LatexReport(object):
     '''
-    Esta clase se expone una interfaz que facilita la generacion de informes sobre datos experimentales
+    Clase representa un informe
     '''
-
     def __init__(self):
         pass
         
+        
+class LatexGenerator(object):
+    '''
+    Esta clase provee los mecanismos para construir el código LaTeX necesario
+    '''    
+    def __init__(self):
+        pass
+    
