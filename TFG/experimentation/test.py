@@ -4,7 +4,7 @@ Created on Jul 28, 2014
 @author: antonio
 '''
 from benchmarks.DataGenerator import DataGenerator
-from RBFNN import RBFNN
+from RBFNN.RBFNN import RBFNN
 from sklearn import preprocessing
 import numpy as np
 import time
@@ -166,23 +166,23 @@ if __name__ == '__main__':
     print 'Performing test over the RBFNNs'
     latexReport = Strings.headerReportClusterTemplate #Incluyo la cabecera tex
     
-#     latexReport += ClusteredDataTest(minCentroids = 2,  # Minimun number of neurons in hidden layer
-#                                 maxCentroids = 8,       # Maximun number of neurons in hidden layer
-#                                 stepCentroids = 2,      # Step in hidden layer growing
-#                                 dim = 20,               # Data set dimension and NNs indim
-#                                 meanSamples=1)          # Number of samples for meaning each result
+    latexReport += ClusteredDataTest(minCentroids = 2,  # Minimun number of neurons in hidden layer
+                                maxCentroids = 8,       # Maximun number of neurons in hidden layer
+                                stepCentroids = 2,      # Step in hidden layer growing
+                                dim = 20,               # Data set dimension and NNs indim
+                                meanSamples=1)          # Number of samples for meaning each result
     
-    latexReport += RealDataTest(dataSet='cancer',       #Data set to test 
-                                minCentroids = 2,     #Min number of centroids (neurons in hiddent layer
-                                maxCentroids = 200,    #Max centroids
-                                stepCentroids = 5,
-                                meanSamples=5)     
-
-    latexReport += RealDataTest(dataSet='column',       #Data set to test 
-                                minCentroids = 2,     #Min number of centroids (neurons in hiddent layer
-                                maxCentroids = 200,    #Max centroids
-                                stepCentroids = 5,
-                                meanSamples=5)     
+#     latexReport += RealDataTest(dataSet='cancer',       #Data set to test 
+#                                 minCentroids = 2,     #Min number of centroids (neurons in hiddent layer
+#                                 maxCentroids = 200,    #Max centroids
+#                                 stepCentroids = 5,
+#                                 meanSamples=5)     
+# 
+#     latexReport += RealDataTest(dataSet='column',       #Data set to test 
+#                                 minCentroids = 2,     #Min number of centroids (neurons in hiddent layer
+#                                 maxCentroids = 200,    #Max centroids
+#                                 stepCentroids = 5,
+#                                 meanSamples=5)     
     
     latexReport += '''\\end{document}'''
     with open('report.tex','w') as f:

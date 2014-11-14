@@ -53,7 +53,7 @@ class RBFNN:
         ej /= 2
         return ej
     
-    def _gradientWeights(self, W, *args):
+    def _partialCost(self, W, *args):
         X, Y = args
         grad = zeros(shape(W), float)
         ej = self._costFunction(W, X, Y)
@@ -62,7 +62,10 @@ class RBFNN:
                 grad[j] += ej*self._basisfunc(cj, xi)
         return grad
     
-    def _cgMinimization(self, X, Y):
+    def _stimateProbability(self, x):
+        pass
+    
+    def _minimization(self, X, Y):
         w = self.W
         print fmin_cg(self._costFunction, w, fprime=None, args=(X,Y))
 #         res = minimize(loglikelihood, (0.01, 0.1,0.1), method = 'Nelder-Mead',args = (atimes,))
@@ -94,13 +97,13 @@ class RBFNN:
         else:
             print "You must set the training method"
             return
-#         print "center", self.centers
+
         # calculate activations of RBFs
         self.G = self._calcAct(X)
 #         print G
          
-        self._gradientDescent(X, Y, 7000)
-#         self._cgMinimization(X, Y)
+#         self._gradientDescent(X, Y, 7000)
+        self._minimization(X, Y)
         # calculate output weights (pseudoinverse)
 #         self.W = dot(pinv(self.G), Y)
         

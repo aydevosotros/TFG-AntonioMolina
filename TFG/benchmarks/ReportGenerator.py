@@ -1,8 +1,10 @@
+# -*- encoding: utf-8 -*-
 '''
 Created on Nov 12, 2014
 
 @author: antonio
 '''
+
 
 class LatexReport(object):
     '''
@@ -10,12 +12,28 @@ class LatexReport(object):
     '''
     def __init__(self):
         pass
-        
-        
-class LatexGenerator(object):
-    '''
-    Esta clase provee los mecanismos para construir el código LaTeX necesario
-    '''    
-    def __init__(self):
+    
+    def setTitle(self):
         pass
     
+    def addSection(self):
+        pass    
+    
+    def createPDF(self):
+        pass
+        
+        
+class LatexGenerator(object):  
+      
+    @staticmethod
+    def generatePlot(self):
+        return "hola k ase"
+    
+    @staticmethod
+    def generateTable(self):
+        pass
+    
+
+# Some code to debug
+if __name__ == '__main__':
+    print LatexGenerator.generatePlot()

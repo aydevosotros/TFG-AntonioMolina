@@ -164,19 +164,30 @@ Una vez asimilados los conceptos y habiendo realizado una implementación y habe
 \section{Metaplasticidad Artificial en RBFN}
 En esta sección trataré de expresar la problemática observada en el proceso de encontrar y aplicar algún mecanismo de metaplasticidad artificial aplicado a las redes neuronales con función de activación de base radial (RBFN). Para ello, haré en primer lugar una breve introducción a las RBFN tratando de introducir al lector en las principales características de este tipo de redes para después exponer una primera solución y la problemática encontrada.
 \subsection{Definición y características de las RBFN}
-En las siguientes líneas trataré de introducir muy brevemente en definir las RBFN y las metodologías de entrenamiento tradicionales de éstas con tal de facilitar al lector la comprensión de esta sección. Procuraré ser lo más didactico posible y no entraré en detalle pues no considero que sea objeto de esta memoria. Sin embargo si me parece adecuado hacer una descripción básica de estas. Me gustaría indicar, además, que para el estudio de las RBFN, fundamentalmente, he estudiado el libro de \textit{Simon Haykin}\cite{haykin99a}.
-
 \begin{figure}[h!]{}
     \centering
     \includegraphics[width=0.6\textwidth]{img/RBFN1.png}
     \label{fig:RBFN1}
     \caption{Arquitectura de las RBFN}
 \end{figure}
+En las siguientes líneas trataré de introducir muy brevemente en definir las RBFN y las metodologías de entrenamiento tradicionales de éstas con tal de facilitar al lector la comprensión de esta sección. Procuraré ser lo más didactico posible y no entraré en detalle pues no considero que sea objeto de esta memoria. Sin embargo si me parece adecuado hacer una descripción básica de estas. Me gustaría indicar, además, que para el estudio de las RBFN, fundamentalmente, he estudiado el libro de \textit{Simon Haykin}\cite{haykin99a}.
 
-Una posible definición de RBFN es considerarla un caso concreto de red neuronal con una arquitectura definida en la que hay una sola capa oculta y cuyos nodos de esta capa tienen como función de activación una función de base radial que tradicionalmente es una función gaussiana. En la figura \ref{fig:RBFN1} se representa esta arquitectura.
- 
+Una posible definición de RBFN es considerarla un caso concreto de red neuronal con una arquitectura definida en la que hay una sola capa oculta y cuyos nodos de esta capa tienen como función de activación una función de base radial que tradicionalmente es una función gaussiana. En la figura \ref{fig:RBFN1} se representa esta arquitectura. 
 
-\subsubsection{Metodologías de entrenamiento}
+Los parámetros del modelo son, por tanto, el valor de los pesos sinápticos $w_{ij}$ y los parámetros de las funciones gaussianas $\sigma_i$ y $\mu_i$. Por tanto, tradicionalmente se aproxima el entrenamiento de estos parámetros en dos fases:
+\begin{itemize}
+	\item \textbf{Primera fase:} Se seleccionan los parámetros de las gaussianas. Para ello, lo más convencional es servirse de alguna de estas dos técnicas:
+	\begin{itemize}
+		\item Se seleccionan puntos aleatorios del conjunto de datos de entrenamiento
+		\item Se realiza alguna técnica de \textit{clustering} que infiera estos centroides del conjunto de datos de entrenamiento
+	\end{itemize}
+	\item \textbf{Segunda fase:} Se procede al entrenamiento de los pesos sinápticos. También existen dos aproximaciones a este problema:
+	\begin{itemize}
+		\item Sirviéndose del álgebra lineal para resolver la ecuación: $W=GY$. Donde $W$ es el vector de pesos, $G$ es la matriz de activación para la salida de la capa oculta para cada centroide y cada muestra del conjunto de datos e $Y$ es el vector con la salida esperada para cada muestra del conjunto de datos.
+		\item Una segunda aproximación es el de utilizar métodos de minimización como el descenso por gradiente para minimizar el error variando los pesos en función a la derivada parcial de estos con respecto al error.
+	\end{itemize}
+\end{itemize}
+
 \subsection{Aplicación directa del estimador de probabilidad}
 Una primera implementación de la metaplasticidad en las RBFN podría ser la de incluir la estimación de probabilidad subóptima en la fase de entrenamiento de pesos con tal de ponderarlos de forma similar a, como he explicado en líneas anteriores, Diego Andina propuso para las AMMLP\citep{Andina2009}.
 
@@ -332,6 +343,8 @@ El objetivo final del software a desarrollar es el de proveer de un \textit{fram
 
 De esta forma, la experimentación será un ejercicio dinámico en la que fácilmente cambiar los diferentes parámetros y algoritmos y experimentar sobre diferentes conjuntos de datos. La experimentación, en multitud de ocasiones, se trata de un ejercicio de ensayo-error guiado por un proceso creativo en donde la simplicidad de las herramientas juega un papel muy importante y por lo tanto, el diseño ha tenido como requisito constante exponer un conjunto de objetos sencillos, claros y fáciles de utilizar y que a su vez sean altamente parametrizables y extensibles en su comportamiento.
 
+Por último, indicar que todo el código relativo a este trabajo, incluyendo el código fuente de esta memoria y de la presentación, está disponible públicamente en el siguiente repositorio de \href{https://github.com/aydevosotros/TFG-AntonioMolina}{GitHub}\footnote{https://github.com/aydevosotros/TFG-AntonioMolina}.
+
 
 \section{Metodología de desarrollo}
 En cuanto a las metodologías de desarrollo, en fase de diseño, determiné usar diferentes metodologías para afrontar los diferentes problemas y con tal de aprovechar las ventajas que, sobre cada uno de los problemas, estas ofrecen.
@@ -344,9 +357,18 @@ Por último, para el generador de informes me serví de una combinación de esta
 
 \section{Esquema general del diseño}
 Ya que el objetivo fundamental del desarrollo es el de proveer de un entorno de experimentación con los requisitos que se han descrito en la introducción de este capitulo, he decidido plantear el desarrollo como una pequeña librería de clases que me ofrezca clases listas para instanciar y con unos pocos parámetros de configuración me provea de diversas configuraciones (tipo de RBFN, conjunto de datos, etc..) para un experimento. Así, con unas pocas líneas de código debería ser capaz de, obtener una RBFN con o sin metaplasticidad y con los parámetros propios de la red deseados, obtener un conjunto de datos con las características deseadas y realizar tantas pruebas como se quiera. Además la recogida de datos deberá ser asistida por una clase que permitirá la construcción de tablas y gráficos y construirá el código LaTeX requerido para la representación de estos.
-Por lo tanto, nuestra librería constará de 3 clases en las que se delegarán las 3 responsabilidades descritas:
+Por lo tanto, nuestra librería constará de 3 clases principales en las que se delegarán las 3 responsabilidades descritas:
 
-(Aquí la imagen de las 3 clases)
+\begin{figure}[!h]{}
+    \centering
+    \includegraphics[scale=0.8]{img/classdiagram.png}
+    \label{fig:classDiagram}
+    \caption{Diagrama de clases simplificado}
+\end{figure}
+
+En la figura \ref{fig:classDiagram} se muestra un diagrama de clases simplificado. En las siguientes subsecciones se detallarán cada una de las clases y se tratará de mostrar al lector las dificultades y bondades de la implementación realizada.
+
+Como se puede observar se trata de un diseño sencillo. Me gustaría dejar constar también que la dificultad de esta implementación ha estribado más en las dificultades propias de implementar algoritmos relativamente complejos, con mucho cálculo matemático y que en ocasiones puede resultar especialmente engorroso de depurar. También me gustaría señalar que en este trabajo de implementación considero que ha sido especialmente acertada la elección de lenguajes y herramientas que describo a continuación y que, en muchos casos, la sintaxis del lenguaje y la potencia de que lo dota la paquetería utilizada me ha facilitado esta tarea de codificación de fórmulas e implementación de algoritmos.
 
 \section{Lenguaje y herramientas}
 Establecidos los objetivos, metodologías, requisitos y diseño general, me propongo a decidir bajo que entorno construir la librería.
@@ -355,7 +377,7 @@ Una primera opción muy recurrida en los entornos investigadores es el uso de \t
 De entre las alternativas abiertas, existen numerosas (y algunas muy buenas) aproximaciones al entorno \textit{Matlab} como puede ser \textit{octave} para el que existe una gran comunidad y multitud de librerías y módulos para extenederlo a muy diversas áreas. Otra aproximación a este tipo de entornos es la librería para \textit{Python} \textit{SciPy} que aglomera un conjunto de paquetes que abarcan gran parte de los requerimientos comunes a cualquier investigación científica. Complementando este \textit{ecosistema} de paquetería que es \textit{SciPy} con otro conjunto de módulos llamado \textit{scikit-learn} y que recoge una muy completa utilitería para problemas de aprendizaje máquina y que a su vez está construida sobre \textit{SciPy}, será la opción elegida para este proyecto. A continuación dedicaré unas pocas líneas a tratar de dar una visión global de cada uno de estos conjuntos de módulos y herramientas:
 
 \subsection{Python\cite{PythonDoc2014}}
-\begin{figure}[!h]{}
+\begin{figure}[!hb]{}
     \centering
     \includegraphics[scale=0.3]{img/logoPython.jpg}
 \end{figure}
@@ -365,6 +387,7 @@ De entre las alternativas abiertas, existen numerosas (y algunas muy buenas) apr
 	\item Es un lenguaje multiplataforma que permite la ejecución directa en diferentes plataformas y dispositivos, requisito fundamental en cualquier equipo de investigación. Además, cualquiera puede acceder al código desarrollado y ejecutarlo con tal de corroborar los resultados directamente.
 	\item Existe una enorme cantidad de software (y mucho de muy buena calidad) desarrollado en \textit{Python} y que enriquecen la plataforma haciéndola idónea para muchos ámbitos. En concreto a lo que nuestro problema se refiere, he citado anteriormente las librerías que se han utilizado en este desarrollo y cuyas características describiré en las siguientes subsecciones.
 \end{itemize}
+\pagebreak
 
 \subsection{SciPy\cite{SciPy2014}}
 \begin{figure}[!h]{}
@@ -391,8 +414,18 @@ Se trata de un conjunto de herramientas con objeto de hacer simple y eficienteme
 Aunque en esta investigación se han definido nuevos modelos, me he servido de estas herramientas para el preprocesamiento, por ejemplo al probar con los datos escalados y sin escalar, o para utilizar técnicas de clustering para encontrar los centroides de las gaussianas de las RBFN.
 
 \section{Implementación de la RBFN}
-La clase RBFN es una clase contenedora de algorítmos. La estructura se muestra en la figura tal. La interfaz pública de la clase es muy sencilla y se basa en un constructor que recibe los parámetros de la red y que permite escoger el algoritmo de entrenamiento. Un método para entrenar el modelo en base a un conjunto de datos de entrenamiento etiquetado y un tercer método de prueba que devuelve el resultado de la red para una entrada dada.
+\begin{figure}[!h]{}
+    \centering
+    \includegraphics[scale=0.6]{img/RBFNScheme.png}
+\end{figure}
+La clase RBFN es básicamente una clase contenedora de algorítmos y sus parámetros. La estructura se muestra en la figura tal. La interfaz pública de la clase es muy sencilla y se basa en un constructor que recibe los parámetros de la red y que permite escoger el algoritmo de entrenamiento. Un método para entrenar el modelo en base a un conjunto de datos de entrenamiento etiquetado y un tercer método de prueba que devuelve el resultado de la red para una entrada dada.
 Con esta estructura sencilla se pretende que el mismo código de experimentación sea reutilizable y que con muy pocas modificaciones (los parámetros del constructor) podamos disponer de redes que implementen algoritmos o parámetros distintos.
+
+Como se observa del diseño, todos los tipos de redes comparten la misma interfaz pública (métodos \textit{train} y \textit{test}) y la elección de los algorítmos se hace en el constructor, con lo que un mismo experimento se puede aplicar a diferentes algoritmos y parámetros tan solo cambiando el constructor, lo que es consecuente con los requisitos descritos. Así mismo, la mayoría de parámetros propios de las redes están definidos con unos parámetros por defecto.
+
+También me gustaría señalar que, como se puede observar en el esquema de la clase, para la minimización del coste se ha realizado una implementación propia y sencilla del algoritmo de \textit{descenso por gradiente} con tal de depurar fácilmente las funciones de coste y las derivadas parciales. Para pruebas de rendimiento también se proporciona la posibilidad de utilizar diferentes algoritmos de minimización que proporciona \textit{SciPy}. Estas opciones de minimización son: \textit{Nelder-Mead simplex algorithm, BFGS algorithm, y Newton-Conjugate-Gradient algorithm}.
+
+Sin encontrar dificultades en la implementación y habiendo indicado las particularidades de la implementación, tan solo añadir que para aplicar el mecanismo de metaplasticidad propuesto tan solo es necesario un parámetro por parámetro en el constructor que así lo indique y en el método \textit{\_partialCost$()$} se hará uso de una estimación de la probabilidad de la muestra para ponderar el peso tal y como se ha descrito.
 
 
 \section{Implementación del generador de datos}
@@ -403,7 +436,7 @@ La siguiente figura representa el esquema general de la clase generadora de dato
     \centering
     \includegraphics[width=0.4\textwidth]{img/GeneradorEsquema.png}
     \label{fig:EsquemaGenerador}
-    \caption{Esquema general del generador de datos}
+    \caption{Esquema del generador de datos}
 \end{figure}
 Los dos métodos principales de estas clases y que son los encargados de generar y de obtener los conjuntos de datos serán explicados en detalle a continuación.
 
@@ -440,13 +473,21 @@ Además de la experimentación con datos generados y con objeto de validar las p
 Una vez generados los datos, los métodos de obtención de los datos mantienen la misma interfaz independientemente del conjunto de datos con lo que sobre el mismo código de prueba, la elección del conjunto requiere tan solo la llamada de un método a otro.
 
 \section{Implementación del generador de informes}
-El generador de informes es un módulo compuesto de dos clases (\textit{LatexReport} y \textit{LatexGenerator}). 
+\begin{figure}[h!]{}
+    \centering
+    \includegraphics[width=0.3\textwidth]{img/reporGeneratorScheme.png}
+    \label{fig:EsquemaGeneradorInformes}
+    \caption{Esquema del Generador de informes}
+\end{figure}
+El generador de informes es un módulo compuesto de dos clases (\textit{LatexReport} y \textit{LatexGenerator}). Este módulo tiene la responsabilidad de generar el código látex necesario para producir un informe de los resultados de la experimentación. 
+La clase \textit{LatexReport} permite crear un informe estableciendo un título para este y habilitando la posibilidad de añadir tantas secciones como se desee. Estas secciones están compuestas por un texto descriptivo, una gráfica que represente los datos y una tabla que contenga estos datos. Además, será la responsable de generar el archivo PDF como resultado de guardar el código en un archivo de texto \textit{.tex} y llamando al comando del sistema pertinente para la compilación del fuente.
+La clase \textit{LatexGenerator} es un contenedor de métodos estáticos y que son los que proporcionarán el código LaTeX para los gráficos y las tablas. El resultado de esta clase fue una refactorización para una división de responsabilidades y mejorar la mantenibilidad y la legibilidad.
 
-(Diagrama de las clases)
+El objetivo de estas clases es el de proporcionar un mecanismo por el cual generar las tablas y los gráficos de los resultados de la experimentación en un informe PDF con tal de simplificar esta tarea. Al mismo tiempo, se ha pretendido ser genérico en cuanto a los datos a representar. Como resultado, se ha obtenido una implementación que pese a ser poco flexible y permitir relativamente pocas opciones, nos permite generar informes que presenten secciones sencillas compuesta de los gráficos generados con \textit{matplotlib} y construir tablas sencillas que recopilen los resultados.
 
 
 \chapter{Conclusiones}
-A lo largo de estas páginas se ha pretendido exponer al lector el trabajo realizado intentando abarcar en la medida de lo posible la extensión del mismo, las dificultades y soluciones a los problemas encontrados en la andadura así como demostrar la cobertura de los objetivos propuestos en la introducción a la memoria.
+A lo largo de estas páginas se ha pretendido exponer al lector el trabajo realizado intentando abarcar en la medida de lo posible la extensión del mismo, las dificultades y soluciones a los problemas encontrados en la andadura, así como demostrar la cobertura de los objetivos propuestos en la introducción a la memoria.
 
 Para cumplir con estos objetivos y en líneas generales:
 \begin{itemize}
@@ -456,11 +497,11 @@ Para cumplir con estos objetivos y en líneas generales:
 	\item Se ha desarrollado un conjunto de herramientas para poder realizar una experimentación ágil basada en prototipado rápido.
 \end{itemize}
 
-En esta conclusión, y haciendo una visión en retrosprectiva de la propuesta, considero que se han abarcado todos los objetivos de la propuesta con éxito y solvencia a la hora de plantear una solución a los problemas descritos y que no son triviales. Así mismo, es de justicia mencionar que el desarrollo del proyecto ha sido probablemente en exceso ambicioso, el trabajo aquí expuesto ha sido el resultado de casi un año en que en multitud de ocasiones me he visto superado por las dificultades que presenta el contexto del problema. He tenido que ampliar en multitud de ocasiones los conocimientos adquiridos durante el grado, así, he tenido que dedicar numerosas horas al estudio de disciplinas como estadística, \textit{machine learning}, etc. Así como el estudio de las neurociencias que son la base de la inspiración biológica de este trabajo.
+En esta conclusión, y haciendo una visión en retrosprectiva de la propuesta, considero que se han abarcado todos los objetivos de la propuesta con éxito y solvencia a la hora de plantear una solución a los problemas descritos y que no son triviales. Así mismo, es de justicia mencionar que el desarrollo del proyecto ha sido probablemente en exceso ambicioso, el trabajo aquí expuesto ha sido el resultado de casi un año en que en multitud de ocasiones me he visto superado por las dificultades que presenta el contexto del problema. He tenido que ampliar sucesivas veces los conocimientos adquiridos durante el grado, así, he tenido que dedicar numerosas horas al estudio de disciplinas como estadística, \textit{machine learning}, etc. Así como el estudio de las neurociencias que son la base de la inspiración biológica de este trabajo.
 
 Al tratarse de un problema de investigación, no se pude prever la dimensión de este, pero he de reconocer que la problemática me ha apasionado y probablemente he pecado de inconformista a la hora de buscar una solución \textit{elegante} y \textit{congruente} en términos matemáticos. He querido entender en profundidad el problema y tratar de ser lo más formal en el procedimiento como me fuera posible. He tratado de buscar siempre la bioinspiración y de acercarme lo máximo posible a la realidad biológica con tal de proponer una solución creativa, original y que realmente pueda suponer un aporte al estado del arte.
 
-Por todo esto, me ha supuesto un problema enorme poner un punto y final a lo que propuse como TFG, es decir, este trabajo empezó a plantearse en noviembre de 2013 y no he sabido cerrarlo en las dos convocatorias que se han celebrado hasta hoy. No ha sido hasta muy recientemente que he sabido plantear una solución que me pareciera lo suficientemente buena para el problema y concluir así este proyecto. Aunque en estas líneas que componen la memoria se ha tratado de ser didáctico y se ha tratado de enlazar todo el trabajo de forma sencilla, el proceso hasta construir la propuesta de solución expuesta en la sección 2.7 ha sido un trabajo de meses que difícilmente se puede expresar aquí. Así, en estos últimos días me he atropellado recopilando y redactando esta memoria y es por esto que pido disculpas al lector por posibles erratas o faltas que pueda encontrar en esta memoria.
+Por todo esto, me ha supuesto un problema enorme poner un punto y final a lo que propuse como TFG, es decir, este trabajo empezó a plantearse en noviembre de 2013 y no he sabido cerrarlo en las dos convocatorias que se han celebrado hasta hoy. No ha sido hasta muy recientemente que he sabido plantear una solución que me pareciera lo suficientemente buena para el problema y concluir así este proyecto. Aunque en estas líneas que componen la memoria se ha tratado de ser didáctico y se ha tratado de enlazar todo el trabajo de forma sencilla, el proceso hasta construir la propuesta de solución expuesta en la sección 2.7 ha sido un trabajo de meses que difícilmente se puede expresar aquí. Así, en estos últimos días me he atropellado recopilando y redactando esta memoria y es por esto que pido disculpas al lector por posibles erratas o faltas que pueda encontrar en esta.
 
 Por último quisiera disculparme con el lector por no haber podido incluir en esta memoria los resultados de la experimentación, desde el momento en que \textit{dí} con una solución \textit{apropiada} hasta el momento en que escribo estas líneas ha sido una batalla contra el tiempo que, a este respecto, he perdido. Confío en que en el momento de la presentación de este proyecto pueda contar con estos resultados.
 
