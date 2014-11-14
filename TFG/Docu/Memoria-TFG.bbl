@@ -1,0 +1,42 @@
+\begin{thebibliography}{1}
+
+\bibitem{Clopton19741}
+Ben~M. Clopton, Jeffrey~A. Winfield, and Frank~J. Flammino.
+\newblock Tonotopic organization: Review and analysis.
+\newblock {\em Brain Research}, 76(1):1 -- 20, 1974.
+
+\bibitem{Andina2009}
+J.~Aleksandar D.~Andina, A. Álvarez-Vellisco and J.~Fombellida.
+\newblock Artificial metaplasticity can improve artificial neural networks
+  learning.
+\newblock {\em Intelligent Automation \& Soft Computing,}, 26:683--696, 2009.
+
+\bibitem{SciPy2014}
+SciPy developers.
+\newblock {\em SciPy documentation}, 2014 (visitado en Noviembre, 2014).
+
+\bibitem{PythonDoc2014}
+Python~Software Foundation.
+\newblock {\em Python 2.7.8 documentation}, 2014 (visitado en Noviembre, 2014).
+
+\bibitem{haykin99a}
+Simon Haykin.
+\newblock {\em Neural Networks: A Comprehensive Foundation}.
+\newblock Prentice Hall, 1999.
+
+\bibitem{Humphries20101202}
+Colin Humphries, Einat Liebenthal, and Jeffrey~R. Binder.
+\newblock Tonotopic organization of human auditory cortex.
+\newblock {\em NeuroImage}, 50(3):1202 -- 1211, 2010.
+
+\bibitem{scikitlearn2014}
+Sci kit developers.
+\newblock {\em Sci-kit-learn documentation}, 2014 (visitado en Noviembre,
+  2014).
+
+\bibitem{Mayer2000447}
+N.~Mayer, J.M. Herrmann, and T.~Geisel.
+\newblock Retinotopy and spatial phase in topographic maps.
+\newblock {\em Neurocomputing}, 32–33(0):447 -- 452, 2000.
+
+\end{thebibliography}
