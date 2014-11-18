@@ -38,6 +38,8 @@
 \pagebreak
 \tableofcontents
 \pagebreak
+\listoffigures
+\pagebreak
 
 \chapter{Introducción}
 \section{La propuesta de Trabajo de Fin de Grado}
@@ -56,17 +58,17 @@ La redacción de esta memoria está estructurada haciendo una división entre el
 
 \chapter{Proceso de investigación}
 \section{Planteamiento del problema}
-Una vez definido el trabajo y planteados los objetivos de este trabajo fin de grado, el siguiente paso ha sido determinar el problema que se va a tratar dentro del proceso investigador y así tratar de proponer una solución al problema siguiendo una metodología de investigación.
+Una vez definido el trabajo fin de grado y planteados los objetivos de este, el siguiente paso ha sido determinar el problema que se va a tratar dentro del proceso investigador y así tratar de proponer una solución al problema siguiendo una metodología de investigación.
 Las redes neuronales artificiales han pretendido, desde su concepción, emular, de alguna manera, el proceso cognitivo que se produce en el cerebro de los mamíferos, siempre a una escala reducida, pero sirviéndose de los mismos principios fundamentales. Sin embargo, el problema del aprendizaje es tradicionalmente objeto de la estadísticas y no de la biología. Las redes neuronales artificiales aplicadas al problema de aprendizaje han sido muy estudiadas como un problema estadístico y existe una muy extensa literatura al respecto, sin embargo, no ha sido hasta años recientes que se está abordando el problema del aprendizaje máquina desde un punto de vista biológico. En los últimos años, la neurocomputación ha adquirido una muy notable importancia dentro del campo del aprendizaje máquina y propone sistemas que realmente pretenden emular a los sistemas biológicos y en los que la posibilidad de llegar a entender quizá un poco más los procesos que dotan a los sistemas biológicos de inteligencia y quizá incluso emular algunas de sus funcionalidades es un campo muy prometedor y cargado de retos ilusionantes.
 
-Partiendo del problema de tratar de emular mecanismos biológicos en los modelos de aprendizaje máquina, mi tutor, Daniel Ruiz, me mostró el trabajo de Diego Andina sobre la aplicación de la metaplasticidad neuronal al perceptrón multicapa (MLP) y me propuso aplicarlo a otro tipo de redes como las RBFN.
+Partiendo del problema de tratar de emular mecanismos biológicos en los modelos de aprendizaje máquina, mi tutor, Daniel Ruiz, me mostró el trabajo de Diego Andina\citep{Andina2009} sobre la aplicación de la metaplasticidad neuronal al perceptrón multicapa (MLP) y me propuso aplicarlo a otro tipo de redes como las RBFN.
 
 \section{El estado del arte}
 Dado que partimos de un trabajo en curso, que es la implementación de la metaplasticidad artificial en redes neuronales artificiales, el estudio del estado del arte ha sido un trabajo aurduo que ha requerido de un estudio bastante en profundidad de las diferentes disciplinas bajo las que se contempla el problema que hemos definido y que cubren desde la neurobiología a la estadística y el aprendizaje máquina. Es por esto que me serviré de esta sección primero para demostrar de alguna forma el trabajo realizado en la documentación y adquisición de conocimientos necesarios para comprender el problema y plantear una solución así como para tratar de introducir al lector, de la forma más amena posible, en los conceptos y terminología en que se definen la problemática y la solución propuesta al problema.
 
-El trabajo se inicia con el estudio de lo relativo a la metaplasticidad en las redes neuronales biológicas. Además, he dedicado tiempo a estudiar y entender los modelos estadísticos bajo los que se estudian las redes neuronales artificiales para buscar la forma de aplicar este principio, que es la metaplasticidad artificial, a otros tipos de redes neuronales artificiales más allá, y partiendo, del trabajo que ha desarrollado Diego Andina en las MLP.
+El trabajo se inicia con el estudio de lo relativo a la metaplasticidad en las redes neuronales biológicas. Además, he dedicado tiempo a estudiar y entender los modelos estadísticos bajo los que se estudian las redes neuronales artificiales para buscar la forma de aplicar este principio, que es la metaplasticidad artificial, a otros tipos de redes neuronales artificiales más allá, y partiendo, del trabajo que ha desarrollado Diego Andina en las MLP\citep{Andina2009}.
 
-Una vez adquiridos los conocimientos necesarios para comprender el problema, se realizará un estudio del estado del arte de las diferentes técnicas de las RBFN con tal de encontrar la forma de aplicar el concepto de metaplasticidad que se da de forma natural en las redes neuronales biológicas.
+Una vez adquiridos los conocimientos necesarios para comprender el problema, se realizará un estudio del estado del arte de las diferentes técnicas de entrenamiento de las RBFN con tal de encontrar la forma de aplicar el concepto de metaplasticidad que se da de forma natural en las redes neuronales biológicas.
 
 En las siguientes subsecciones se definirán primero la metaplasticidad en términos biológicos y se expondrá la propuesta de Diego Andina para poder especificar el problema y, partiendo de ahí, plantear la solución propuesta. 
 
@@ -89,7 +91,7 @@ Sobre lo que podemos hacer la siguiente transformación:
 	\label{metaSub1}
 	E_M = \int_{\Re^n}\dfrac{e(x)}{f^*_X(x)}f^*_X(x)dx = \varepsilon^*\lbrace\dfrac{e(x)}{f^*_X(x)}\rbrace
 \end{equation}
-y calcular el error del modelo añadiendo el siguiente estimador:
+y calcular el error del modelo añadiendo el estimador $f^*_X(x)$. El error del sistema será, por tanto,
 \begin{equation}
 	\label{metaSub2}
 	\widehat{E}_M=\dfrac{1}{M}\sum^M_{k=1}\dfrac{e(x^*_k)}{f^*_X(x^*_k)}
@@ -100,10 +102,10 @@ donde $x^*_k,k=1,2,...,M$ son muestras independientes cuya $pdf$ es $f^*_X(x)$. 
 	(f^*_X(x))_{opt}=\dfrac{1}{E_M}e(x)
 \end{equation}
 
-Lo que se pretende conseguir a través de la introducción de la función subóptima de las ecuaciones \ref{metaSub1} y \ref{metaSub2} es incluir el factor de probabilidad a posteriori de la muestra con tal de provocar un efecto de LTP o LTD en los pesos sinápticos consiguiendo así introducir un mecanismo de metaplasticidad en la red neuronal artificial.
+Lo que se pretende conseguir a través de la introducción de la función subóptima $f^*_X(x)$ de las ecuaciones \ref{metaSub1} y \ref{metaSub2} es incluir el factor de probabilidad a priori de la muestra con tal de provocar un efecto de LTP o LTD en los pesos sinápticos consiguiendo así introducir un mecanismo de metaplasticidad en la red neuronal artificial.
 Como se expresa en la ecuación \ref{metaSub3}, la función $f^*_X(x)$ óptima sería la $fdp$ (funcion de distribucion de probabilidad) de la señal de entrada de nuestro modelo ($f_X(x)$), lo que es desconocido por nosotros, con lo que, en la práctica, se elige una $f^*_X(x)$ arbitraria tal que $f^*_X(x) \simeq f_X(x)$.
 
-La figura \ref{fig:WeightedTrainEpoch} ilustra como se incorpora el mecanismo de metaplasticidad como un factor de corrección sobre los pesos. Como se observa, esta corrección del error se hace en base a la salida esperada siendo esta, como ya hemos dicho, $f^*_X(x)$.
+La figura 2.1 ilustra como se incorpora el mecanismo de metaplasticidad como un factor de corrección sobre los pesos. Como se observa en la figura, esta corrección del error se hace en base a la salida esperada interpretando esta como $\widehat{y}_L=P(H_L/x) $.
 
 \begin{figure}[h!]{}
     \centering
@@ -123,23 +125,24 @@ En base a esta interpretación que Diego Andina hace de la metaplasticidad en el
 	\delta_j^{(S)} = (y_j - \widehat{y}^{(S)}_j) \cdot \dfrac{f^{'(S)}}{f^*_X(x)}
 \end{equation}
 siendo s el contador de capas, $s=1,2,...,S$, $j$ e $i$ son el contador de nodos y entradas y $\delta_j^{(S)}$ el error de un nodo $j$ para la capa $s$. Por tanto, la ecuación \ref{eqErrorLastLayer} define el cálculo del error para los nodos de la última capa. Para el resto de capas, el error se propaga siguiendo la forma convencional del \textit{backpropagation}.
-En definitiva, lo que se propone es incluir para, cada iteración en el entrenamiento, es ponderar ese peso en un factor que es el siguiente:
+En definitiva, lo que se propone es incluir, para cada iteración en el entrenamiento, el siguiente factor:
 \begin{equation}
 	w^*(x) = \dfrac{1}{f^*(x)}
 \end{equation}
 con lo que se consigue acelerar el entrenamiento dando más importancia a los casos menos frecuentes. Esto además es acorde con la teoría de la información en tanto que \textit{los sucesos menos frecuentes contienen más información}.
 
-De todo lo comentado anteriormente, queda patente que una de las claves en la implementación de la metaplasticidad a las redes neuronales es la elección acertada de la función subóptima $f_X(x)$. En el caso concreto de las MLP, para clasificar $L$ clases $H_l$ para $l=0,1,...,L-1$, y basándonos en el teorema de Bayes, obtenemos
+De todo lo comentado anteriormente, queda patente que una de las claves en la implementación de la metaplasticidad a las redes neuronales es la elección acertada de la función subóptima $f^*_X(x)$. En el caso concreto de las MLP, para clasificar $L$ clases $H_l$ para $l=0,1,...,L-1$, y basándonos en el teorema de Bayes, obtenemos
 \begin{equation}
 	\widehat{y}_l \simeq P(H_l/x)=\dfrac{f_X(x/H_l) \cdot P(H_l)}{f_X(x)}
 \end{equation}
 si asumimos la salida de nuestra red $\widehat{y}_l$ como $P(H_l/x)$, la propia salida de la red neuronal generaliza $f_X(x)$ con lo que esta puede ser utilizada como función subóptima.
 
-De esta forma, Diego Andina obtiene los resultados de la figura \ref{fig:andinaResults} y que representa la media del error para redes con la modificación propuesta (BPW) para un número creciente de operaciones en contraposición con la media del error en redes entrenando con un algorítmo de \textit{backpropagation} tradicional(BP). En este caso, la función de distribución de probabilidad, se ha asumido la siguiente gaussiana
+De esta forma, Diego Andina obtiene los resultados de la figura 2.2 y que representa la media del error para redes con la modificación propuesta (BPW) para un número creciente de iteraciones en contraposición con la media del error en redes entrenando con un algorítmo de \textit{backpropagation} tradicional(BP). En este caso, la función de distribución de probabilidad, se ha asumido la siguiente función gaussiana
 \begin{equation}
+	\label{distMetaAndina}
 	f^*_X(x) = \dfrac{A}{\sqrt{(2\pi)^n} \cdot e^{\dfrac{B}{8} \sum_{i=1}^n{x_i^2}}}
 \end{equation}
-donde $A$ y $B$ son los parámetros de la gaussiana que en este caso representan los parámetros de la metaplasticidad. En el artículo\citep{Andina2009} se muestra el siguiente ejemplo de como puede mejorar esta propuesta para una entrada concreta en un escenario, se supone, ideal:
+donde $A$ y $B$ son los parámetros de la gaussiana que en este caso representan los parámetros de la metaplasticidad. En el artículo\citep{Andina2009} se muestra el siguiente ejemplo de como puede mejorar esta propuesta para una entrada que sigue una distribución de probabilidad como la descrita en la ecuación \ref{distMetaAndina}.
 
 \begin{figure}[h!]{}
     \centering
@@ -149,12 +152,12 @@ donde $A$ y $B$ son los parámetros de la gaussiana que en este caso representan
 \end{figure}
 
 \subsubsection{Implementación propia}
-Sobre esta propuesta de modificación del algorítmo de \textit{backpropagation} realicé mi propia implementación con tal de poder hacer mi propia experimentación. Esta implementación la basé en el desarrollo de una MLP que realicé para la asignatura de \textit{Razonamiento Automático} en C++. El objetivo de esta implementación era tan solo el de poder experimentar de primera mano, utilizar diferentes funciones subóptimas y diferentes datos de entrenamiento. 
+Sobre esta propuesta de modificación del algorítmo de \textit{backpropagation} realicé mi propia implementación con tal de poder hacer mi propia experimentación. Esta implementación la basé en el desarrollo de una MLP que realicé para la asignatura de \textit{Razonamiento Automático} en C++. El objetivo de esta implementación era tan solo el de poder experimentar de primera mano, utilizando diferentes funciones subóptimas y diferentes datos de entrenamiento. 
 Así, en la siguiente subsección expondré las conclusiones derivadas del estudio y la experimentación de la técnica propuesta por Diego Andina.
  Esta implementación está publicada en el siguiente repositorio de \href{https://github.com/aydevosotros/AMMLP}{GitHub}\footnote{https://github.com/aydevosotros/AMMLP}.
 
 \subsubsection{Conclusiones del estudio}
-Una vez asimilados los conceptos y habiendo realizado una implementación y haber experimentado primero sobre el conjunto de datos sobre los que se publica el artículo y después con otros conjuntos de datos públicos y típicos en los problemas de aprendizaje máquina y habiendo experimentado con diferentes funciones subótimas, he alcanzado las siguientes conclusiones
+Una vez asimilados los conceptos y habiendo realizado una implementación y habiendo experimentado primero sobre el conjunto de datos sobre los que se publica el artículo y después con otros conjuntos de datos públicos y típicos en los problemas de aprendizaje máquina y habiendo experimentado con diferentes funciones subótimas, he alcanzado las siguientes conclusiones
 \begin{itemize}
 	\item Encontrando una función subóptima que se aproxime a la función de distribución de probabilidad de los datos que componen la señal de entrada podemos obtener una gran mejora emulando los procesos LTP y LTD de los sistemas biológicos.
 	\item A priori, $f_X(x)$ es desconocida en los problemas de aprendizaje máquina, con lo que escoger una $f^*_X(x)$ subótima apropiada es un problema muy considerable.
@@ -162,7 +165,7 @@ Una vez asimilados los conceptos y habiendo realizado una implementación y habe
 \end{itemize}
 
 \section{Metaplasticidad Artificial en RBFN}
-En esta sección trataré de expresar la problemática observada en el proceso de encontrar y aplicar algún mecanismo de metaplasticidad artificial aplicado a las redes neuronales con función de activación de base radial (RBFN). Para ello, haré en primer lugar una breve introducción a las RBFN tratando de introducir al lector en las principales características de este tipo de redes para después exponer una primera solución y la problemática encontrada.
+En esta sección trataré de expresar la problemática observada en el proceso de encontrar algún mecanismo de aplicar el concepto de metaplasticidad artificial aplicado a las redes neuronales con función de activación de base radial (RBFN). Para ello, haré en primer lugar una breve introducción a las RBFN tratando de introducir al lector en las principales características de este tipo de redes para después exponer una primera solución y la problemática encontrada.
 \subsection{Definición y características de las RBFN}
 \begin{figure}[h!]{}
     \centering
@@ -210,7 +213,7 @@ para obtener de nuevo el error del sistema en función del criterio de error que
 Para aplicar este nuevo cálculo del error a una RBFN, tan solo hemos de aplicar el criterio de error a la propia red. Si consideramos el criterio de error más típico que es el del cuadrado de la diferencia e incluyéndolo en \ref{metaRBFN2} obtenemos:
 \begin{equation}
 	\label{metaRBFN3}
-	\widehat{E}_M=\dfrac{1}{M}\sum^M_{k=1}\dfrac{(y_k - \overbrace{\left(\sum^M_{j=1}{w_j G(\Vert x^*_k - t_j \Vert_{C_j})}\right)}^{Salida\ de\ la\ RBFN})^2}{f^*_X(x^*_k)}
+	\widehat{E}_M=\dfrac{1}{M}\sum^N_{k=1}\dfrac{(y_k - \overbrace{\left(\sum^M_{j=1}{w_j G(\Vert x^*_k - t_j \Vert_{C_j})}\right)}^{Salida\ de\ la\ RBFN})^2}{f^*_X(x^*_k)}
 \end{equation}
 que sustituiremos la derivada parcial respecto $w_i$
 \begin{equation}
@@ -221,19 +224,18 @@ Por tanto, y en términos del algorítmo general, el entrenamiento de nuestra RB
 	w_i(n+1)=w_i(n) - \eta \dfrac{\partial\varepsilon(n)}{\partial w_i(n)}
 \end{equation}
 
-\subsection{Problemática}
-Una vez asumido el concepto de metaplasticidad en las redes neuronales biológicas y partiendo de la propuesta de metaplasticidad artificial en las MLP de Diego Andina, estamos en disposición de abordar el problema. 
+\subsection{Problemática} 
 Como ya se ha expuesto anteriormente y en esencia, la propuesta de Diego Andina se basa en la emulación de los procesos LTP y LTD añadiendo un factor que pondera la derivada parcial en el descenso por gradiente de la muestra con respecto al peso de la conexión sináptica que representa cuan \textit{raro}, en términos de probabilidad, es la muestra respecto a la clase en que se clasifica a posteriori. Esta probabilidad a posteriori se estima por la propia salida de la red neuronal en ese estado del entrenamiento. 
 
 En este punto, queda patente que existe numerosos problemas a la hora de aplicar esta técnica a otro tipo de redes neuronales, en particular en las RBFN. En la figura \ref{fig:RBFN1}, se representa la arquitectura típica de una RBFN.
 
-Un problema fundamental se debe a la salida de la última capa de sendas redes neuronales. Para implementar un mecanismo de metaplasticidad similar al descrito en las AMMLP\footnote{\textbf{AMMLP:} Artificial Metaplasticity MultiLayer Perceptron}\cite{Andina2009}, se requiere de una estimación de la probabilidad de pertenencia a la clase (cuan \textit{rara} es la muestra) y en las AMMLP la estimamos como la salida de la propia red neuronal. Ya que la neurona de la última capa es una función logística \footnote{Una función logística es una función continua cuya salida $\in [0 1]$. Un ejemplo de función logística típia es \\ $f_{log}(z)=\frac{1}{1+e^{-z}}$}, asumimos ésta como la probabilidad a posteriori de pertenencia a la clase. Por su parte, la salida de una RBFN para el problema de clasificación se calcula como $sign(f(x)=\sum w \phi(x))$. Queda patente que la salida de la RBFN no nos sirve para estimar una probabilidad a posteriori de la muestra.
+Un problema fundamental se debe a la salida de la última capa de sendas redes neuronales. Para implementar un mecanismo de metaplasticidad similar al descrito en las AMMLP\footnote{\textbf{AMMLP:} Artificial Metaplasticity MultiLayer Perceptron}\cite{Andina2009}, se requiere de una estimación de la probabilidad de pertenencia a la clase (cuan \textit{rara} es la muestra) y en las AMMLP la estimamos como la salida de la propia red neuronal. Ya que la neurona de la última capa es una función logística \footnote{Una función logística es una función continua cuya salida $\in [0 1]$. Un ejemplo de función logística típia es \\ $f_{log}(z)=\frac{1}{1+e^{-z}}$}, asumimos ésta como la probabilidad a posteriori de pertenencia a la clase. Por su parte, la salida de una RBFN para el problema de clasificación se calcula como $sign(\sum w \phi(x))$. Queda patente que la salida de la RBFN no nos sirve para estimar una probabilidad a posteriori de la muestra.
 
-Sin embargo, la propia naturaleza de las RBFN parece resultar idónea a su vez para experimentar con técnicas. Este \textit{parecer} es una percepción completamente intuitiva, pero existen ciertas características que trataré de explicar a continuación que pueden hacer de estas redes idóneas para representar las redes neuronales biológicas y a la forma en que estas representan la información y que me inspiraron a plantearme el problema en multitud de formas tratando de encontrar la forma de encajar estas características con la naturaleza del aprendizaje y de la metaplasticidad. Estas características son, en líneas generales:
+Sin embargo, la propia naturaleza de las RBFN parece resultar idónea a su vez para experimentar con estas técnicas. Este \textit{parecer} es una percepción completamente intuitiva, pero existen ciertas características que trataré de explicar a continuación y que pueden hacer de estas redes una estructura idónea para representar las redes neuronales biológicas la forma en que estas representan la información y que me inspiraron a plantearme el problema en multitud de formas tratando de encontrar la forma de encajar estas características con la naturaleza del aprendizaje y de la metaplasticidad. Estas características son, en líneas generales:
 
 \begin{itemize}
-	\item La capa oculta característica de las RBFN está compuesta por \textit{neuronas} cuya función de activación es típicamente una gaussiana en la forma . Estas gaussianas tienen dos parámetros básicos y que son fundamentalmente dependientes de la naturaleza de la señal de entrada y que son un centroide y la varianza.
-	\item La capa oculta, a su vez, realiza una transformación no lineal en un espacio basado en la distancia. Esta característica sirve de nexo para el estudio de las RBFN dentro del conjunto de los \textit{Kernel Methods}.
+	\item La capa oculta característica de las RBFN está compuesta por nodos cuya función de activación es típicamente una gaussiana en la forma . Estas gaussianas tienen dos parámetros básicos y que son fundamentalmente dependientes de la naturaleza de la señal de entrada y que son un centroide y la varianza.
+	\item La capa oculta realiza una transformación no lineal en un espacio basada en la distancia al centroide. Esta característica sirve de nexo para el estudio de las RBFN dentro del conjunto de los \textit{Kernel Methods}.
 	\item La matriz de covarianza determina el campo receptivo de las funciones de activación de base radial gaussianas.
 \end{itemize}
 
@@ -250,11 +252,11 @@ Existen diferentes aproximaciones al problema, pero tratando de ser consecuente 
 
 En líneas generales, se propone una nueva interpretación de las RBFN bajo la perspectiva de que, en lugar de que los nodos cuya función de activación es una RBF sean contemplados en términos de neuronas, se propone el contemplarlos como centros neuronales. En las redes neuronales biológicas, se ha observado que en las cócleas de los mamíferos, las neuronas se organizan siguiendo una estructura topológica que responde a las características propias de las señales que procesa el oído, esto es al sonido. Más adelante se trata un poco más en detalle los fenómenos de la tonotopía y la retinotopía
 
-Esta disposición topológica puede realmente ser representada por una RBFN si consideramos que cada función de base radial abstrae esta topología definida por el centroide de la gaussiana y la varianza para definir la topología en base a las caracterísiticas del espacio de nuestra señal de entrada. Esta aproximación nos invita a intentar representar esta estructura topológica sobre el espacio de caracterísitcas con las RBF. Además, y en lo que se refiere a la aplicación del mecanismo de metaplasticidad, esta nueva interpretación nos invita a aproximar la $f_X(x)$ en base a la topología que define la propia red neuronal ya que las propias gaussianas definen una $fdp$ que nos puede dar una idea de la probabilidad a priori de una muestra en base a la topología que define la red como la $fdp$.
+Esta disposición topológica puede realmente ser representada por una RBFN si consideramos que cada función de base radial abstrae esta topología definida por el centroide de la gaussiana y la varianza para definir la topología en base a las caracterísiticas del espacio de nuestra señal de entrada. Esta aproximación nos invita a intentar representar esta estructura topológica sobre el espacio de caracterísitcas con las RBF. Además, y en lo que se refiere a la aplicación del mecanismo de metaplasticidad, esta nueva interpretación nos invita a aproximar la $f_X(x)$ en base a la topología que define la propia red neuronal ya que las propias gaussianas definen una $fdp$ que nos puede dar una idea de la probabilidad a priori de una muestra en base a la topología que define la red.
 
-Además, las RBFN son estudiadas también dentro del conjunto de modelos que se recogen bajo el nombre de \textit{Kernel Methods} y que tienen como características principales primero que se sirven de \textit{Kernels} para realizar transformaciones no lineales para buscar la separabilidad de los datos en espacio de muchas dimensiones y que estos \textit{kernels} realizan esta transformación siempre en base a una distancia.
+Además, las RBFN son estudiadas también dentro del conjunto de modelos que se recogen bajo el nombre de \textit{Kernel Methods} y que tienen como características principales que se sirven de \textit{Kernels} para realizar transformaciones no lineales para buscar la separabilidad de los datos en espacio de muchas dimensiones y que estos \textit{kernels} realizan esta transformación siempre en base a una distancia.
 
-Sin intención de entrar demasiado en detalle, trataré de introducir al lector en el estado del arte de estas nuevos campos de investigación en los que sustento la propuesta de solución haciendo una pequeña introducción a la tonotopía y la retinotopía en redes neuronales biológicas. Además haré una breve introducción a los \textit{kernels methods} con tal de facilitar al lector la comprensión de la propuesta. Por último y para acabar esta primera parte de trabajo de investigación, trataré de exponer de forma más concreta esta propuesta.
+Sin intención de entrar demasiado en detalle, trataré de introducir al lector en el estado del arte de estas nuevos campos de investigación en los que sustento la propuesta de solución haciendo una pequeña introducción a la tonotopía y la retinotopía en redes neuronales biológicas. Por último y para acabar esta primera parte de trabajo de investigación, trataré de exponer de forma más concreta esta propuesta.
 
 De forma simplificada, trataré de conducir al lector a través de la línea de pensamiento que me llevó a plantear una nueva propuesta. Ya se han explicado, también de forma muy simplificada, las estrategias típicas de entrenamiento de este tipo de redes. De entre estas, tenemos la opción de escoger los centroides de las gaussianas aleatoriamente de entre los puntos de nuestro conjunto de datos.
 
@@ -266,11 +268,11 @@ De forma simplificada, trataré de conducir al lector a través de la línea de 
     \caption{Distribución de centros neuronales reactivos a distintas frecuencias en la cóclea}
 \end{figure}
 
-La tonotopía se define como la organización topológica de campos topológicos en el cortex auditivo. En una de las primeras investigaciones al respecto, Colin Humphries publicó en \textit{Tonotopic organization of human auditory cortex}\citep{Humphries20101202} los resultados que obtuvo del estudio de este fenómeno en el cerebro humano a través de la observación de este bajo resonancia magnética funcional Las conclusiones de este estudio nos indican . En la misma línea, se hace un análisis detallado de este fenómeno en el siguiente artículo\citep{Clopton19741}. Considero que queda fuera del alcance de esta memoria el de definir detalladamente el estado del arte de estos estudios y pretendo no abrumar al lector con tal cantidad de información colateral, sin embargo, sí me gustaría hacer constar que en el estudio del fenómeno se han observado detalles que animan al esfuerzo en intentar emular estos mecanismos basándose en la propuesta que planteo de representar la topología de estos conjuntos de neuronas que responden a frecuencias de sonido concretas con estructuras matemáticas como los \textit{kernels} que realizan una transformación no lineal en base a una distancia (en este caso concreto, esas distancias son las frecuencias) tal y como se demuestra que hace el cerebro al distribuirse topológicamente.  
+La tonotopía se define como la organización topológica de las neuronas en el cortex auditivo bajo la que neuronas sensibles a diferentes frecuencias se distribuyen. En una de las primeras investigaciones al respecto, Colin Humphries publicó en \textit{Tonotopic organization of human auditory cortex}\citep{Humphries20101202} los resultados que obtuvo del estudio de este fenómeno en el cerebro humano a través de la observación de este bajo resonancia magnética funcional, como efectivamente, neuronas reactivas a estímulos con una frecuencia cercana se distribuyen formando una mapa de frecuencias como se muestra en la figura \ref{fig:DistribucionFreq}. En la misma línea, se hace un análisis detallado de este fenómeno en el siguiente artículo\citep{Clopton19741}. Considero que queda fuera del alcance de esta memoria el de definir detalladamente el estado del arte de estos estudios y pretendo no abrumar al lector con tal cantidad de información colateral, sin embargo, sí me gustaría hacer constar que en el estudio del fenómeno se han observado detalles que animan al esfuerzo en intentar emular estos mecanismos basándose en la propuesta que planteo y que se basa en representar la topología de estos conjuntos de neuronas que responden a frecuencias de sonido concretas con estructuras matemáticas como los \textit{kernels} que realizan una transformación no lineal en base a una distancia (en este caso concreto, esas distancias son las frecuencias) tal y como se observa que hace el cerebro al distribuirse topológicamente.  
 
 De la misma forma que ocurre en el córtex auditivo, se ha observado un fenómeno similar relacionado con la percepción de la luz y el procesamiento de la imagen en el córtex visual y que se estudia bajo la disciplina de la retinotopía. En este campo, N. Mayer ha llegado a proponer en un artículo titulado \textit{Retinotopy and spatial phase in topographic maps}\citep{Mayer2000447} un algoritmo que se sirve del mapeo en subespacios para producir mapas topográficos similares a la contra-parte biológica.
 
-No es objeto de este trabajo entrar en detalles al respecto de los detalles concretos de este fenómeno y es muy importante la investigación que actualmente se está desarrollando al respecto. Así mismo, esta aproximación desde el aprendizaje máquina tal vez pueda arrojar luz a como funcionan ciertos procesos del cerebro que aún no se explican.
+No es objeto de este trabajo entrar en detalles al respecto de los detalles concretos de este fenómeno y es muy importante la investigación que actualmente se está desarrollando al respecto. Así mismo, esta aproximación desde el aprendizaje máquina tal vez pueda arrojar luz a como funcionan ciertos procesos del cerebro que aún no se explican en el estado del arte de ninguna disciplina científica.
 
 \section{Propuesta de solución}
 En base a los trabajos previos, la idea de servirnos de la naturaleza de los datos de nuestro entrenamiento para hacernos una idea a priori de cuan significativa es una muestra y actuar ponderando esa conexión sináptica concreta parece encajar de forma especialmente buena en el concepto de RBFN debido a la naturaleza de las Funciones de Base Radial. 
@@ -282,24 +284,23 @@ En base a los trabajos previos, la idea de servirnos de la naturaleza de los dat
     \caption{Ilustración de la representación del fenómeno de la tonotopía como suma de gaussianas}
 \end{figure}
 
-Si posicionamos los centroides de nuestras funciones de base radial en unas frecuencias concretas tal y como se ha demostrado que ocurre en el cerebro de los mamiferos y como se ilustra en la figura \ref{fig:Esquemapropuesta1}, en el modelo propuesto, la capa oculta de las RBFN puede representar la mezcla de gaussianas que mapean el espacio de carcterísiticas que son las muestras la señal de entrada. Si consideramos esta capa oculta como la distribución topológica que se da en el cerebro
+Si posicionamos los centroides de nuestras funciones de base radial en unas frecuencias concretas tal y como se ha demostrado que ocurre en el cerebro de los mamiferos y como se ilustra en la figura 2.5, en el modelo propuesto, la capa oculta de las RBFN puede representar la mezcla de gaussianas que mapean el espacio de carcterísiticas que son las muestras de la señal de entrada. 
 
-
-En definitiva, lo que se propone es un modelo bioinspirado en los fenómenos de la tonotopía y la retinotopía que se basa en los siguientes principios:
+En resumen, lo que se propone es un modelo bioinspirado en los fenómenos de la tonotopía y la retinotopía que se basa en los siguientes principios:
 \begin{itemize}
-	\item La topología que se ha demostrado en las redes neuronales que transforman más directamente las señales que perciben nuestros sentidos puede ser representada como una suma de funciones gaussianas.
+	\item La distribución topológica de las neuronas que se ha demostrado en las redes neuronales biológicas que transforman las señales que perciben nuestros sentidos, puede ser representada como una suma de funciones gaussianas.
 	\item Cada una de estas funciones gaussianas es un kernel de nuestro modelo que mepea la señal de entrada a un espacio de alta dimensionalidad dónde los datos serán separables por un hiperplano con lo que el modelo se puede enmarcar conceptualmente entre los \textit{kernel methods}.
 \end{itemize}
 
 \section{Implicaciones de la propuesta}
-Algunas de las implicaciones que he analizado de la propuesta que recoge esta memoria son las siguientes:
+Algunas de las implicaciones que he analizado de la propuesta y que recoge esta memoria son las siguientes:
 \begin{itemize}
 	\item La retinotopía y tonotopía vienen a demostrar que la topología del cerebro ha sido diseñada por la evolución para conservar en si misma información acerca de como procesar la información. Esto es, existe un conocimiento a priori en los sistemas neuronales biológicos como es en este caso la distribución de las neuronas que procesan la señal auditiva y se organizan topológicamente en función a las características de la señal procesada como es la frecuencia en el caso de la tonotopía. Por lo tanto podemos diseñar modelos que definan una topología basada en el conocimiento y la experiencia que se tiene de la señal que se va a procesar.
 	\item Así como el cerebro de los mamiferos, la estructura topológica posibilita el aprendizaje de funciones de bajo nivel transformando el espacio de caracterísiticas a otros espacios. Como hacemos tradicionalmente con los \textit{kernel methods}.
 \end{itemize}
 
 \subsection{Adaptando la metaplasticidad al modelo}
-En conclusión, bajo esta nueva perspectiva que se ha tratado de dilucidar en las secciones anteriores, y asumiendo que las funciones gaussianas de la capa oculta representan la distribución topológica dependiente de alguna característica intrínseca a la señal que se ha de procesar de forma mimética a lo que hacen los conjuntos de neuronas, que se distribuyen según se ha descrito en los fenómenos de tonotopía y retinotopía, la función de distribución de probabilidad de la señal de entrada quedaría aproximada por la suma de las gaussianas tal y como se ha representado en la figura \ref{fig:Esquemapropuesta1}. 
+En conclusión, bajo esta nueva perspectiva que se ha tratado de dilucidar en las secciones anteriores, y asumiendo que las funciones gaussianas de la capa oculta representan la distribución topológica dependiente de alguna característica intrínseca a la señal que se ha de procesar de forma mimética a lo que hacen los conjuntos de neuronas, que se distribuyen según se ha descrito en los fenómenos de tonotopía y retinotopía, la función de distribución de probabilidad de la señal de entrada podría ser aproximada por la suma de las gaussianas tal y como se ha representado en la figura 2.5. 
 
 Con esto, y partiendo de la aplicación directa del estimador de probabilidad descrito en la sección 2.5.2, el entrenamiento de los pesos sinápticos de una RBFN con el mecanismo de metaplasticidad propuesto sería:
 \begin{equation}
@@ -320,7 +321,7 @@ y en dónde definimos el estimador $f^*_X(x^*_k)$ como:
 
 
 \chapter{Implementación}
-Con tal de dar soporte al planteamiento teórico que ha sido expuesto en la sección anterior, he desarrollado un \textit{benchmarks} sobre el que realizar la experimentación que sustente la validez (o pruebe la falta de esta) de los algoritmos propuestos. Pese a tener un objeto muy concreto, he tratado de realizar un diseño tan generalista como me fuera posible, tratando de definir y delegar las responsabilidades entre clases y persiguiendo siempre un bajo acoplamiento y una alta cohesión entre estas.
+Con tal de dar soporte al planteamiento teórico que ha sido expuesto en el capítulo anterior, he desarrollado un \textit{benchmarks} sobre el que realizar la experimentación que sustente la validez (o pruebe la falta de esta) de los algoritmos propuestos. Pese a tener un objeto muy concreto, he tratado de realizar un diseño tan generalista como me fuera posible, tratando de definir y delegar las responsabilidades entre clases y persiguiendo siempre un bajo acoplamiento y una alta cohesión entre estas.
 En líneas generales, el software desarrollado ha de cubrir los siguientes objetivos:
 \begin{itemize}
 	\item Implementar una \textbf{RBFN} configurable tanto en los parámetros propios de la RBFNN (dimensionalidad, parámetros de las gaussianas, etc...) como en los algorítmos de entrenamiento.
@@ -334,10 +335,10 @@ En líneas generales, el software desarrollado ha de cubrir los siguientes objet
 
 Una vez especificados los objetivos, en las siguientes subsecciones describiré y justificaré las metodologías escogidas para el desarrollo del software. Además, describiré y justificaré la elección del lenguaje de programación escogido y de las herramientas en las que me he apoyado para el desarrollo. Por último, trataré de ir describiendo los diferentes paquetes que he desarrollado para cubrir cada uno de los requerimientos que se han planteado en forma de objetivos \textit{(RBFN, Generador de datos, Generador de informes)}.
 
-El objetivo final del software a desarrollar es el de proveer de un \textit{framework} de desarrollo rápido que fuera lo más general y flexible posible para poder realizar una experimentación lo más rápida y cómoda posible. Es decir, el objetivo último era conseguir un entorno con las siguientes características:
+El objetivo final del software a desarrollar será el de proveer de un \textit{framework} de desarrollo rápido que fuera lo más general y flexible posible para poder realizar una experimentación lo más rápida y cómoda posible. Es decir, el objetivo último era conseguir un entorno con las siguientes características:
 \begin{itemize}
 	\item \textbf{Flexible:} Ha de facilitar el proceso de realizar experimentación con diferentes algoritmos y parámetros con el menor número de cambios posible.
-	\item \textbf{Extensible:} Ha de ser fácilmente extensible a nuevos algoritmos y que estas extensiones no tengan repercusiones en los experimentos ya implementados
+	\item \textbf{Extensible:} Ha de ser fácilmente extensible a nuevos algoritmos y que estas extensiones no tengan repercusiones notables en los experimentos ya implementados
 	\item \textbf{Desarrollo rápido:} Ha de permitir implementar algoritmos y desarrollar experimentos con poca inversión de esfuerzo y tiempo para no desfocalizar al experimentador con un desarrollo engorroso.
 \end{itemize}
 
@@ -349,11 +350,11 @@ Por último, indicar que todo el código relativo a este trabajo, incluyendo el 
 \section{Metodología de desarrollo}
 En cuanto a las metodologías de desarrollo, en fase de diseño, determiné usar diferentes metodologías para afrontar los diferentes problemas y con tal de aprovechar las ventajas que, sobre cada uno de los problemas, estas ofrecen.
 
-Así pues, para implementar la RBFN me serví de un desarrollo basado en Test Driven Development (TDD). Debido a la complejidad de implementación a la susceptibilidad de errores de implementación en los algorítmos, me aproximé al desarrollo de la red neuronal basándome en diferentes pruebas lo suficientemente sencillas para poder precalcular cada uno de los resultados de los algoritmos y garantizar así la correcta implementación. Así mismo, el diseño de la clase vino determinado por las necesidades que surgían al diseñar las pruebas y que, por lo tanto, siguiendo un desarrollo \textit{up-to-bottom}.
+Así pues, para implementar la RBFN me serví de un desarrollo basado en Test Driven Development (TDD). Debido a la complejidad de implementación a la susceptibilidad de errores de implementación en los algorítmos, me aproximé al desarrollo de la red neuronal basándome en diferentes pruebas lo suficientemente sencillas para poder precalcular cada uno de los resultados de los algoritmos y garantizar así la correcta implementación. Así mismo, el diseño de la clase vino determinado por las necesidades que surgían al diseñar las pruebas y, por lo tanto, siguiendo un desarrollo \textit{up-to-bottom}.
 
-Para el desarrollo del generador de datos realicé un Diseño Orientado a Objetos con un enfoque cercano a la Programación Extrema. Esto es, dado que los requisitos para el generador de datos, descritos anteriormente, me permitían hacer un diseño de clases bastante claro ya que los propios requisitos definen la interfaz pública de la clase generadora de datos (\textit{generarDataSet, obtenerX, obtenerY, etc...}).
+Para el desarrollo del generador de datos realicé un Diseño Orientado a Objetos. Esto es, dado que los requisitos para el generador de datos, descritos anteriormente, me permitían hacer un diseño de clases bastante claro ya que los propios requisitos definen la interfaz pública de la clase generadora de datos (\textit{generarDataSet, obtenerX, obtenerY, etc...}) que define el diseño de la clase y su comportamiento.
 
-Por último, para el generador de informes me serví de una combinación de estas. Es decir, partía de un resultado esperado que era el informe y una interfaz pública más o menos clara (\textit{addGrafico, addSection, etc}). Sin embargo en tiempo de desarrollo, las pruebas fueron redefiniendo esta interfaz en base a los requisitos que iban imponiendo las pruebas rediseñando así el modelo en cada \textit{iteración} del desarrollo.
+Por último, para el generador de informes partía de un resultado esperado que era el informe y una interfaz pública más o menos clara (\textit{addGrafico, addSection, etc}). Sin embargo en tiempo de desarrollo, las pruebas fueron redefiniendo el comportamiento en base a los requisitos que iban imponiendo las pruebas rediseñando así el modelo en cada \textit{iteración} del desarrollo.
 
 \section{Esquema general del diseño}
 Ya que el objetivo fundamental del desarrollo es el de proveer de un entorno de experimentación con los requisitos que se han descrito en la introducción de este capitulo, he decidido plantear el desarrollo como una pequeña librería de clases que me ofrezca clases listas para instanciar y con unos pocos parámetros de configuración me provea de diversas configuraciones (tipo de RBFN, conjunto de datos, etc..) para un experimento. Así, con unas pocas líneas de código debería ser capaz de, obtener una RBFN con o sin metaplasticidad y con los parámetros propios de la red deseados, obtener un conjunto de datos con las características deseadas y realizar tantas pruebas como se quiera. Además la recogida de datos deberá ser asistida por una clase que permitirá la construcción de tablas y gráficos y construirá el código LaTeX requerido para la representación de estos.
@@ -501,7 +502,7 @@ En esta conclusión, y haciendo una visión en retrosprectiva de la propuesta, c
 
 Al tratarse de un problema de investigación, no se pude prever la dimensión de este, pero he de reconocer que la problemática me ha apasionado y probablemente he pecado de inconformista a la hora de buscar una solución \textit{elegante} y \textit{congruente} en términos matemáticos. He querido entender en profundidad el problema y tratar de ser lo más formal en el procedimiento como me fuera posible. He tratado de buscar siempre la bioinspiración y de acercarme lo máximo posible a la realidad biológica con tal de proponer una solución creativa, original y que realmente pueda suponer un aporte al estado del arte.
 
-Por todo esto, me ha supuesto un problema enorme poner un punto y final a lo que propuse como TFG, es decir, este trabajo empezó a plantearse en noviembre de 2013 y no he sabido cerrarlo en las dos convocatorias que se han celebrado hasta hoy. No ha sido hasta muy recientemente que he sabido plantear una solución que me pareciera lo suficientemente buena para el problema y concluir así este proyecto. Aunque en estas líneas que componen la memoria se ha tratado de ser didáctico y se ha tratado de enlazar todo el trabajo de forma sencilla, el proceso hasta construir la propuesta de solución expuesta en la sección 2.7 ha sido un trabajo de meses que difícilmente se puede expresar aquí. Así, en estos últimos días me he atropellado recopilando y redactando esta memoria y es por esto que pido disculpas al lector por posibles erratas o faltas que pueda encontrar en esta.
+Por todo esto, me ha supuesto un problema enorme poner un punto y final a lo que propuse como TFG, es decir, este trabajo empezó a plantearse en noviembre de 2013 y no he sabido cerrarlo en las dos convocatorias que se han celebrado hasta hoy. No ha sido hasta muy recientemente que he sabido plantear una solución que me pareciera lo suficientemente buena para el problema y concluir así este proyecto. Aunque en estas líneas que componen la memoria se ha tratado de ser didáctico y se ha tratado de enlazar todo el trabajo de forma sencilla, el proceso hasta construir la propuesta de solución expuesta en la sección 2.7 ha sido un trabajo de meses que difícilmente se puede expresar aquí. Así, en estas últimas semanas me he atropellado recopilando y redactando esta memoria y es por esto que pido disculpas al lector por posibles erratas o faltas que pueda encontrar en esta.
 
 Por último quisiera disculparme con el lector por no haber podido incluir en esta memoria los resultados de la experimentación, desde el momento en que \textit{dí} con una solución \textit{apropiada} hasta el momento en que escribo estas líneas ha sido una batalla contra el tiempo que, a este respecto, he perdido. Confío en que en el momento de la presentación de este proyecto pueda contar con estos resultados.
 

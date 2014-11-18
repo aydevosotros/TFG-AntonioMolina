@@ -13,19 +13,20 @@ import numpy as np
 from scipy.linalg import norm, pinv
 from scipy.cluster.vq import kmeans
 from matplotlib import pyplot as plt
-from benchmarks import DataGenerator
+from benchmarks.DataGenerator import DataGenerator
 from scipy.optimize.optimize import fmin_cg
 
  
 class RBFNN:
      
-    def __init__(self, indim, numCenters, outdim, trainingCentroidsMethod="random", trainingWeightsMethod="pseudoinverse"):
+    def __init__(self, indim, numCenters, outdim, trainingCentroidsMethod="random", trainingWeightsMethod="pseudoinverse", beta=8):
         self.indim = indim
         self.outdim = outdim
         self.numCenters = numCenters
         self.centers = [random.uniform(-1, 1, indim) for i in xrange(numCenters)]
-        self.beta = 8
-        self.training=trainingCentroidsMethod
+        self.beta = beta
+        self.trainingCentroidsMethod=trainingCentroidsMethod
+        self.trainingWeightsMethod = trainingWeightsMethod
         self.W = random.random((self.numCenters, self.outdim))
          
     def _basisfunc(self, c, d):
@@ -43,23 +44,25 @@ class RBFNN:
     def _costFunction(self, W, *args):
         X, Y = args
         ej = 0.0
+        gError = zeros(0)
         # Error computation
         for i, xi in enumerate(X):
-            G = zeros(self.numCenters, float)
-            for ci, c in enumerate(self.centers):
-                G[ci] = self._basisfunc(c, xi)
-            fx = dot(np.transpose(G), W)
+            fx = dot(transpose(self.G[i]), W)
             ej += (Y[i]-fx)**2
-        ej /= 2
+        ej /= len(X)
+        append(gError, ej)
         return ej
     
     def _partialCost(self, W, *args):
+        # TODO: Tengo que asegurarme que hago un buen update de los pesos
         X, Y = args
         grad = zeros(shape(W), float)
         ej = self._costFunction(W, X, Y)
-        for i, xi in enumerate(X):
-            for j, cj in enumerate(self.centers):
-                grad[j] += ej*self._basisfunc(cj, xi)
+        for i in xrange(len(W)):
+            for j in xrange(len(X)):
+#                 print "El producto es: ", dot(transpose(self.G[i]), W)
+                ej = (Y[i]-dot(transpose(self.G[i]), W))**2
+                grad[i] += ej*self.G[j,i]
         return grad
     
     def _stimateProbability(self, x):
@@ -67,31 +70,31 @@ class RBFNN:
     
     def _minimization(self, X, Y):
         w = self.W
-        print fmin_cg(self._costFunction, w, fprime=None, args=(X,Y))
+        w2 = fmin_cg(self._costFunction, w, fprime=None, args=(X,Y))
+        self.W = w2
 #         res = minimize(loglikelihood, (0.01, 0.1,0.1), method = 'Nelder-Mead',args = (atimes,))
     
     def _gradientDescent(self, X, Y, iterations):
         error = np.zeros(iterations, float)
         G = self._calcAct(X)
-        print G
         for it in xrange(iterations):
             ej = self._costFunction(self.W, X, Y)
-            gj = self._gradientWeights(self.W, X, Y)
+            gj = self._partialCost(self.W, X, Y)
             error[it] = ej;
             print "El error para la iteracion %d es %.15f y el gradiente:\n"%(it, ej), gj
             self.W = self.W - 0.1*gj
         plt.clf()
-        plt.plot(xrange(iterations), error)
-        plt.show()
+        plt.plot(range(iterations), error)
+#         plt.show()
  
     def train(self, X, Y):
         """ X: matrix of dimensions n x indim
             y: column vector of dimension n x 1 """
-        if self.training == "random":
+        if self.trainingCentroidsMethod == "random":
             print 'Training with randomly chosen centroids'
             rnd_idx = random.permutation(X.shape[0])[:self.numCenters]
             self.centers = [X[i,:] for i in rnd_idx]
-        elif self.training == "knn":
+        elif self.trainingCentroidsMethod == "knn":
             print 'Training with centroids from k-means algorithm'
             self.centers = kmeans(X, self.numCenters)[0]
         else:
@@ -103,16 +106,18 @@ class RBFNN:
 #         print G
          
 #         self._gradientDescent(X, Y, 7000)
-        self._minimization(X, Y)
+        if self.trainingWeightsMethod == "pseudoinverse":
+            self.W = dot(pinv(self.G), Y)
+        elif self.trainingWeightsMethod == "gd":
+#             self._gradientDescent(X, Y, 100)
+            self._minimization(X, Y)
         # calculate output weights (pseudoinverse)
 #         self.W = dot(pinv(self.G), Y)
         
          
     def test(self, X):
         """ X: matrix of dimensions n x indim """
-         
         G = self._calcAct(X)
-#         print "G=", G
         Y = dot(G, self.W)
         return Y
     
@@ -121,21 +126,21 @@ class RBFNN:
 if __name__ == '__main__':
     print "Ejecutando codigo de debug"
     dim=2
-    nSamples=500
+    nSamples=50
     dataGenerator = DataGenerator()
-#     dataGenerator.generateClusteredRandomData(nSamples, 2, dim)
-    dataGenerator.generateRealData('cancer', False)
+    dataGenerator.generateClusteredRandomData(nSamples, 2, dim)
+#     dataGenerator.generateRealData('cancer', False)
 
     print "InDim: ", len(dataGenerator.getTrainingX()[0])
-    rbfnn = RBFNN(len(dataGenerator.getTrainingX()[0]), 5, 1, 'knn')
+    rbfnn = RBFNN(len(dataGenerator.getTrainingX()[0]), 5, 1, 'knn', 'gd')
     rbfnn.train(dataGenerator.getTrainingX(), dataGenerator.getTrainingY())
     dataGenerator.verifyResult(rbfnn.test(dataGenerator.getValidationX()))
     
     #Plotting data
-    colors = ["red", "blue"]
-    for i,x in enumerate(dataGenerator.getTrainingX()):
-        plt.plot(x[0], x[1], "o", color= colors[0] if dataGenerator.getTrainingY()[i]>0 else colors[1])
-    plt.xlabel("First dimension")
-    plt.ylabel("Second dimension")
-    plt.show()
+#     colors = ["red", "blue"]
+#     for i,x in enumerate(dataGenerator.getTrainingX()):
+#         plt.plot(x[0], x[1], "o", color= colors[0] if dataGenerator.getTrainingY()[i]>0 else colors[1])
+#     plt.xlabel("First dimension")
+#     plt.ylabel("Second dimension")
+#     plt.show()
         
