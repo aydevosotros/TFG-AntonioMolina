@@ -32,7 +32,7 @@ from scipy.optimize import minimize
  
 class RBFNN(object):
      
-    def __init__(self, indim, numCenters, outdim, trainingCentroidsMethod="random", trainingWeightsMethod="pseudoinverse", beta=8):
+    def __init__(self, indim, numCenters, outdim, trainingCentroidsMethod="knn", trainingWeightsMethod="BFGS", beta=8):
         self.indim = indim
         self.outdim = outdim
         self.numCenters = numCenters
@@ -159,7 +159,7 @@ if __name__ == '__main__':
 #     dataGenerator.generateRealData('cancer', False)
 
     print "InDim: ", len(dataGenerator.getTrainingX()[0])
-    rbfnn = RBFNN(len(dataGenerator.getTrainingX()[0]), 5, 1, 'knn', 'cgmin')
+    rbfnn = RBFNN(len(dataGenerator.getTrainingX()[0]), 5, 1, 'knn', 'BFGS')
     rbfnn.train(dataGenerator.getTrainingX(), dataGenerator.getTrainingY())
     dataGenerator.verifyResult(rbfnn.test(dataGenerator.getValidationX()))
     
