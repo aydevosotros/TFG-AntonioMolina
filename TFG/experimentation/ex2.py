@@ -18,7 +18,7 @@ if __name__ == '__main__':
     latexReport = LatexReport("Pruebas de experimentacion", "Antonio Molina")
     dataGenerator = DataGenerator()
 #     dataGenerator.generateClusteredRandomData(50, 2, 2)
-    dataGenerator.generateRealData('column', True)
+    dataGenerator.generateRealData('cancer', True)
     
     #Obtengo training y validation sets
     trainingX = dataGenerator.getTrainingX()
@@ -26,10 +26,10 @@ if __name__ == '__main__':
     validatingX = dataGenerator.getValidationX()    
     
     #Inicializo los parametros del experimento
-    minBeta = 2
+    minBeta = 4
     maxBeta = 10
     stepCBeta = 1
-    meanSamples = 5
+    meanSamples = 1
     steps = (maxBeta-minBeta)/stepCBeta
     results = np.zeros((steps,2), float)
     beta = np.zeros(steps)
