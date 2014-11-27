@@ -62,19 +62,15 @@
 				</section>
 
 				<section>
-					<section>
-						<h1>Introducción</h1>
-					</section>
-					<section>
-						<h2>Justificación y objetivos</h2>
-						Resumen de abordar el problema del aprendizaje inspirándose en la biología
-						<ul>
-							<li class="fragment roll-in">Estudio del estado del arte del problema en cuestión</li>
-							<li class="fragment roll-in">Planteamiento de soluciones</li>
-							<li class="fragment roll-in">Experimentación</li>
-						</ul>
-					</section>
+					<h2>Justificación y objetivos</h2>
+					<p>Abordar el problema del aprendizaje desde una persperctiva biológica.</p>
+					<ul>
+						<li class="fragment roll-in">Estudio del estado del arte del problema.</li>
+						<li class="fragment roll-in">Plantear de soluciones al problema.</li>
+						<li class="fragment roll-in">Realizar una experimentación sobre este</li>
+					</ul>
 				</section>
+
 				<section>
 					<section>
 						<h2>Planteamiento del problema</h2>
@@ -87,7 +83,7 @@
 					<section>
 						<h3>Metaplasticidad en redes biológicas</h3>
 						<ul class="fragment roll-in">
-							<li>Cambio dependiente de la actividad que modula la plasticidad sináptica en los sistemas neuronales</li>
+							<li>Cambio <span class="fragment highlight-green">dependiente de la actividad</span> que modula la plasticidad sináptica en los sistemas neuronales</li>
 							<ul class="fragment roll-in">
 								<li>Long-Term Potentation</li>
 								<li>Long-Term Depression</li>
@@ -100,6 +96,7 @@
 					<section>
 						<h3>Metaplasticidad en redes artificales</h3>
 						<div style="margin-top: 1.2em">
+							<p>Como postuló Shannon:</p>
 							<span style="font-style: italic;"><p>Los casos menos frequentes contienen más información</p></span>
 							<img  class="fragment roll-in" src="img/weightingOperation.png"/>
 						</div>
@@ -123,14 +120,14 @@
 						<h2>Conclusiones del estudio</h2>
 						<ul>
 							<li class="fragment roll-in">Encontrando una <span class="fragment highlight-green">función subóptima</span> que se <span class="fragment highlight-green">aproxime</span> a la función de distribución de probabilidad de los datos que componen la señal de entrada podemos obtener una gran mejora <span class="fragment highlight-green">emulando</span> los procesos <span class="fragment highlight-green">LTP</span> y <span class="fragment highlight-green">LTD</span> de los sistemas biológicos.</li>
-							<li class="fragment roll-in">A priori, <span class="fragment highlight-green">$f_X(x)$ es desconocida</span> en los problemas de aprendizaje máquina, con lo que <span class="fragment highlight-green">escoger una $f^*_X(x)$ subótima apropiada es un problema muy considerable.</span></li>
-							<li class="fragment roll-in">La posibilidad de <span class="fragment highlight-green">aproximar $f_X(x)$</span> por la salida de la red neuronal <span class="fragment highlight-green">$\widehat{y}_l$</span> cuando esta está lo suficientemente entrenada como para proveer una aproximación lo suficientemente buena <span class="fragment highlight-green">puede ser muy interesante.</span></li>
+							<li class="fragment roll-in">A priori, <span class="fragment highlight-green">$f_X(x)$ es desconocida</span> en los problemas de aprendizaje máquina, con lo que escoger una $f^*_X(x)$ subótima apropiada es un <span class="fragment highlight-green">problema muy considerable.</span></li>
+							<li class="fragment roll-in">Cuando la MLP está suficientemente entrenada podemos considerar que <span class="fragment highlight-green">$\widehat{y}_l  \simeq P(H_l/x)$</span> ya que la propia MLP generaliza $f_X(x)$</li>
 						</ul>
 					</section>
 				</section>
 				<section>
 					<section>
-						<h1>Metaplasticidad Artificial en RBFN</h1>
+						<h1>Metaplasticidad</br> Artificial en RBFN</h1>
 					</section>
 					<section>
 						<h2>Aplicación directa del estimador de probabilidad</h2>
@@ -148,13 +145,13 @@
 						<h2>Problemática</h2>
 						<ul>
 							<li class="fragment roll-in">$sign(\sum w \phi(x)) \not\simeq P(H_l/x)$</li>
-							<li class="fragment roll-in">$f^*_X(x) = \dfrac{A}{\sqrt{(2\pi)^n} \cdot e^{\dfrac{B}{8} \sum_{i=1}^n{x_i^2}}}$</li>
+							<li class="fragment roll-in">$f^*_X(x) \simeq \dfrac{A}{\sqrt{(2\pi)^n} \cdot e^{\dfrac{B}{8} \sum_{i=1}^n{x_i^2}}}$</li>
 						</ul>
 					</section>
 				</section>
 				<section>
 					<section>
-						<h1>Ampliación de la investigación y del estado del arte</h1>
+						<h1>Ampliación de la</br> investigación y del </br>estado del arte</h1>
 					</section>
 					<section>
 						<h2>Tonotopía y Retinotopía</h2>
@@ -194,6 +191,20 @@
 					</section>
 					<section>
 						<h2>Implementación de la RBFN</h2>
+						<div style="margin: 0 auto 0 auto;">
+							<div style="float: left; width: 60%">
+								<img alt="" src="img/RBFNScheme.png">
+							</div>
+							<div style="float: left; width: 19%" class="fragment roll-in">
+								<ul>
+									<li>Nelder-Mead</li>
+									<li>Powell</li>
+									<li>BFGS</li>
+									<li>Newton-CG</li>
+									<li>L-BFGS-B</li>
+								</ul>
+							</div>
+						</div>
 					</section>
 					<section>
 						<h2>Implementación del generador de datos</h2>
@@ -215,14 +226,15 @@
 						</ul>
 					</section>
 					<section>
-						<h2>Implementación del generador de informes</h2>
+						<h2>Implementación del</br> generador de informes</h2>
+						<img src="img/reporGeneratorScheme.png">
 					</section>
 				</section>
 				<section>
 					<section>
 						<h1>Conclusiones</h1>
 						<ul>
-							<li>Se ha tratado un <span class="fragment highlight-green">problema que no es trivial</span> y que se trataba de mejorar el entrenamiento de las RBFN basándose en <span class="fragment highlight-green">métodos bioinspirados</span>.</li>
+							<li>Se ha tratado un <span class="fragment highlight-green">problema que no es trivial</span> y que se trataba de <span class="fragment highlight-green">mejorar</span> el entrenamiento de las RBFN basándose en <span class="fragment highlight-green">métodos bioinspirados</span>.</li>
 							<li>Se ha realizado un <span class="fragment highlight-green">extenso estudio</span> que incluye el estado del arte tanto de problemas de <span class="fragment highlight-green">aprendizaje máquina</span> como de diferentes problemas relativos a las <span class="fragment highlight-green">neurociencias</span>.</li>
 							<li>Se ha desarrollado un conjunto de <span class="fragment highlight-green">herramientas</span> para poder realizar una experimentación ágil basada en <span class="fragment highlight-green">prototipado rápido</span>.</li>
 						</ul>
@@ -231,7 +243,7 @@
 						<h1>Futuros</h1>
 						<ul>
 							<li>Publicación de comparativas con el estado del arte actual (TFM)</li>
-							<li>Emulación de otros procesos biológicos en base a las ideas propuestas</li>
+							<li>Emulación de otros procesos biológicos en base a las ideas propuestas en estudios de doctorado</li>
 						</ul>
 					</section>
 				</section>
