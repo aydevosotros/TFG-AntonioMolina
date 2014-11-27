@@ -433,7 +433,7 @@ Sin encontrar dificultades en la implementación y habiendo indicado las particu
 El generador de datos tiene como objetivos generales generar/obtener los conjuntos de datos que alimentarán nuestros modelos y hacerlos disponibles de forma sencilla. El generador de datos tiene un papel fundamental en la experimentación debido a las particularidades de la solución propuesta ya que es importante tener control sobre la distribución de los datos con los que trabajamos. Además, se delega en este la obtención de los datos de diferentes bases de datos estándar con tal de comparar los resultados con otras propuestas del estado del arte.
 
 La siguiente figura representa el esquema general de la clase generadora de datos implementada.
-\begin{figure}[b]{}
+\begin{figure}[h!]{}
     \centering
     \includegraphics[width=0.4\textwidth]{img/GeneradorEsquema.png}
     \label{fig:EsquemaGenerador}
