@@ -17,8 +17,8 @@ if __name__ == '__main__':
     #Inicializo los componentes principales
     latexReport = LatexReport("Pruebas de experimentacion", "Antonio Molina")
     dataGenerator = DataGenerator()
-    dataGenerator.generateClusteredRandomData(200, 5, 0.2)
-#     dataGenerator.generateRealData('cancer', True)
+#     dataGenerator.generateClusteredRandomData(300, 10, 1)
+    dataGenerator.generateRealData('cancer', True)
     
     #Obtengo training y validation sets
     trainingX = dataGenerator.getTrainingX()
@@ -26,38 +26,35 @@ if __name__ == '__main__':
     validatingX = dataGenerator.getValidationX()    
     
     #Inicializo los parametros del experimento
-    minBeta = 2
-    maxBeta = 20
-    stepCBeta = 1
-    meanSamples = 100
-    steps = (maxBeta-minBeta)/stepCBeta
-    results = np.zeros((steps,5), float)
+    minNc = 10
+    maxNc = 20
+    stepNc = 1
+    meanSamples = 5
+    steps = (maxNc-minNc)/stepNc
+    results = np.zeros((steps,3), float)
     beta = np.zeros(steps)
     kperf = np.zeros(steps)
     j=0
     
     # Realizo la experimentacion
-    for b in xrange(minBeta, maxBeta, stepCBeta):
-        print "Testing RBFNN looking for beta with value %d"%(b)        
-        for k in xrange(meanSamples):
-            krbfnn = RBFNN(len(trainingX[0]), 10, 1, "knn", "cgmin", float(b))
-            krbfn2 = RBFNN(len(trainingX[0]), 10, 1, "knn", "cgmin", float(b), metaplasticity=True)    
+    for nc in xrange(minNc, maxNc, stepNc):
+        print "Testing RBFNN looking for %d centroids"%(nc)     
+        for k in xrange(meanSamples):   
+            krbfnn = RBFNN(len(trainingX[0]), nc, 1, "knn", "cgmin")
+            rbfnn2 = RBFNN(len(trainingX[0]), nc, 1, "knn", "cgmin", metaplasticity=True)
+            #Training and verifying results by k-means clustering
             krbfnn.train(trainingX, trainingY)
-            krbfn2.train(trainingX, trainingY)
+            rbfnn2.train(trainingX, trainingY)
             results[j][1] += dataGenerator.verifyResult(krbfnn.test(validatingX))
-            results[j][2] += krbfnn.gradEval
-            results[j][3] += dataGenerator.verifyResult(krbfn2.test(validatingX))
-            results[j][4] += krbfn2.gradEval
+            results[j][2] += dataGenerator.verifyResult(rbfnn2.test(validatingX))
         results[j][1] /= meanSamples
         results[j][2] /= meanSamples
-        results[j][3] /= meanSamples
-        results[j][4] /= meanSamples
-        results[j][0] = b
+        results[j][0] = nc
         j+=1
 
     print "Generando informe"
     latexReport.addSection("Una primera prueba")
     latexReport.addContent("En esta experimentacion se trata de obtener un error razonable al hacer un descenso por gradiente")
-    latexReport.addContent(ReportGenerator.LatexGenerator.generateTable(results, ["Beta", "Perf SM", "Grad. Eval. SM", "Perf CM", "Grad. Eval. CM"]))
-    latexReport.createPDF("r2Con100Redes2")
+    latexReport.addContent(ReportGenerator.LatexGenerator.generateTable(results, ["Centroides", "Metodo1", "Metodo2"]))
+    latexReport.createPDF("r1")
     

@@ -15,7 +15,7 @@ from scipy.linalg import norm, pinv
 from scipy.cluster.vq import kmeans
 from matplotlib import pyplot as plt
 from benchmarks.DataGenerator import DataGenerator
-from scipy.optimize.optimize import fmin_cg
+from scipy.optimize.optimize import fmin_cg, fmin_bfgs
 from scipy.optimize import minimize
 
 # class MinimizationMethods(Enum):
@@ -32,7 +32,7 @@ from scipy.optimize import minimize
  
 class RBFNN(object):
      
-    def __init__(self, indim, numCenters, outdim, trainingCentroidsMethod="knn", trainingWeightsMethod="BFGS", beta=8):
+    def __init__(self, indim, numCenters, outdim, trainingCentroidsMethod="knn", trainingWeightsMethod="BFGS", beta=1.0/8.0, metaplasticity=False):
         self.indim = indim
         self.outdim = outdim
         self.numCenters = numCenters
@@ -41,6 +41,7 @@ class RBFNN(object):
         self.trainingCentroidsMethod=trainingCentroidsMethod
         self.trainingWeightsMethod = trainingWeightsMethod
         self.W = random.random((self.numCenters, self.outdim))
+        self.metaplasticity = metaplasticity
          
     def _basisfunc(self, c, d):
         assert len(d) == self.indim
@@ -70,14 +71,16 @@ class RBFNN(object):
         X, Y = args
         grad = zeros(shape(W), float)
         ej = self._costFunction(W, X, Y)
+        p = 1.0
         for i in xrange(len(W)):
             for j in xrange(len(X)):
-                ej = (Y[i]-dot(transpose(self.G[i]), W))**2
-                grad[i] += ej*self.G[j,i]
+                fx = dot(transpose(self.G[j]), W)
+                ej = ((Y[i]-fx)**2)/2.0
+                if self.metaplasticity:
+                    for k in xrange(len(W)):
+                        p += self.G[j][k]
+                grad[i] += ej*self.G[j,i]*(1.0/p)
         return grad
-    
-    def _stimateProbability(self, x):
-        pass
     
     def _minimization(self, X, Y, method=None):
         w = np.copy(self.W)
@@ -91,10 +94,12 @@ class RBFNN(object):
         
     def _cgmin(self, X, Y):
         w = np.copy(self.W)
-        res = fmin_cg(self._costFunction, w, fprime=self._partialCost, args=(X,Y), retall=True)
-        plt.clf()
-        plt.plot(range(len(res[1])), [(self._costFunction(wx, X, Y)) for wx in res[1]])
-        plt.show()
+        res = fmin_bfgs(self._costFunction, w, fprime=self._partialCost, args=(X,Y), full_output=True)
+#         plt.clf()
+#         plt.plot(range(len(res[1])), [(self._costFunction(wx, X, Y)) for wx in res[1]])
+#         plt.show()
+        self.W = res[0]
+        self.gradEval = res[-2]
         
     def _gcb(self, xk):
         self.it+=1
@@ -153,16 +158,18 @@ class RBFNN(object):
 if __name__ == '__main__':
     print "Ejecutando codigo de debug"
     dim=2
-    nSamples=500
+    nSamples=50
     dataGenerator = DataGenerator()
     dataGenerator.generateClusteredRandomData(nSamples, 2, dim)
 #     dataGenerator.generateRealData('cancer', False)
-
-    print "InDim: ", len(dataGenerator.getTrainingX()[0])
-    rbfnn = RBFNN(len(dataGenerator.getTrainingX()[0]), 5, 1, 'knn', 'BFGS')
-    rbfnn.train(dataGenerator.getTrainingX(), dataGenerator.getTrainingY())
-    dataGenerator.verifyResult(rbfnn.test(dataGenerator.getValidationX()))
     
+    perf = 0.0
+    print "InDim: ", len(dataGenerator.getTrainingX()[0])
+    for i in range(10):
+        rbfnn = RBFNN(len(dataGenerator.getTrainingX()[0]), 5, 1, 'knn', 'cgmin')
+        rbfnn.train(dataGenerator.getTrainingX(), dataGenerator.getTrainingY())
+        perf += dataGenerator.verifyResult(rbfnn.test(dataGenerator.getValidationX()))
+    print "El rendimiento medio es: ", perf/10
     #Plotting data
 #     colors = ["red", "blue"]
 #     for i,x in enumerate(dataGenerator.getTrainingX()):
