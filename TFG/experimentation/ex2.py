@@ -17,7 +17,7 @@ if __name__ == '__main__':
     #Inicializo los componentes principales
     latexReport = LatexReport("Pruebas de experimentacion", "Antonio Molina")
     dataGenerator = DataGenerator()
-    dataGenerator.generateClusteredRandomData(200, 5, 0.2)
+    dataGenerator.generateClusteredRandomData(500, 5, 0.2)
 #     dataGenerator.generateRealData('cancer', True)
     
     #Obtengo training y validation sets
@@ -27,9 +27,9 @@ if __name__ == '__main__':
     
     #Inicializo los parametros del experimento
     minBeta = 2
-    maxBeta = 20
+    maxBeta = 3
     stepCBeta = 1
-    meanSamples = 100
+    meanSamples = 5
     steps = (maxBeta-minBeta)/stepCBeta
     results = np.zeros((steps,5), float)
     beta = np.zeros(steps)
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     for b in xrange(minBeta, maxBeta, stepCBeta):
         print "Testing RBFNN looking for beta with value %d"%(b)        
         for k in xrange(meanSamples):
-            krbfnn = RBFNN(len(trainingX[0]), 10, 1, "knn", "cgmin", float(b))
+            krbfnn = RBFNN(len(trainingX[0]), 10, 1, "knn", "cgmin", float(b), metaplasticity=False)
             krbfn2 = RBFNN(len(trainingX[0]), 10, 1, "knn", "cgmin", float(b), metaplasticity=True)    
             krbfnn.train(trainingX, trainingY)
             krbfn2.train(trainingX, trainingY)

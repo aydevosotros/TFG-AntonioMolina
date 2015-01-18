@@ -18,8 +18,8 @@ if __name__ == '__main__':
     #Inicializo los componentes principales
     latexReport = LatexReport("Pruebas de experimentacion", "Antonio Molina")
     dataGenerator = DataGenerator()
-    dataGenerator.generateClusteredRandomData(1000, 5, 0.01)
-#     dataGenerator.generateRealData('column', True)
+#     dataGenerator.generateClusteredRandomData(10000, 5, 0.01)
+    dataGenerator.generateRealData('cancer', True)
     
     #Obtengo training y validation sets
     trainingX = dataGenerator.getTrainingX()
@@ -27,10 +27,10 @@ if __name__ == '__main__':
     validatingX = dataGenerator.getValidationX()    
     
     #Inicializo los parametros del experimento
-    minNc = 2
-    maxNc = 10
+    minNc = 10
+    maxNc = 20
     stepNc = 1
-    meanSamples = 10
+    meanSamples = 5
     steps = (maxNc-minNc)/stepNc
     results = np.zeros((steps,5), float)
     beta = np.zeros(steps)
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     for nc in xrange(minNc, maxNc, stepNc):
         print "Testing RBFNN looking for %d centroids"%(nc)     
         for k in xrange(meanSamples):   
-            krbfnn = RBFNN(len(trainingX[0]), nc, 1, "knn", "cgmin", 1/9)
+            krbfnn = RBFNN(len(trainingX[0]), nc, 1, "knn", "cgmin", 1/9, metaplasticity=False)
 #             rbfnn2 = RBFNN(len(trainingX[0]), nc, 1, "knn", "BFGS", 9)
             rbfnn3 = RBFNN(len(trainingX[0]), nc, 1, "knn", "cgmin", 1/9, metaplasticity=True)
             #Training and verifying results by k-means clustering

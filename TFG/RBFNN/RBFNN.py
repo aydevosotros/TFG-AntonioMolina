@@ -17,6 +17,7 @@ from matplotlib import pyplot as plt
 from benchmarks.DataGenerator import DataGenerator
 from scipy.optimize.optimize import fmin_cg, fmin_bfgs
 from scipy.optimize import minimize
+from scipy.spatial import distance
 
 # class MinimizationMethods(Enum):
 #     metaplasticity = 'metaplasticity'
@@ -42,45 +43,62 @@ class RBFNN(object):
         self.trainingWeightsMethod = trainingWeightsMethod
         self.W = random.random((self.numCenters, self.outdim))
         self.metaplasticity = metaplasticity
+        self.radialFunc = "iGaussian"
+        self.gError = zeros(0)
          
     def _basisfunc(self, c, d):
         assert len(d) == self.indim
         return exp(-self.beta * norm(c-d)**2)
+    
+    def _gaussianFunc(self, c, d):
+        return exp(-((self.beta * norm(c-d))**2))
+    
+    def _isotropicGaussian(self, c, d):
+        return exp((-(self.numCenters/(self.dm)**2))*(distance.euclidean(c, d)**2))    
      
     def _calcAct(self, X):
-        # TODO: Aqui falta el bias que flipas
         G = zeros((X.shape[0], self.numCenters), float)
         for ci, c in enumerate(self.centers):
             for xi, x in enumerate(X):
-                G[xi,ci] = self._basisfunc(c, x)
+                if self.radialFunc == "gaussian":
+                    G[xi,ci] = self._gaussianFunc(c, x)
+                elif self.radialFunc == "iGaussian":
+                    G[xi,ci] = self._isotropicGaussian(c, x)
+                else:
+                    G[xi,ci] = self._basisfunc(c, x)
         return G
+    
+    def _costBasic(self, W, *args):
+        X, Y = args
+        ej = 0.0
+        # Error computation
+        for i, xi in enumerate(X):
+            fx = dot(transpose(self.G[i]), W)
+            ej += ((Y[i]-fx)**2)
+        ej = ej/len(X)
+        self.gError = append(self.gError, ej)
+        return ej
+
     
     def _costFunction(self, W, *args):
         X, Y = args
         ej = 0.0
-        gError = zeros(0)
         # Error computation
         for i, xi in enumerate(X):
             fx = dot(transpose(self.G[i]), W)
-            ej += (Y[i]-fx)**2
-        ej /= len(X)
-        append(gError, ej)
+            p = (1.0) if not self.metaplasticity else 1-self.P[i]
+            ej += ((Y[i]-fx)**2)*(1/p)
+        ej = ej/len(X)
+        self._costBasic(W, X, Y)
         return ej
+
     
-    def _partialCost(self, W, *args):
-        X, Y = args
-        grad = zeros(shape(W), float)
-        ej = self._costFunction(W, X, Y)
-        p = 1.0
-        for i in xrange(len(W)):
-            for j in xrange(len(X)):
-                fx = dot(transpose(self.G[j]), W)
-                ej = ((Y[i]-fx)**2)/2.0
-                if self.metaplasticity:
-                    for k in xrange(len(W)):
-                        p += self.G[j][k]
-                grad[i] += ej*self.G[j,i]*(1.0/p)
-        return grad
+    def _pEstimator(self, x):
+        p=0.0
+        for k in xrange(self.numCenters):
+            p+=self._isotropicGaussian(self.centers[k], x)
+        return p/self.numCenters
+        
     
     def _minimization(self, X, Y, method=None):
         w = np.copy(self.W)
@@ -94,10 +112,8 @@ class RBFNN(object):
         
     def _cgmin(self, X, Y):
         w = np.copy(self.W)
-        res = fmin_bfgs(self._costFunction, w, fprime=self._partialCost, args=(X,Y), full_output=True)
-#         plt.clf()
-#         plt.plot(range(len(res[1])), [(self._costFunction(wx, X, Y)) for wx in res[1]])
-#         plt.show()
+        res = fmin_bfgs(self._costFunction, w, args=(X,Y), full_output=1, retall=1)
+        self.allvec = res[-1]
         self.W = res[0]
         self.gradEval = res[-2]
         
@@ -133,8 +149,12 @@ class RBFNN(object):
             return
 
         # calculate activations of RBFs
+        # Para la gaussiana isotropica calculo la distncia maxima
+        dis = [distance.euclidean(self.centers[i], self.centers[j]) for i in range(self.numCenters) for j in range(self.numCenters) if i != j]
+        self.dm = np.amax(dis)
+        self.P = [self._pEstimator(x[1]) for x in enumerate(X)]
         self.G = self._calcAct(X)
-#         print G
+#         print self.G
          
 #         self._gradientDescent(X, Y, 7000)
         if self.trainingWeightsMethod == "pseudoinverse":
@@ -158,15 +178,15 @@ class RBFNN(object):
 if __name__ == '__main__':
     print "Ejecutando codigo de debug"
     dim=2
-    nSamples=50
+    nSamples=500
     dataGenerator = DataGenerator()
-    dataGenerator.generateClusteredRandomData(nSamples, 2, dim)
-#     dataGenerator.generateRealData('cancer', False)
+#     dataGenerator.generateClusteredRandomData(nSamples, 2, dim)
+    dataGenerator.generateRealData('cancer', True)
     
     perf = 0.0
     print "InDim: ", len(dataGenerator.getTrainingX()[0])
     for i in range(10):
-        rbfnn = RBFNN(len(dataGenerator.getTrainingX()[0]), 5, 1, 'knn', 'cgmin')
+        rbfnn = RBFNN(len(dataGenerator.getTrainingX()[0]), 2, 1, 'knn', 'cgmin', metaplasticity=True)
         rbfnn.train(dataGenerator.getTrainingX(), dataGenerator.getTrainingY())
         perf += dataGenerator.verifyResult(rbfnn.test(dataGenerator.getValidationX()))
     print "El rendimiento medio es: ", perf/10
